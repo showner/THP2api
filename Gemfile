@@ -35,9 +35,6 @@ group :development, :test do
   gem 'rspec-rails'
 end
 
-
-
-
 group :development do
   gem 'annotate'
   gem 'listen', '>= 3.0.5', '< 3.2'
