@@ -186,6 +186,29 @@ end
 
 add `gem 'faker'` in the Gemfile in development group
 
+### Create Lesson model
+
+add `gem 'shoulda-matchers', '~> 3.1'` in the Gemfile in test group
+
+And a the bottom of `spec/rails_helper.rb`
+
+```
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    # Choose a test framework(there was multiples one like minitest or test_unit):
+    with.test_framework :rspec
+
+    # Choose one or more libraries:
+    # with.library :active_record
+    # with.library :active_model
+    # with.library :action_controller
+    # Or, choose the following (which implies all of the above):
+    with.library :rails
+  end
+end
+
+```
+
 
 # First Things first 
 
