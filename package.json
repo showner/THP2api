@@ -1,7 +1,7 @@
 {
   "husky": {
     "hooks": {
-      "pre-commit": "rubocop && annotate",
+      "pre-commit": "rubocop && annotate && echo 'Hello World!'",
       "pre-push": "rubocop && annotate && rspec"
     }
   },
