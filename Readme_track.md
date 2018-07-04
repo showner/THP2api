@@ -170,6 +170,21 @@ in `config/application.rb` we add
   end
 ```
 
+### Add Factories
+
+add `  gem 'factory_bot_rails'` in the Gemfile in development group
+
+
+in `spec/rails_helper.rb` add to the config
+
+```
+RSpec.configure do |config|
+  config.include FactoryBot::Syntax::Methods
+end
+```
+#### Add faker
+
+add `gem 'faker'` in the Gemfile in development group
 
 
 # First Things first 
