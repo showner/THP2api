@@ -132,11 +132,15 @@ run `rubocop`, you might see some offenses. You can correct some of them (perhap
 
 ### Add husky
 
+We'll add a last tool: `annotate` add `gem 'annotate'` in the Gemfile in development 
+
 You should have `node --version` > 6
 
 Install yarn following [THIS LINK](https://yarnpkg.com/lang/en/docs/install/#debian-stable)
 
 We are able to add husky tool now with: `yarn add husky@next --save-dev`
+
+# PACKAGE.JSON file
 
 
 
