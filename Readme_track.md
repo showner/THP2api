@@ -132,7 +132,7 @@ run `rubocop`, you might see some offenses. You can correct some of them (perhap
 
 ### Add husky
 
-We'll add a last tool: `annotate` add `gem 'annotate'` in the Gemfile in development 
+We'll add a last tool: `annotate` add `gem 'annotate'` in the Gemfile in development group
 
 You should have `node --version` > 6
 
@@ -141,6 +141,34 @@ Install yarn following [THIS LINK](https://yarnpkg.com/lang/en/docs/install/#deb
 We are able to add husky tool now with: `yarn add husky@next --save-dev`
 
 # PACKAGE.JSON file
+
+### Set uuid as primary key
+
+- REQUIREMENT postgres >= 9.4 & Rails >= 5.1
+
+Following [THIS ARTICLE](https://lab.io/articles/2017/04/13/uuids-rails-5-1/)
+
+so we have to perform:
+
+`rails generate migration enable_pgcrypto_extension`
+
+the migration generated should look like this:
+```
+class EnablePgcryptoExtension < ActiveRecord::Migration[5.2]
+  def change
+    enable_extension 'pgcrypto'
+  end
+end
+```
+
+you have to add `enable_extension 'pgcrypto'` in the right line
+
+in `config/application.rb` we add 
+```
+  config.generators do |g|
+      g.orm :active_record, primary_key_type: :uuid
+  end
+```
 
 
 
