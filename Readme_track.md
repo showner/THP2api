@@ -108,6 +108,7 @@ This will create a spec folder with rails_helper and spec_helper, also `.rspec` 
 We want to make sure that the `spec_helper` is required in every spec file so add/check this line in `.rspec`:
 
 `--require spec_helper`
+`--require rails_helper`
 
 `git add .` changes, and `git commit -m '[ADD] Rspec'` (you could push or not)
 
