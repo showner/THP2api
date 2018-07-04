@@ -22,4 +22,6 @@
 /config/master.key
 node_modules
 yarn-error.log
-.env
+.env*
+spec/examples.txt
+coverage
