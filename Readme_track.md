@@ -186,6 +186,7 @@ end
 
 add `gem 'faker'` in the Gemfile in development group
 
+
 ### Create Lesson model
 
 add `gem 'shoulda-matchers', '~> 3.1'` in the Gemfile in test group
@@ -208,6 +209,7 @@ Shoulda::Matchers.configure do |config|
 end
 
 ```
+
 
 
 # First Things first 
