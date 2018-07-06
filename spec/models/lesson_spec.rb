@@ -13,6 +13,9 @@ RSpec.describe Lesson, type: :model do
   it 'is creatable' do
     lesson = create(:lesson)
     expect(Lesson.last.title).to eq(lesson.title)
+    expect(Lesson.last.title).not_to be_blank
+    expect(Lesson.last.description).to eq(lesson.description)
+    expect(Lesson.last.description).not_to be_blank
   end
 
   it 'increment Lesson count' do
