@@ -1,3 +1,33 @@
+
+
+# First Things first 
+
+### Requirements
+
+  - Ruby installed
+  - Your favorite editor
+  - Docker
+  - node version > 6
+  - github / gitlab account
+  - heroku account
+
+You can choose whatever name for the project, we'll use $PROJECT to reference it
+
+### Create the base repository and set it
+  
+Introducing the workflow we create our repository on [Github](https://github.com/new)(could be the same on [Gitlab](https://gitlab.com/projects/new)).
+
+Lets create the repository with the name you want. I'll pick THP2api this time.
+
+We won't initialize it with a readme because were gonna do it ourself later on.
+
+
+We will name our project THP2api, to do so we use `mkdir THP2api` and `cd THP2api`  
+
+
+### [NyanCatFormatter](https://github.com/mattsears/nyan-cat-formatter)
+
+
 # GEMSET?
 
 # Docker REAdme
@@ -81,7 +111,7 @@ Example:
 
 Because i don't want to use sprocket, any front-end middleware and the test framework, and also use postgresqlas database: 
 
-`rails new . -T --skip-bundle --api --database=postgresql`
+`rails new ./ -S -J -T -skip --skip-bundle --api --database=postgresql`
 
 Then rails is generating all required files
 
@@ -187,26 +217,80 @@ end
 add `gem 'faker'` in the Gemfile in development group
 
 
-# First Things first 
+### Create Lesson model
 
-### Requirements
+add `gem 'shoulda-matchers', '~> 3.1'` in the Gemfile in test group
 
-  - Ruby installed
-  - Your favorite editor
-  - Docker
-  - node version > 6
-  - github / gitlab account
-  - heroku account
+And a the bottom of `spec/rails_helper.rb`
 
-You can choose whatever name for the project, we'll use $PROJECT to reference it
+```
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    # Choose a test framework(there was multiples one like minitest or test_unit):
+    with.test_framework :rspec
 
-### Create the base repository and set it
-  
-Introducing the workflow we create our repository on [Github](https://github.com/new)(could be the same on [Gitlab](https://gitlab.com/projects/new)).
+    # Choose one or more libraries:
+    # with.library :active_record
+    # with.library :active_model
+    # with.library :action_controller
+    # Or, choose the following (which implies all of the above):
+    with.library :rails
+  end
+end
 
-Lets create the repository with the name you want. I'll pick THP2api this time.
+```
 
-We won't initialize it with a readme because were gonna do it ourself later on.
+#### Generate model, migration, factory
+
+`rails g model Lesson title:string{50} description:text{300} `
+
+also we want the title column to not be empty so the migration file should look like this:
+```
+class CreateLessons < ActiveRecord::Migration[5.2]
+  def change
+    create_table :lessons, id: :uuid do |t|
+      t.string :title, limit: 50, null: false
+      t.text :description, limit: 300
+
+      t.timestamps
+    end
+  end
+end
+```
 
 
-We will name our project THP2api, to do so we use `mkdir THP2api` and `cd THP2api`  
+`app/models/lesson.rb` should look like that:
+
+```
+ class Lesson < ApplicationRecord
+  validates :title, presence: true, length: { maximum: 50 }, allow_blank: false
+  validates :description, length: { maximum: 300 }
+end
+```
+
+the factory: `spec/factories/lesson.rb` 
+
+```
+RSpec.describe Lesson, type: :model do
+  it 'is creatable' do
+    lesson = create(:lesson)
+    expect(Lesson.last.title).to eq(lesson.title)
+    expect(Lesson.last.title).not_to be_blank
+    expect(Lesson.last.description).to eq(lesson.description)
+    expect(Lesson.last.description).not_to be_blank
+  end
+
+  it 'increment Lesson count' do
+    expect{ create(:lesson) }.to change{ Lesson.count }.by(1)
+  end
+
+  describe(:title) do
+    it { should_not be_blank }
+  end
+
+  it { should validate_presence_of(:title) }
+  it { should validate_length_of(:title).is_at_most(50) }
+  it { should validate_length_of(:description).is_at_most(300) }
+end
+
+```
