@@ -9,11 +9,9 @@
 #  updated_at  :datetime         not null
 #
 
-require 'faker'
-
 FactoryBot.define do
   factory :lesson do
-    title { Faker::Educator.course }
-    description { Faker::FamilyGuy.quote }
+    title { Faker::Educator.course.first(50) }
+    description { Faker::FamilyGuy.quote.first(300) }
   end
 end

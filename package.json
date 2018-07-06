@@ -2,7 +2,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "rubocop && annotate",
-      "pre-push": "rubocop && annotate && rspec"
+      "pre-push": "rubocop && rspec --format progress"
     }
   },
   "dependencies": {
