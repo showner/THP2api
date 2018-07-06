@@ -1,3 +1,33 @@
+
+
+# First Things first 
+
+### Requirements
+
+  - Ruby installed
+  - Your favorite editor
+  - Docker
+  - node version > 6
+  - github / gitlab account
+  - heroku account
+
+You can choose whatever name for the project, we'll use $PROJECT to reference it
+
+### Create the base repository and set it
+  
+Introducing the workflow we create our repository on [Github](https://github.com/new)(could be the same on [Gitlab](https://gitlab.com/projects/new)).
+
+Lets create the repository with the name you want. I'll pick THP2api this time.
+
+We won't initialize it with a readme because were gonna do it ourself later on.
+
+
+We will name our project THP2api, to do so we use `mkdir THP2api` and `cd THP2api`  
+
+
+### [NyanCatFormatter](https://github.com/mattsears/nyan-cat-formatter)
+
+
 # GEMSET?
 
 # Docker REAdme
@@ -81,7 +111,7 @@ Example:
 
 Because i don't want to use sprocket, any front-end middleware and the test framework, and also use postgresqlas database: 
 
-`rails new . -T --skip-bundle --api --database=postgresql`
+`rails new ./ -S -J -T -skip --skip-bundle --api --database=postgresql`
 
 Then rails is generating all required files
 
@@ -210,28 +240,32 @@ end
 
 ```
 
+#### Generate model, migration, factory
+
+`rails g model Lesson title:string{50} description:text{300} `
+
+also we want the title column to not be empty so the migration file should look like this:
+```
+class CreateLessons < ActiveRecord::Migration[5.2]
+  def change
+    create_table :lessons, id: :uuid do |t|
+      t.string :title, limit: 50, null: false
+      t.text :description, limit: 300
+
+      t.timestamps
+    end
+  end
+end
+```
 
 
-# First Things first 
+`app/models/lesson.rb` should look like that:
 
-### Requirements
+```
+ class Lesson < ApplicationRecord
+  validates :title, presence: true, length: { maximum: 50 }, allow_blank: false
+  validates :description, length: { maximum: 300 }
+end
+```
 
-  - Ruby installed
-  - Your favorite editor
-  - Docker
-  - node version > 6
-  - github / gitlab account
-  - heroku account
-
-You can choose whatever name for the project, we'll use $PROJECT to reference it
-
-### Create the base repository and set it
-  
-Introducing the workflow we create our repository on [Github](https://github.com/new)(could be the same on [Gitlab](https://gitlab.com/projects/new)).
-
-Lets create the repository with the name you want. I'll pick THP2api this time.
-
-We won't initialize it with a readme because were gonna do it ourself later on.
-
-
-We will name our project THP2api, to do so we use `mkdir THP2api` and `cd THP2api`  
+the factory: `spec/factories/lesson.rb` 
