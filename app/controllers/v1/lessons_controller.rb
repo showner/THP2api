@@ -2,23 +2,23 @@ module V1
   class LessonsController < ApplicationController
     def index
       @lessons = Lesson.all
-      render json: @lessons
+      render json: @lessons, status: :ok
     end
 
     def show
       lesson = Lesson.find(params[:id])
-      render json: lesson
+      render json: lesson, status: :ok
     end
 
     def create
       lesson = Lesson.create(lesson_params)
-      render json: lesson
+      render json: lesson, status: :created
     end
 
     def update
       lesson = Lesson.find(params[:id])
       lesson.update!(lesson_params)
-      render json: lesson
+      render json: lesson, status: :ok
     end
 
     def destroy
