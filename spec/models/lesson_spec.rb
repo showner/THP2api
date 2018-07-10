@@ -12,11 +12,11 @@
 RSpec.describe Lesson, type: :model do
   it 'is creatable' do
     lesson = create(:lesson)
-
-    expect(Lesson.last.title).to eq(lesson.title)
-    expect(Lesson.last.title).not_to be_blank
-    expect(Lesson.last.description).to eq(lesson.description)
-    expect(Lesson.last.description).not_to be_blank
+    last_lesson = Lesson.last
+    expect(last_lesson.title).to eq(lesson.title)
+    expect(last_lesson.title).not_to be_blank
+    expect(last_lesson.description).to eq(lesson.description)
+    expect(last_lesson.description).not_to be_blank
   end
 
   context 'increment Lesson count' do
@@ -28,6 +28,7 @@ RSpec.describe Lesson, type: :model do
     it { should validate_length_of(:title).is_at_most(50) }
   end
   context ':description' do
+    it { expect(:description).to_not be_blank }
     it { should validate_length_of(:description).is_at_most(300) }
   end
 end
