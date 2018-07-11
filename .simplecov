@@ -7,9 +7,6 @@ if ENV["COVERAGE"]
   SimpleCov.start do
     add_filter "/config/"
     add_filter "/spec/support/"
-    add_filter do |source_file|
-      source_file.lines.count < 5
-    end
 
     add_group 'Controllers', 'app/controllers'
     add_group 'Models', 'app/models'

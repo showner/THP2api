@@ -2,7 +2,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "rubocop && annotate",
-      "pre-push": "rubocop && COVERAGE=true rspec --format progress --format NyanCatFormatter"
+      "pre-push": "rubocop && COVERAGE=true rspec --format progress"
     }
   },
   "dependencies": {
