@@ -39,6 +39,10 @@ end
 
 group :development do
   gem 'annotate'
+  gem 'guard', require: false
+  gem 'guard-annotate', require: false
+  gem 'guard-rspec', require: false
+  gem 'guard-rubocop', require: false
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'rubocop', '~> 0.54.0', require: false
   gem 'spring'
@@ -48,6 +52,11 @@ end
 group :test do
   gem 'nyan-cat-formatter'
   gem 'shoulda-matchers', '~> 3.1'
+end
+
+group :production do
+  # From heroku dev-center for sentry addon
+  gem 'sentry-raven'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
