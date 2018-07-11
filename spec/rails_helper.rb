@@ -1,7 +1,4 @@
 require 'simplecov'
-SimpleCov.start do
-  add_filter "spec/**/*.rb"
-end
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
@@ -76,5 +73,12 @@ Shoulda::Matchers.configure do |config|
     # with.library :action_controller
     # Or, choose the following (which implies all of the above):
     with.library :rails
+  end
+end
+
+SimpleCov.start 'rails' do
+  add_filter "spec/support/"
+  add_filter do |source_file|
+    source_file.lines.count < 5
   end
 end
