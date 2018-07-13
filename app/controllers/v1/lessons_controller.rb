@@ -1,8 +1,8 @@
 module V1
   class LessonsController < ApplicationController
     def index
-      @lessons = Lesson.all
-      render json: @lessons, status: :ok
+      lessons = Lesson.all
+      render json: lessons, status: :ok
     end
 
     def show
