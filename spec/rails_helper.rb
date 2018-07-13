@@ -60,6 +60,7 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   # include custom helpers created under spec/support
   config.include RequestSpecHelper
+  config.include MyApiSpecHelper
 end
 
 Shoulda::Matchers.configure do |config|

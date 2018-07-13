@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe V1::LessonsController, type: :controller do
-  include MyApiSpecHelper
   describe "GET #index" do
     lesson_count = 5
     before { create_list(:lesson, lesson_count) }
