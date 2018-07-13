@@ -9,9 +9,7 @@
 #  updated_at  :datetime         not null
 #
 
-FactoryBot.define do
-  factory :lesson do
-    title { Faker::Educator.course.first(50) }
-    description { Faker::FamilyGuy.quote.first(300) }
-  end
+class LessonSerializer
+  include FastJsonapi::ObjectSerializer
+  attributes :id, :title, :description, :created_at, :updated_at
 end

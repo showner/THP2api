@@ -3,6 +3,7 @@
     "hooks": {
       "pre-commit": "rubocop && annotate",
       "pre-push": "rubocop && COVERAGE=true rspec --format progress"
+
     }
   },
   "dependencies": {

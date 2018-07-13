@@ -28,11 +28,16 @@ We will name our project THP2api, to do so we use `mkdir THP2api` and `cd THP2ap
 ### [NyanCatFormatter](https://github.com/mattsears/nyan-cat-formatter)
 
 
-# GEMSET?
 
 # Docker REAdme
 
 # Rspec go again
+
+# Pipeline Heroku
+
+
+
+
 
 
 # What it did:
@@ -270,27 +275,47 @@ end
 
 the factory: `spec/factories/lesson.rb` 
 
-```
-RSpec.describe Lesson, type: :model do
-  it 'is creatable' do
-    lesson = create(:lesson)
-    expect(Lesson.last.title).to eq(lesson.title)
-    expect(Lesson.last.title).not_to be_blank
-    expect(Lesson.last.description).to eq(lesson.description)
-    expect(Lesson.last.description).not_to be_blank
-  end
+# Code expected
 
-  it 'increment Lesson count' do
-    expect{ create(:lesson) }.to change{ Lesson.count }.by(1)
-  end
+the spec: `spec/model/lesson_spec.rb`
 
-  describe(:title) do
-    it { should_not be_blank }
-  end
+# Code expected
 
-  it { should validate_presence_of(:title) }
-  it { should validate_length_of(:title).is_at_most(50) }
-  it { should validate_length_of(:description).is_at_most(300) }
-end
 
-```
+### Pipeline Heroku
+
+### Create Lesson controller
+
+#### Create the serializer
+
+Add `gem 'fast_jsonapi'` in Gemfile in general
+
+Generate the Lesson serializer:
+
+`rails g serializer Lesson id title description created_at updated_at`
+
+#### Create the controller
+
+We want to be able to upgrade in the future our API so will use namespace v1
+
+`rails g controller v1/Lessons index show create update destroy`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

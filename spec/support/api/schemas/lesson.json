@@ -1,0 +1,17 @@
+{
+  "type"      : "object",
+  "required"  : ["id", "title", "description", "created_at", "updated_at"],
+  "properties": {
+    "id"         : { "$ref" : "#/definitions/uuid" },
+    "title"      : { "type" : "string"},
+    "description": { "type" : "string"},
+    "created_at" : { "type" : "string", "format": "date-time" },
+    "updated_at" : { "type" : "string", "format": "date-time" }
+  },
+  "definitions": {
+    "uuid": {
+      "type": "string",
+      "pattern": "^[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}$"
+    }
+  }
+}
