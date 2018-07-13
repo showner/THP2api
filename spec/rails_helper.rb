@@ -76,10 +76,3 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
-
-SimpleCov.start 'rails' do
-  add_filter "spec/support/"
-  add_filter do |source_file|
-    source_file.lines.count < 5
-  end
-end
