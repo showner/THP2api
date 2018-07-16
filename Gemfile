@@ -34,12 +34,11 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'dotenv-rails'
   gem 'factory_bot_rails'
-  gem 'faker'
   gem 'rspec-rails'
 end
 
 group :development do
-  gem 'annotate'
+  gem 'annotate', require: false
   gem 'guard', require: false
   gem 'guard-annotate', require: false
   gem 'guard-rspec', require: false
@@ -51,6 +50,7 @@ group :development do
 end
 
 group :test do
+  gem 'faker'
   gem 'json-schema'
   gem 'nyan-cat-formatter'
   gem 'shoulda-matchers', '~> 3.1'
