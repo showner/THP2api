@@ -3,13 +3,17 @@ require 'rails_helper'
 RSpec.describe V1::LessonsController, type: :controller do
   describe "GET #index" do
     lesson_count = 5
-    before { create_list(:lesson, lesson_count) }
-    before { get :index }
+    let!(:lessons) { create_list(:lesson, lesson_count) }
+    subject { get :index }
     it 'returns http success' do
+      subject
       expect(response).to have_http_status(:ok)
     end
     it "returns #{lesson_count} Lessons" do
-      expect(response_from_json.length).to eq(lesson_count)
+      subject
+      expect(response_from_json.size).to eq(lesson_count)
+      # binding.pry
+      expect(response_from_json.map{ |e| e["id"] }).to eq(lessons.map(&:id))
     end
   end
 
