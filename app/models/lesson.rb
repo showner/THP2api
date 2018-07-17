@@ -10,6 +10,6 @@
 #
 
 class Lesson < ApplicationRecord
-  validates :title, presence: true, length: { maximum: 50 }, allow_blank: false
-  validates :description, length: { maximum: 300 }, allow_blank: false
+  validates :title, presence: true, length: { maximum: 50 }
+  validates :description, presence: true, length: { maximum: 300 }
 end

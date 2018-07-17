@@ -8,6 +8,8 @@ module V1
     def show
       lesson = Lesson.find(params[:id])
       render json: lesson
+      # binding.pry
+      # render json: LessonSerializer.new(lesson)
     end
 
     def create
