@@ -101,7 +101,7 @@ RSpec.describe V1::LessonsController, type: :controller do
       end
     end
     context "with invalid params" do
-      it 'returns 403 forbidden' do
+      it 'invalid and 403' do
         params[:title] = Faker::Lorem.characters(55)
         params[:description] = nil
         subject

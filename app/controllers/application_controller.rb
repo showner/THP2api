@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::API
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from ActionController::ParameterMissing, with: :params_missing
-  rescue_from ActiveRecord::RecordInvalid, with: :invalid_record
+  rescue_from ActiveRecord::RecordInvalid, with: :bad_params
 
   def record_not_found(error)
     render json: { error: error.message }, status: :not_found
@@ -11,7 +11,7 @@ class ApplicationController < ActionController::API
     render json: { error: error.message }, status: :forbidden
   end
 
-  def invalid_record(error)
-    render json: { error: error.message }, status: :forbidden
+  def bad_params(error)
+    render json: { error: error.record.errors.full_messages }, status: :forbidden
   end
 end

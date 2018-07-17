@@ -6,7 +6,6 @@ if ENV["COVERAGE"]
 	  add_filter 'app/mailers'
     add_filter 'app/jobs'
     add_filter 'app/channels'
-    add_filter 'app/serializers'
     add_filter do |source_file|
       source_file.lines.count < 7
     end

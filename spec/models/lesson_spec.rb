@@ -23,11 +23,11 @@ RSpec.describe Lesson, type: :model do
     it { expect{ create(:lesson) }.to change{ Lesson.count }.by(1) }
   end
   context ':title' do
-    it { should validate_presence_of(:title) }
-    it { should validate_length_of(:title).is_at_most(50) }
+    it { is_expected.to validate_presence_of(:title) }
+    it { is_expected.to validate_length_of(:title).is_at_most(50) }
   end
   context ':description' do
-    it { should validate_presence_of(:title) }
-    it { should validate_length_of(:description).is_at_most(300) }
+    it { is_expected.to validate_presence_of(:title) }
+    it { is_expected.to validate_length_of(:description).is_at_most(300) }
   end
 end
