@@ -11,5 +11,6 @@
 
 class LessonSerializer
   include FastJsonapi::ObjectSerializer
+  set_type :lesson
   attributes :id, :title, :description, :created_at, :updated_at
 end

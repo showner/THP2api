@@ -3,8 +3,9 @@ module V1
     def index
       lessons = Lesson.all
       render json: lessons
-      # binding.pry
-      # render json: LessonSerializer.new(lessons).serializable_hash
+      # options = {}
+      # options[:is_collection] = true
+      render json: LessonSerializer.new(lessons).serializable_hash
     end
 
     def show
