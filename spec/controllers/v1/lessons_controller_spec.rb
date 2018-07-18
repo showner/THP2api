@@ -1,34 +1,32 @@
 require 'rails_helper'
 
 RSpec.describe V1::LessonsController, type: :controller do
-  describe "GET #index" do
+  xdescribe "GET #index" do
     lesson_count = 5
     let!(:lessons) { create_list(:lesson, lesson_count) }
     subject { get :index }
     it 'returns http success' do
-      subject
-      expect(response).to have_http_status(:ok)
+      is_expected.to have_http_status(:ok)
     end
     it "returns #{lesson_count} Lessons" do
       subject
       expect(response_from_json.size).to eq(lesson_count)
-      expect(response_from_json.map{ |e| e["id"] }).to eq(lessons.map(&:id))
+      expect(response_from_json.map{ |e| e[:id] }).to eq(lessons.map(&:id))
     end
     context 'with extra params' do
       subject { get :index, params: { another_params: Faker::Lorem.word } }
       it 'returns http success' do
-        subject
-        expect(response).to have_http_status(:ok)
+        is_expected.to have_http_status(:ok)
       end
       it "returns #{lesson_count} Lessons" do
         subject
         expect(response_from_json.size).to eq(lesson_count)
-        expect(response_from_json.map{ |e| e["id"] }).to eq(lessons.map(&:id))
+        expect(response_from_json.map{ |e| e[:id] }).to eq(lessons.map(&:id))
       end
     end
   end
 
-  describe 'GET #show' do
+  xdescribe 'GET #show' do
     let(:lesson) { create(:lesson) }
     subject { get :show, params: params }
     context ':id exists' do
@@ -38,8 +36,7 @@ RSpec.describe V1::LessonsController, type: :controller do
     context ":id doesn't exist" do
       let(:params) { { id: Faker::Lorem.word } }
       it 'returns 404 not_found' do
-        subject
-        expect(response).to have_http_status(:not_found)
+        is_expected.to have_http_status(:not_found)
       end
     end
     context "has extras params" do
@@ -48,80 +45,124 @@ RSpec.describe V1::LessonsController, type: :controller do
     end
   end
 
-  describe 'POST #create' do
-    subject { post :create, params: lesson }
-    let(:lesson) { { lesson: params } }
-    let(:params) { attributes_for(:lesson) }
+  xdescribe 'POST #create' do
+    subject { post :create, params: params }
+    let(:params) { { lesson: lesson } }
+    let(:lesson) { attributes_for(:lesson) }
     context 'with valid params' do
+      include_examples 'lesson_examples', :created
+    end
+    context 'with extra params next to lesson' do
+      let(:params) { { lesson: lesson, extra: 'this extra params' } }
+      include_examples 'lesson_examples', :created
+    end
+    context 'with extra params into lesson' do
+      let(:params) do
+        lesson[:extra] = 'this extra params'
+        { lesson: lesson }
+      end
       include_examples 'lesson_examples', :created
     end
     context "without params" do
       it 'returns 403 forbidden' do
-        lesson.delete(:lesson)
-        subject
-        expect(response).to have_http_status(:forbidden)
+        params.delete(:lesson)
+        is_expected.to have_http_status(:forbidden)
       end
     end
     context "without title" do
       it 'returns 403 forbidden' do
-        params.delete(:title)
-        subject
-        expect(response).to have_http_status(:forbidden)
+        lesson.delete(:title)
+        is_expected.to have_http_status(:forbidden)
       end
     end
     context "without description" do
       it 'returns 403 forbidden' do
-        params.delete(:description)
-        subject
-        expect(response).to have_http_status(:forbidden)
+        lesson.delete(:description)
+        is_expected.to have_http_status(:forbidden)
       end
     end
     context "with invalid title" do
       it ':nil returns 403 forbidden' do
-        params[:title] = nil
-        subject
-        expect(response).to have_http_status(:forbidden)
+        lesson[:title] = nil
+        is_expected.to have_http_status(:forbidden)
       end
       it ':too_long returns 403 forbidden' do
-        params[:title] = Faker::Lorem.characters(55)
-        subject
-        expect(response).to have_http_status(:forbidden)
+        lesson[:title] = Faker::Lorem.characters(55)
+        is_expected.to have_http_status(:forbidden)
       end
     end
     context "with invalid description" do
       it ':nil returns 403 forbidden' do
-        params[:description] = nil
-        subject
-        expect(response).to have_http_status(:forbidden)
+        lesson[:description] = nil
+        is_expected.to have_http_status(:forbidden)
       end
       it ':too_long returns 403 forbidden' do
-        params[:description] = Faker::Lorem.characters(350)
-        subject
-        expect(response).to have_http_status(:forbidden)
+        lesson[:description] = Faker::Lorem.characters(350)
+        is_expected.to have_http_status(:forbidden)
       end
     end
     context "with invalid params" do
       it 'invalid and 403' do
-        params[:title] = Faker::Lorem.characters(55)
-        params[:description] = nil
-        subject
-        expect(response).to have_http_status(:forbidden)
+        lesson[:title] = Faker::Lorem.characters(55)
+        lesson[:description] = nil
+        is_expected.to have_http_status(:forbidden)
       end
     end
   end
 
   describe 'patch #update' do
     let(:lesson) { create(:lesson) }
-    subject! { patch :update, params: { id: lesson.id, lesson: attributes_for(:lesson) } }
-    include_examples 'lesson_examples', :ok
+    let(:lesson_update) { attributes_for(:lesson) }
+    let(:params) { { id: lesson.id, lesson: lesson_update } }
+    subject { patch :update, params: params }
+    context 'with valid params' do
+      include_examples 'lesson_examples', :ok
+    end
+    context 'with extra params next to lesson' do
+      let(:params) { { id: lesson.id, lesson: lesson_update, extra: 'this extra params' } }
+      include_examples 'lesson_examples', :ok
+    end
+    context 'with extra params into lesson' do
+      let(:params) do
+        lesson_update[:extra] = 'this extra params'
+        { id: lesson.id, lesson: lesson }
+      end
+      include_examples 'lesson_examples', :forbidden
+    end
+    context "with invalid title" do
+      it ':nil returns 403 forbidden' do
+        lesson_update[:title] = nil
+        is_expected.to have_http_status(:forbidden)
+      end
+      it ':too_long returns 403 forbidden' do
+        lesson_update[:title] = Faker::Lorem.characters(55)
+        is_expected.to have_http_status(:forbidden)
+      end
+    end
+    context "with invalid description" do
+      it ':nil returns 403 forbidden' do
+        lesson_update[:description] = nil
+        is_expected.to have_http_status(:forbidden)
+      end
+      it ':too_long returns 403 forbidden' do
+        lesson_update[:description] = Faker::Lorem.characters(350)
+        is_expected.to have_http_status(:forbidden)
+      end
+    end
+    context "with invalid params" do
+      it 'invalid and 403' do
+        lesson_update[:title] = Faker::Lorem.characters(55)
+        lesson_update[:description] = nil
+        is_expected.to have_http_status(:forbidden)
+      end
+    end
   end
 
-  describe "DELETE #destroy" do
+  xdescribe "DELETE #destroy" do
     let!(:lesson) { create(:lesson) }
     subject { delete :destroy, params: { id: lesson.id } }
     it 'returns http no-content' do
-      subject
-      expect(response).to have_http_status(:no_content)
+      is_expected.to have_http_status(:no_content)
     end
     it 'delete in db' do
       expect{ subject }.to change(Lesson, :count).by(-1)

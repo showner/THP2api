@@ -17,6 +17,7 @@ module V1
     end
 
     def update
+      # binding.pry
       lesson = Lesson.find(params[:id])
       lesson.update!(update_params)
       render json: lesson
@@ -34,6 +35,12 @@ module V1
     def create_params
       params.require(:lesson).permit(:title, :description)
     end
-    alias_method :update_params, :create_params
+
+    def update_params
+      ActionController::Parameters.action_on_unpermitted_parameters = :raise
+      params.require(:lesson).permit(:title, :description)
+    end
+    #
+    # alias_method :update_params, :create_params
   end
 end
