@@ -14,7 +14,7 @@ RSpec.describe V1::LessonsController, type: :controller do
       expect(response_from_json.size).to eq(lesson_count)
       expect(response_from_json.map{ |e| e["id"] }).to eq(lessons.map(&:id))
     end
-    context 'with params' do
+    context 'with extra params' do
       subject { get :index, params: { another_params: Faker::Lorem.word } }
       it 'returns http success' do
         subject

@@ -9,8 +9,6 @@
 #  updated_at  :datetime         not null
 #
 
-class LessonSerializer
-  include FastJsonapi::ObjectSerializer
-  set_type :lesson
+class LessonSerializer < ActiveModel::Serializer
   attributes :id, :title, :description, :created_at, :updated_at
 end

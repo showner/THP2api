@@ -3,28 +3,23 @@ module V1
     def index
       lessons = Lesson.all
       render json: lessons
-      # options = {}
-      # options[:is_collection] = true
-      render json: LessonSerializer.new(lessons).serializable_hash
     end
 
     def show
       lesson = Lesson.find(params[:id])
-      # render json: lesson, serializer: LessonSerializer
-      render json: LessonSerializer.new(lesson).serializable_hash[:data][:attributes]
+      render json: lesson
+      # render json: LessonSerializer.new(lesson).serializable_hash[:data][:attributes]
     end
 
     def create
       lesson = Lesson.create!(create_params)
-      # render json: lesson, status: :created
-      render json: LessonSerializer.new(lesson).serializable_hash[:data][:attributes], status: :created
+      render json: lesson, status: :created
     end
 
     def update
       lesson = Lesson.find(params[:id])
       lesson.update!(update_params)
-      # render json: lesson
-      render json: LessonSerializer.new(lesson).serializable_hash[:data][:attributes]
+      render json: lesson
     end
 
     def destroy
