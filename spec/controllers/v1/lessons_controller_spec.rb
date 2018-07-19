@@ -62,24 +62,24 @@ RSpec.describe V1::LessonsController, type: :controller do
     end
 
     context "without params" do
-      it 'returns 403 forbidden' do
+      it {
         params.delete(:lesson)
         is_expected.to have_http_status(:forbidden)
-      end
+      }
     end
 
     context "without title" do
-      it 'returns 403 forbidden' do
+      it {
         lesson.delete(:title)
         is_expected.to have_http_status(:forbidden)
-      end
+      }
     end
 
     context "without description" do
-      it 'returns 403 forbidden' do
+      it {
         lesson.delete(:description)
         is_expected.to have_http_status(:forbidden)
-      end
+      }
     end
 
     context "with invalid title" do
@@ -151,10 +151,10 @@ RSpec.describe V1::LessonsController, type: :controller do
     end
 
     context "without lesson params" do
-      it 'returns 403 forbidden' do
+      it {
         params.delete(:lesson)
         is_expected.to have_http_status(:forbidden)
-      end
+      }
     end
 
     context "without lesson:title" do
