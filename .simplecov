@@ -3,7 +3,7 @@ if ENV["COVERAGE"]
   SimpleCov.start 'rails' do
     add_filter '/config/'
     add_filter '/spec/'
-	  add_filter 'app/mailers'
+    add_filter 'app/mailers'
     add_filter 'app/jobs'
     add_filter 'app/channels'
     add_filter do |source_file|
