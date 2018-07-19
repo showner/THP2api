@@ -116,7 +116,7 @@ Example:
 
 Because i don't want to use sprocket, any front-end middleware and the test framework, and also use postgresqlas database: 
 
-`rails new ./ -S -J -T -skip --skip-bundle --api --database=postgresql`
+`rails new ./ -T -s --skip-bundle --api --database=postgresql`
 
 Then rails is generating all required files
 

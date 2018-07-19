@@ -27,21 +27,22 @@ gem 'bootsnap', '>= 1.1.0', '< 1.3.1', require: false
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
-gem 'fast_jsonapi'
+# Maybe used later
+# gem 'fast_jsonapi'
+# Used for now
+gem 'active_model_serializers', '~> 0.10.0'
 # Auth
 gem 'devise_token_auth'
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'dotenv-rails'
   gem 'factory_bot_rails'
-  gem 'faker'
+  gem 'pry-byebug'
   gem 'rspec-rails'
 end
 
 group :development do
-  gem 'annotate'
+  gem 'annotate', require: false
   gem 'guard', require: false
   gem 'guard-annotate', require: false
   gem 'guard-rspec', require: false
@@ -53,6 +54,7 @@ group :development do
 end
 
 group :test do
+  gem 'faker'
   gem 'json-schema'
   gem 'nyan-cat-formatter'
   gem 'shoulda-matchers', '~> 3.1'

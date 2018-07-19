@@ -1,36 +1,59 @@
 module V1
   class LessonsController < ApplicationController
+    before_action do
+      @attributes = %i[title description]
+      @allow_only_params_for = {
+        create:  [lesson: @attributes],
+        destroy: [:id],
+        index:   [],
+        show:    [:id],
+        update:  [:id, lesson: @attributes]
+      }
+      deny_all_unpermitted_parameters
+    end
+    before_action :find_lesson, only: %i[show update destroy]
+
     def index
       lessons = Lesson.all
-      render json: lessons, status: :ok
+      render json: lessons
     end
 
     def show
-      lesson = Lesson.find(params[:id])
-      render json: lesson, status: :ok
+      render json: @lesson
+      # render json: LessonSerializer.new(lesson).serializable_hash[:data][:attributes]
     end
 
     def create
-      lesson = Lesson.create(lesson_params)
+      lesson = Lesson.create!(create_params)
       render json: lesson, status: :created
     end
 
     def update
-      lesson = Lesson.find(params[:id])
-      lesson.update!(lesson_params)
-      render json: lesson, status: :ok
+      @lesson.update!(update_params)
+      render json: @lesson
     end
 
     def destroy
-      lesson = Lesson.find(params[:id])
-      lesson.destroy
-      render status: :no_content
+      # Maybe destroy, see later
+      # @lesson.destroy
+      @lesson.delete
+      head :no_content
     end
 
     private
 
-    def lesson_params
-      params.require(:lesson).permit(:title, :description)
+    def create_params
+      params.require(:lesson).permit(@attributes)
+    end
+    alias_method :update_params, :create_params
+
+    def deny_all_unpermitted_parameters
+      ActionController::Parameters.action_on_unpermitted_parameters = :raise
+      params.permit(*@allow_only_params_for[params[:action].to_sym])
+    end
+
+    def find_lesson
+      @lesson = Lesson.find(params[:id])
     end
   end
 end
