@@ -1,4 +1,5 @@
 --format doc
+--tag ~skip
 --color
 --require spec_helper
 --require rails_helper
