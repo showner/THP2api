@@ -4,9 +4,9 @@ RSpec.shared_examples 'lesson_examples' do |parameter|
     lesson = Lesson.new(response_from_json)
     expect(lesson).to eq Lesson.last
   end
-  it "returns #{parameter} http status" do
+  it {
     is_expected.to have_http_status(parameter)
-  end
+  }
   it 'returns json utf8' do
     is_expected.to be_json_utf8
   end

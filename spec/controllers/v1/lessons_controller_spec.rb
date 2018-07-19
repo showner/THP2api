@@ -82,34 +82,38 @@ RSpec.describe V1::LessonsController, type: :controller do
       }
     end
 
-    context "with invalid title" do
-      it ':nil returns 403 forbidden' do
+    context "with invalid title:nil" do
+      it {
         lesson[:title] = nil
         is_expected.to have_http_status(:forbidden)
-      end
-      it ':too_long returns 403 forbidden' do
+      }
+    end
+    context "with invalid title:too_long" do
+      it {
         lesson[:title] = Faker::Lorem.characters(55)
         is_expected.to have_http_status(:forbidden)
-      end
+      }
     end
 
-    context "with invalid description" do
-      it ':nil returns 403 forbidden' do
+    context "with invalid description:nil" do
+      it {
         lesson[:description] = nil
         is_expected.to have_http_status(:forbidden)
-      end
-      it ':too_long returns 403 forbidden' do
+      }
+    end
+    context "with invalid description:too_long" do
+      it {
         lesson[:description] = Faker::Lorem.characters(350)
         is_expected.to have_http_status(:forbidden)
-      end
+      }
     end
 
     context "with invalid params" do
-      it 'invalid and 403' do
+      it {
         lesson[:title] = Faker::Lorem.characters(55)
         lesson[:description] = nil
         is_expected.to have_http_status(:forbidden)
-      end
+      }
     end
   end
 
@@ -167,34 +171,38 @@ RSpec.describe V1::LessonsController, type: :controller do
       include_examples 'lesson_examples', :ok
     end
 
-    context "with invalid lesson:title" do
-      it ':nil returns 403 forbidden' do
+    context "with invalid lesson:title:nil" do
+      it {
         lesson_update[:title] = nil
         is_expected.to have_http_status(:forbidden)
-      end
-      it ':too_long returns 403 forbidden' do
+      }
+    end
+    context "with invalid lesson:title:nil" do
+      it {
         lesson_update[:title] = Faker::Lorem.characters(55)
         is_expected.to have_http_status(:forbidden)
-      end
+      }
     end
 
-    context "with invalid lesson:description" do
-      it ':nil returns 403 forbidden' do
+    context "with invalid lesson:description:nil" do
+      it {
         lesson_update[:description] = nil
         is_expected.to have_http_status(:forbidden)
-      end
-      it ':too_long returns 403 forbidden' do
+      }
+    end
+    context "with invalid lesson:description:too_long" do
+      it {
         lesson_update[:description] = Faker::Lorem.characters(350)
         is_expected.to have_http_status(:forbidden)
-      end
+      }
     end
 
     context "with invalid lesson params" do
-      it 'invalid and 403' do
+      it {
         lesson_update[:title] = Faker::Lorem.characters(55)
         lesson_update[:description] = nil
         is_expected.to have_http_status(:forbidden)
-      end
+      }
     end
   end
 
