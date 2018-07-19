@@ -1,13 +1,14 @@
 module V1
   class LessonsController < ApplicationController
+    before_action :find_lesson, only: %i[show update destroy]
+
     def index
       lessons = Lesson.all
       render json: lessons
     end
 
     def show
-      lesson = Lesson.find(params[:id])
-      render json: lesson
+      render json: @lesson
       # render json: LessonSerializer.new(lesson).serializable_hash[:data][:attributes]
     end
 
@@ -18,29 +19,27 @@ module V1
 
     def update
       # binding.pry
-      lesson = Lesson.find(params[:id])
-      lesson.update!(update_params)
-      render json: lesson
+      @lesson.update!(update_params)
+      render json: @lesson
     end
 
     def destroy
       # Maybe destroy, see later
       # Lesson.find(params[:id]).destroy
-      Lesson.find(params[:id]).delete
+      @lesson.delete
       head :no_content
     end
 
     private
 
     def create_params
-      params.require(:lesson).permit(:title, :description)
-    end
-
-    def update_params
       ActionController::Parameters.action_on_unpermitted_parameters = :raise
       params.require(:lesson).permit(:title, :description)
     end
-    #
-    # alias_method :update_params, :create_params
+    alias_method :update_params, :create_params
+
+    def find_lesson
+      @lesson = Lesson.find(params[:id])
+    end
   end
 end
