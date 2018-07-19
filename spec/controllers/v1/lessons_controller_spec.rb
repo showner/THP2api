@@ -5,11 +5,8 @@ RSpec.describe V1::LessonsController, type: :controller do
     lesson_count = 5
     let!(:lessons) { create_list(:lesson, lesson_count) }
     subject { get :index }
-
-    it 'returns http success' do
-      is_expected.to have_http_status(:ok)
-    end
-
+    context 'with valid request'
+    it { is_expected.to have_http_status(:ok) }
     it "returns #{lesson_count} Lessons" do
       subject
       expect(response_from_json.size).to eq(lesson_count)
@@ -18,9 +15,7 @@ RSpec.describe V1::LessonsController, type: :controller do
 
     context 'with extra params' do
       subject { get :index, params: { another_params: Faker::Lorem.word } }
-      it 'returns http success' do
-        is_expected.to have_http_status(:forbidden)
-      end
+      it { is_expected.to have_http_status(:forbidden) }
     end
   end
 
@@ -33,18 +28,14 @@ RSpec.describe V1::LessonsController, type: :controller do
       include_examples 'lesson_examples', :ok
     end
 
-    context ":id doesn't exist" do
+    context ":id is not valid " do
       let(:params) { { id: Faker::Lorem.word } }
-      it 'returns 404 not_found' do
-        is_expected.to have_http_status(:not_found)
-      end
+      it { is_expected.to have_http_status(:not_found) }
     end
 
     context "has extras params" do
       let(:params) { { id: lesson.id, another_params: Faker::Lorem.word } }
-      it 'returns 403 forbidden' do
-        is_expected.to have_http_status(:forbidden)
-      end
+      it { is_expected.to have_http_status(:forbidden) }
     end
   end
 
@@ -59,9 +50,7 @@ RSpec.describe V1::LessonsController, type: :controller do
 
     context 'with extra params next to lesson' do
       let(:params) { { lesson: lesson, extra: 'this extra params' } }
-      it 'returns 403 forbidden' do
-        is_expected.to have_http_status(:forbidden)
-      end
+      it { is_expected.to have_http_status(:forbidden) }
     end
 
     context 'with extra params into lesson' do
@@ -69,9 +58,7 @@ RSpec.describe V1::LessonsController, type: :controller do
         lesson[:extra] = 'this extra params'
         { lesson: lesson }
       end
-      it 'returns 403 forbidden' do
-        is_expected.to have_http_status(:forbidden)
-      end
+      it { is_expected.to have_http_status(:forbidden) }
     end
 
     context "without params" do
@@ -137,28 +124,22 @@ RSpec.describe V1::LessonsController, type: :controller do
     end
 
     xcontext 'without params' do
-      let(:params) {}
-      it 'returns 403 forbidden' do
-        is_expected.to have_http_status(:forbidden)
-      end
+      let(:params) { {} }
+      it { is_expected.to have_http_status(:forbidden) }
     end
 
     xcontext "without id params" do
       let(:params) { { lesson: lesson_update } }
-      it 'returns 403 forbidden' do
-        is_expected.to have_http_status(:forbidden)
-      end
+      it { is_expected.to have_http_status(:forbidden) }
     end
 
-    context "with invalid id params" do
+    xcontext "with invalid id params" do
       let(:params) { { id: Faker::Number.number(10), lesson: lesson_update } }
     end
 
     context 'with extra params next to lesson' do
       let(:params) { { id: lesson.id, lesson: lesson_update, extra: 'this extra params' } }
-      it 'returns 403 forbidden' do
-        is_expected.to have_http_status(:forbidden)
-      end
+      it { is_expected.to have_http_status(:forbidden) }
     end
 
     context 'with extra params into lesson' do
@@ -166,9 +147,7 @@ RSpec.describe V1::LessonsController, type: :controller do
         lesson_update[:extra] = 'this extra params'
         { id: lesson.id, lesson: lesson_update }
       end
-      it 'returns 403 forbidden' do
-        is_expected.to have_http_status(:forbidden)
-      end
+      it { is_expected.to have_http_status(:forbidden) }
     end
 
     context "without lesson params" do
@@ -224,9 +203,7 @@ RSpec.describe V1::LessonsController, type: :controller do
     let(:params) { { id: lesson.id } }
     subject { delete :destroy, params: params }
     context "with valid id" do
-      it 'returns http no-content' do
-        is_expected.to have_http_status(:no_content)
-      end
+      it { is_expected.to have_http_status(:no_content) }
       it 'delete in db' do
         expect{ subject }.to change(Lesson, :count).by(-1)
       end
@@ -234,20 +211,16 @@ RSpec.describe V1::LessonsController, type: :controller do
 
     context "with invalid id" do
       let(:params) { { id: Faker::Number.number(10) } }
-      it 'returns 403 forbidden' do
-        is_expected.to have_http_status(:not_found)
-      end
+      it { is_expected.to have_http_status(:forbidden) }
     end
 
     context "with extra params" do
       let(:params) { { id: lesson.id, extra: 'extra params' } }
-      it 'returns 403 forbidden' do
-        is_expected.to have_http_status(:forbidden)
-      end
+      it { is_expected.to have_http_status(:forbidden) }
     end
 
     xcontext "without params" do
-      let(:params) {}
+      let(:params) { {} }
     end
 
     xcontext "only with extra params" do

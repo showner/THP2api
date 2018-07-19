@@ -24,18 +24,19 @@ RSpec.shared_examples 'lesson_examples' do |parameter|
     expect(response_from_json[:id]).not_to be_blank
     expect(response_from_json[:id]).to be_valid_uuid
   end
-  it 'returns valid title' do
-    subject
-    expect(response_from_json).to have_key(:title)
-    expect(response_from_json[:title]).not_to be_blank
-    expect(response_from_json[:title].length).to be <= 50
-  end
-  it 'returns valid description' do
-    subject
-    expect(response_from_json).to have_key(:description)
-    expect(response_from_json[:description]).not_to be_blank
-    expect(response_from_json[:description].length).to be <= 300
-  end
+  # REDONDANT
+  # it 'returns valid title' do
+  #   subject
+  #   expect(response_from_json).to have_key(:title)
+  #   expect(response_from_json[:title]).not_to be_blank
+  #   expect(response_from_json[:title].length).to be <= 50
+  # end
+  # it 'returns valid description' do
+  #   subject
+  #   expect(response_from_json).to have_key(:description)
+  #   expect(response_from_json[:description]).not_to be_blank
+  #   expect(response_from_json[:description].length).to be <= 300
+  # end
   it 'returns valid timestamps' do
     subject
     expect(response_from_json).to have_key(:created_at)

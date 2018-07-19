@@ -6,19 +6,19 @@ class ApplicationController < ActionController::API
   # rescue_from ActionController::UrlGenerationError, with: :no_route
 
   def record_not_found(error)
-    render json: { error: error.message }, status: :not_found
+    render json: { error: [error.message] }, status: :not_found
   end
 
   def params_missing(error)
-    render json: { error: error.message }, status: :forbidden
+    render json: { error: [error.message] }, status: :forbidden
   end
 
   def bad_params(error)
-    render json: { error: error.record.errors.full_messages }, status: :forbidden
+    render json: { error: [error.record.errors.full_messages] }, status: :forbidden
   end
 
   def unpermitted_params(error)
-    render json: { error: error.message }, status: :forbidden
+    render json: { error: [error.message] }, status: :forbidden
   end
   # def no_route(error)
   #   binding.pry
