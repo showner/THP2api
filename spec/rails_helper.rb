@@ -61,6 +61,7 @@ RSpec.configure do |config|
   # include custom helpers created under spec/support
   config.include RequestSpecHelper
   config.include MyApiSpecHelper
+  config.include Devise::Test::ControllerHelpers, type: :controller
 end
 
 Shoulda::Matchers.configure do |config|

@@ -28,10 +28,14 @@
 #  updated_at             :datetime         not null
 #
 
-class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :confirmable
-  include DeviseTokenAuth::Concerns::User
+FactoryBot.define do
+  factory :user do
+    email    { Faker::Internet.safe_email }
+    nickname { Faker::Internet.username }
+    password { Faker::Internet.password(8, 20) }
+
+    trait :confirmed do
+      confirmed_at { 2.days.ago }
+    end
+  end
 end

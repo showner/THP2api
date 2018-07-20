@@ -1,5 +1,6 @@
 module V1
   class LessonsController < ApplicationController
+    before_action :authenticate_user!
     before_action do
       @attributes = %i[title description]
       @allow_only_params_for = {
