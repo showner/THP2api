@@ -34,6 +34,8 @@ FactoryBot.define do
     nickname { Faker::Internet.username }
     password { Faker::Internet.password(8, 20) }
 
+    trait :unconfirmed
+
     trait :confirmed do
       confirmed_at { 2.days.ago }
     end

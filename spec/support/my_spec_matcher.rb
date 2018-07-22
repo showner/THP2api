@@ -1,4 +1,4 @@
-module MyApiSpecHelper
+module MySpecMatcher
   extend RSpec::Matchers::DSL
 
   matcher :be_valid_uuid do

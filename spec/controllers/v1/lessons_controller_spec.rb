@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe V1::LessonsController, type: :controller do
   context 'with auth user' do
     before {
-      user = create(:user)
-      request.headers.merge! user.create_new_auth_token
+      fake_user
+      # binding.pry
     }
     describe "GET #index" do
       lesson_count = 5
