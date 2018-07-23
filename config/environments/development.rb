@@ -52,7 +52,7 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   # Config http://guides.rubyonrails.org/action_mailer_basics.html#generating-urls-in-action-mailer-views
-  config.action_mailer.default_url_options = { host: 'localhost' }
+  config.action_mailer.default_url_options = { host: 'localhost:3000' }
 
   # Maildev config
   config.action_mailer.delivery_method = :smtp
@@ -60,4 +60,15 @@ Rails.application.configure do
     address: "localhost",
     port: 1025
   }
+
+  # Mailtrap config
+  # config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.smtp_settings = {
+  #   user_name: ENV.fetch('MAILTRAP_USERNAME', ''),
+  #   password: ENV.fetch('MAILTRAP_PASSWORD', ''),
+  #   address: 'smtp.mailtrap.io',
+  #   domain: 'smtp.mailtrap.io',
+  #   port: '2525',
+  #   authentication: :cram_md5
+  # }
 end
