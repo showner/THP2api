@@ -34,8 +34,4 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
   include DeviseTokenAuth::Concerns::User
-
-  def confirmation_required?
-    false
-  end
 end
