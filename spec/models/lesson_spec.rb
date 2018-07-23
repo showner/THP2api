@@ -1,16 +1,12 @@
-# ## Schema Information
+# == Schema Information
 #
-# Table name: `lessons`
+# Table name: lessons
 #
-# ### Columns
-#
-# Name               | Type               | Attributes
-# ------------------ | ------------------ | ---------------------------
-# **`id`**           | `uuid`             | `not null, primary key`
-# **`description`**  | `text`             |
-# **`title`**        | `string(50)`       | `not null`
-# **`created_at`**   | `datetime`         | `not null`
-# **`updated_at`**   | `datetime`         | `not null`
+#  id          :uuid             not null, primary key
+#  title       :string(50)       not null
+#  description :text
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
 #
 
 RSpec.describe Lesson, type: :model do
@@ -31,7 +27,7 @@ RSpec.describe Lesson, type: :model do
     it { is_expected.to validate_length_of(:title).is_at_most(50) }
   end
   context ':description' do
-    it { is_expected.to validate_presence_of(:title) }
+    it { is_expected.to validate_presence_of(:description) }
     it { is_expected.to validate_length_of(:description).is_at_most(300) }
   end
 end
