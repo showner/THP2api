@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe V1::LessonsController, type: :controller do
+  # Without authenticated user
   context 'with auth user' do
-    before {
+    before(:each) {
       fake_user
-      # binding.pry
     }
     describe "GET #index" do
       lesson_count = 5
@@ -239,6 +239,57 @@ RSpec.describe V1::LessonsController, type: :controller do
 
       xcontext "only with extra params" do
         let(:params) { { extra: 'extra params' } }
+      end
+    end
+  end
+  # Without authenticated user
+  context 'without auth user' do
+    describe "GET #index" do
+      lesson_count = 5
+      let!(:lessons) { create_list(:lesson, lesson_count) }
+      subject { get :index }
+      context 'with valid request' do
+        it { is_expected.to have_http_status(:unauthorized) }
+      end
+    end
+
+    describe 'GET #show' do
+      let(:lesson) { create(:lesson) }
+      let(:params) { { id: lesson.id } }
+      subject { get :show, params: params }
+
+      context ":id exists " do
+        it { is_expected.to have_http_status(:unauthorized) }
+      end
+    end
+
+    describe 'POST #create' do
+      let(:lesson) { attributes_for(:lesson) }
+      let(:params) { { lesson: lesson } }
+      subject { post :create, params: params }
+
+      context 'with valid params' do
+        it { is_expected.to have_http_status(:unauthorized) }
+      end
+    end
+
+    describe 'patch #update' do
+      let(:lesson) { create(:lesson) }
+      let(:lesson_update) { attributes_for(:lesson) }
+      let(:params) { { id: lesson.id, lesson: lesson_update } }
+      subject { patch :update, params: params }
+
+      context 'with valid params' do
+        it { is_expected.to have_http_status(:unauthorized) }
+      end
+    end
+
+    describe "DELETE #destroy" do
+      let!(:lesson) { create(:lesson) }
+      let(:params) { { id: lesson.id } }
+      subject { delete :destroy, params: params }
+      context "with valid id" do
+        it { is_expected.to have_http_status(:unauthorized) }
       end
     end
   end

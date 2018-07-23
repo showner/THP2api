@@ -8,11 +8,11 @@ module MySpecHelper
     end
   end
 
-  def test_user
-    @test_user ||= create(:user)
+  def test_user(trait)
+    @test_user ||= create(:user, trait)
   end
 
-  def fake_user
+  def fake_user(trait = :confirmed)
     request.headers.merge! test_user(trait).create_new_auth_token
   end
 end
