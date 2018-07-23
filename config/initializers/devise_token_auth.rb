@@ -48,5 +48,6 @@ DeviseTokenAuth.setup do |config|
 
   # From doc
   # https://devise-token-auth.gitbook.io/devise-token-auth/configuration/initializer-settings
-  config.default_confirm_success_url = "http://localhost:3000"
+  # config.default_confirm_success_url = "http://localhost:3000"
+  # To be set in environments/*.rb
 end

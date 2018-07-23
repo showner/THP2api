@@ -12,7 +12,7 @@ module MySpecHelper
     @test_user ||= create(:user, trait)
   end
 
-  def fake_user(trait = :confirmed)
+  def fake_user(trait = nil)
     request.headers.merge! test_user(trait).create_new_auth_token
   end
 end

@@ -71,4 +71,8 @@ Rails.application.configure do
   #   port: '2525',
   #   authentication: :cram_md5
   # }
+
+  DeviseTokenAuth.setup do |config|
+    config.default_confirm_success_url = "http://localhost:3000"
+  end
 end

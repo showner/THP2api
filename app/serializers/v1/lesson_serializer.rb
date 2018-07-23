@@ -8,7 +8,8 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
-
-class LessonSerializer < ActiveModel::Serializer
-  attributes :id, :title, :description, :created_at, :updated_at
+module V1
+  class LessonSerializer < ActiveModel::Serializer
+    attributes :id, :title, :description, :created_at, :updated_at
+  end
 end
