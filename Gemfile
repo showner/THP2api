@@ -48,7 +48,7 @@ group :development do
   gem 'guard-rspec', require: false
   gem 'guard-rubocop', require: false
   gem 'listen', '>= 3.0.5', '< 3.2'
-  gem 'rubocop', '~> 0.54.0', require: false
+  gem 'rubocop', '~> 0.58.1', require: false
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
