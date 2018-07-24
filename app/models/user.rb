@@ -37,7 +37,7 @@ class User < ApplicationRecord
   include DeviseTokenAuth::Concerns::User
 
   validates :nickname, uniqueness: { case_sensitive: false, allow_nil: true }
-  # validates :nickname, uniqueness: true
+  validates :email, confirmation: true
   # validates :email, uniqueness: true
   # validates :email, format: { on: %i[:create, :update] }
 end

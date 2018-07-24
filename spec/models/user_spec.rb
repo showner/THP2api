@@ -29,21 +29,30 @@
 #
 
 RSpec.describe User, type: :model do
-  context 'is valid' do
-    it { expect(create(:user)).to be_valid }
+  context 'factory is valid' do
+    subject { create(:user) }
+    it { is_expected.to be_valid }
+    it { expect{ subject }.to change{ User.count }.by(1) }
   end
 
-  context 'increment Lesson count' do
-    it { expect{ create(:user) }.to change{ User.count }.by(1) }
-  end
   context ':email' do
     it { is_expected.to validate_presence_of(:email) }
     it { is_expected.to validate_uniqueness_of(:email).scoped_to(:provider).case_insensitive }
   end
+
+  context ':email_confirmation' do
+    it { is_expected.to validate_confirmation_of(:email) }
+  end
+
   context ':password' do
     it { is_expected.to validate_presence_of(:password) }
     it { is_expected.to validate_length_of(:password). is_at_least(8).is_at_most(128) }
   end
+
+  context ':password_confirmation' do
+    it { is_expected.to validate_confirmation_of(:password) }
+  end
+
   context ':nickname' do
     it { is_expected.to validate_uniqueness_of(:nickname).case_insensitive.allow_nil }
   end
