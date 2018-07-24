@@ -31,11 +31,23 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable,
-         password_length: 8..128
+         password_length: 8..128, authentication_keys: [:login]
   include DeviseTokenAuth::Concerns::User
 
   validates :username, uniqueness: { case_sensitive: false }
   validates :email, confirmation: true
   # validates :email, uniqueness: true
   # validates :email, format: { on: %i[:create, :update] }
+
+  # https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to
+  # -sign-in-using-their-username-or-email-address
+  attr_writer :login
+  def login
+    @login || username || email
+  end
+
+  def confirmation_required?
+    false
+  end
+  default_scope -> { order("created_at ASC") }
 end
