@@ -19,9 +19,7 @@
 #  confirmed_at           :datetime
 #  confirmation_sent_at   :datetime
 #  unconfirmed_email      :string
-#  name                   :string
-#  nickname               :string
-#  image                  :string
+#  username               :string
 #  email                  :string
 #  tokens                 :json
 #  created_at             :datetime         not null
@@ -29,15 +27,15 @@
 #
 
 RSpec.describe User, type: :model do
+  subject { create(:user) }
   context 'factory is valid' do
-    subject { create(:user) }
     it { is_expected.to be_valid }
     it { expect{ subject }.to change{ User.count }.by(1) }
   end
 
   context ':email' do
     it { is_expected.to validate_presence_of(:email) }
-    it { is_expected.to validate_uniqueness_of(:email).scoped_to(:provider).case_insensitive }
+    xit { is_expected.to validate_uniqueness_of(:email).scoped_to(:provider).case_insensitive }
   end
 
   context ':email_confirmation' do
@@ -53,7 +51,7 @@ RSpec.describe User, type: :model do
     it { is_expected.to validate_confirmation_of(:password) }
   end
 
-  context ':nickname' do
-    it { is_expected.to validate_uniqueness_of(:nickname).case_insensitive.allow_nil }
+  context ':username' do
+    it { is_expected.to validate_uniqueness_of(:username).case_insensitive }
   end
 end

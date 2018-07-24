@@ -19,9 +19,7 @@
 #  confirmed_at           :datetime
 #  confirmation_sent_at   :datetime
 #  unconfirmed_email      :string
-#  name                   :string
-#  nickname               :string
-#  image                  :string
+#  username               :string
 #  email                  :string
 #  tokens                 :json
 #  created_at             :datetime         not null
@@ -31,11 +29,12 @@
 FactoryBot.define do
   factory :user do
     email    { Faker::Internet.safe_email }
-    nickname { Faker::Internet.username }
+    username { Faker::Internet.username }
     password { Faker::Internet.password(8, 20) }
+    password_confirmation { password }
 
-    trait :nonickname do
-      nickname {}
+    trait :nousername do
+      username {}
     end
 
     trait :confirmed do

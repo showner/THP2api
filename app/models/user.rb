@@ -19,9 +19,7 @@
 #  confirmed_at           :datetime
 #  confirmation_sent_at   :datetime
 #  unconfirmed_email      :string
-#  name                   :string
-#  nickname               :string
-#  image                  :string
+#  username               :string
 #  email                  :string
 #  tokens                 :json
 #  created_at             :datetime         not null
@@ -36,7 +34,7 @@ class User < ApplicationRecord
          password_length: 8..128
   include DeviseTokenAuth::Concerns::User
 
-  validates :nickname, uniqueness: { case_sensitive: false, allow_nil: true }
+  validates :username, uniqueness: { case_sensitive: false }
   validates :email, confirmation: true
   # validates :email, uniqueness: true
   # validates :email, format: { on: %i[:create, :update] }
