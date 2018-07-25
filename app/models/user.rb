@@ -2,7 +2,6 @@
 #
 # Table name: users
 #
-#  id                     :bigint(8)        not null, primary key
 #  provider               :string           default("email"), not null
 #  uid                    :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
@@ -24,6 +23,7 @@
 #  tokens                 :json
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  id                     :uuid             not null, primary key
 #
 
 class User < ApplicationRecord
