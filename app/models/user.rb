@@ -35,7 +35,7 @@ class User < ApplicationRecord
   # , authentication_keys: [:login]
   include DeviseTokenAuth::Concerns::User
 
-  validates :username, uniqueness: { case_sensitive: false }
+  validates :username, uniqueness: { case_sensitive: false, allow_nil: true }
   validates :email, confirmation: true
   # validates :email, uniqueness: true
   # validates :email, format: { on: %i[:create, :update] }
@@ -51,4 +51,8 @@ class User < ApplicationRecord
   #   false
   # end
   default_scope -> { order("created_at ASC") }
+
+  # TODO validate password_confirmation format, length etc same as password
+  # TODO validate email_confirmation format, length etc same as email
+  # Link to do so https://github.com/plataformatec/devise/blob/master/lib/devise/models/validatable.rb
 end

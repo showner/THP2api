@@ -32,7 +32,9 @@ class ApplicationController < ActionController::API
   protected
 
   def configure_permitted_parameters
-    added_attrs = %i[username email password password_confirmation]
+    # devise default adds password & password_confirmation for sign_up
+    # https://github.com/plataformatec/devise/blob/master/lib/devise/parameter_sanitizer.rb#L38
+    added_attrs = %i[username email email_confirmation]
     devise_parameter_sanitizer.permit :sign_up, keys: added_attrs
     # devise_parameter_sanitizer.permit :account_update, keys: added_attrs
   end
