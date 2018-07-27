@@ -25,12 +25,14 @@ module V1
     end
 
     def create
-      lesson = Lesson.create!(create_params)
+      # binding.pry
+      lesson = current_v1_user.created_lessons.create!(create_params)
       render json: lesson, status: :created
     end
 
     def update
-      @lesson.update!(update_params)
+      # Choose between oneof the 2 way to write instruction (create or update)
+      @lesson.update!(update_params.merge(creator: current_v1_user))
       render json: @lesson
     end
 

@@ -27,31 +27,50 @@
 #
 
 RSpec.describe User, type: :model do
-  subject { create(:user) }
-  context 'factory is valid' do
-    it { is_expected.to be_valid }
-    it { expect{ subject }.to change{ User.count }.by(1) }
+  describe '#validator' do
+    subject { create(:user) }
+    context 'factory is valid' do
+      it { is_expected.to be_valid }
+      it { expect{ subject }.to change{ User.count }.by(1) }
+    end
+
+    context ':email' do
+      it { is_expected.to validate_presence_of(:email) }
+      it { is_expected.to validate_uniqueness_of(:email).scoped_to(:provider).case_insensitive }
+    end
+
+    context ':email_confirmation' do
+      it { is_expected.to validate_confirmation_of(:email) }
+    end
+
+    context ':password' do
+      it { is_expected.to validate_presence_of(:password) }
+      it { is_expected.to validate_length_of(:password). is_at_least(8).is_at_most(128) }
+    end
+
+    context ':password_confirmation' do
+      it { is_expected.to validate_confirmation_of(:password) }
+    end
+
+    context ':username' do
+      it { is_expected.to validate_uniqueness_of(:username).case_insensitive }
+    end
   end
 
-  context ':email' do
-    it { is_expected.to validate_presence_of(:email) }
-    xit { is_expected.to validate_uniqueness_of(:email).scoped_to(:provider).case_insensitive }
+  describe '#scope' do
+    context ':default_scope' do
+      it { expect(User.all.default_scoped.to_sql).to eq User.all.to_sql }
+    end
   end
 
-  context ':email_confirmation' do
-    it { is_expected.to validate_confirmation_of(:email) }
-  end
-
-  context ':password' do
-    it { is_expected.to validate_presence_of(:password) }
-    it { is_expected.to validate_length_of(:password). is_at_least(8).is_at_most(128) }
-  end
-
-  context ':password_confirmation' do
-    it { is_expected.to validate_confirmation_of(:password) }
-  end
-
-  context ':username' do
-    it { is_expected.to validate_uniqueness_of(:username).case_insensitive }
+  describe '#relationship' do
+    context 'lesson creation' do
+      it { is_expected.to have_many(:created_lessons).class_name(:Lesson) }
+      it { is_expected.to have_many(:created_lessons).with_foreign_key('creator_id') }
+      it { is_expected.to have_many(:created_lessons).dependent(:destroy).inverse_of(:creator) }
+      it { is_expected.to have_many(:created_lessons).inverse_of(:creator) }
+    end
+    xcontext 'follows lesson link' do
+    end
   end
 end
