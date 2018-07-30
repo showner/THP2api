@@ -20,8 +20,8 @@
 
 RSpec.describe Lesson, type: :model do
   describe '#validator' do
-    subject { create(:lesson) }
     context 'factory is valid' do
+      subject { create(:lesson) }
       it { is_expected.to be_valid }
       it { expect{ create(:lesson) }.to change{ Lesson.count }.by(1) }
     end
@@ -43,6 +43,37 @@ RSpec.describe Lesson, type: :model do
     end
   end
 
+  describe '#BbColumns' do
+    context ':id' do
+      it { is_expected.to have_db_column(:id).of_type(:uuid) }
+      it { is_expected.to have_db_column(:id).with_options(primary_key: true, null: false) }
+    end
+    context ':description' do
+      it { is_expected.to have_db_column(:description).of_type(:text) }
+    end
+    context ':title' do
+      it { is_expected.to have_db_column(:title).of_type(:string) }
+      it { is_expected.to have_db_column(:title).with_options(limit: 50, null: false) }
+    end
+    context ':created_at' do
+      it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
+      it { is_expected.to have_db_column(:created_at).with_options(null: false) }
+    end
+    context ':updated_at' do
+      it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
+      it { is_expected.to have_db_column(:updated_at).with_options(null: false) }
+    end
+    context ':creator_id' do
+      it { is_expected.to have_db_column(:creator_id).of_type(:uuid) }
+    end
+  end
+
+  describe '#DbIndex' do
+    context ':index_lessons_on_creator_id' do
+      it { is_expected.to have_db_index(:creator_id) }
+    end
+  end
+
   describe '#relationship' do
     context 'lesson creation' do
       it { is_expected.to belong_to(:creator).class_name(:User) }
@@ -50,6 +81,10 @@ RSpec.describe Lesson, type: :model do
       it { is_expected.to belong_to(:creator).counter_cache(:created_lessons_count) }
     end
     xcontext 'follows lesson link' do
+      let(:lesson) { create(:lesson) }
+      it 'lesson should eq lesson' do
+        expect(lesson.creator.created_lessons.first).to eq(lesson)
+      end
     end
   end
 end
