@@ -80,7 +80,7 @@ RSpec.describe Lesson, type: :model do
       it { is_expected.to belong_to(:creator).inverse_of(:created_lessons) }
       it { is_expected.to belong_to(:creator).counter_cache(:created_lessons_count) }
     end
-    xcontext 'follows lesson link' do
+    context 'follows lesson link' do
       let(:lesson) { create(:lesson) }
       it 'lesson should eq lesson' do
         expect(lesson.creator.created_lessons.first).to eq(lesson)
