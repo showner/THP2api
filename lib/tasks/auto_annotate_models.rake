@@ -39,7 +39,7 @@ if Rails.env.development?
       'skip_on_db_migrate'        => 'false',
       'format_bare'               => 'true',
       'format_rdoc'               => 'false',
-      'format_markdown'           => 'true',
+      'format_markdown'           => 'false',
       'sort'                      => 'false',
       'force'                     => 'false',
       'classified_sort'           => 'true',
