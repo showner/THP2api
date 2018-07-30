@@ -2,7 +2,6 @@
 #
 # Table name: users
 #
-#  id                     :bigint(8)        not null, primary key
 #  provider               :string           default("email"), not null
 #  uid                    :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
@@ -19,19 +18,41 @@
 #  confirmed_at           :datetime
 #  confirmation_sent_at   :datetime
 #  unconfirmed_email      :string
-#  name                   :string
-#  nickname               :string
-#  image                  :string
+#  username               :string
 #  email                  :string
 #  tokens                 :json
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  id                     :uuid             not null, primary key
 #
 
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :confirmable
+         :recoverable, :rememberable, :trackable, :validatable, :confirmable,
+         password_length: 8..128
+  # , authentication_keys: [:login]
   include DeviseTokenAuth::Concerns::User
+
+  validates :username, uniqueness: { case_sensitive: false, allow_nil: true }
+  validates :email, confirmation: true
+  # validates :email, uniqueness: true
+  # validates :email, format: { on: %i[:create, :update] }
+
+  # https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to
+  # -sign-in-using-their-username-or-email-address
+  # attr_writer :login
+  # def login
+  #   @login || username || email
+  # end
+
+  # def confirmation_required?
+  #   false
+  # end
+  default_scope -> { order("created_at ASC") }
+
+  # TODO validate password_confirmation format, length etc same as password
+  # TODO validate email_confirmation format, length etc same as email
+  # Link to do so https://github.com/plataformatec/devise/blob/master/lib/devise/models/validatable.rb
 end

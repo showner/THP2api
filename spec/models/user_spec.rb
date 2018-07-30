@@ -2,7 +2,6 @@
 #
 # Table name: users
 #
-#  id                     :bigint(8)        not null, primary key
 #  provider               :string           default("email"), not null
 #  uid                    :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
@@ -19,14 +18,40 @@
 #  confirmed_at           :datetime
 #  confirmation_sent_at   :datetime
 #  unconfirmed_email      :string
-#  name                   :string
-#  nickname               :string
-#  image                  :string
+#  username               :string
 #  email                  :string
 #  tokens                 :json
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  id                     :uuid             not null, primary key
 #
 
 RSpec.describe User, type: :model do
+  subject { create(:user) }
+  context 'factory is valid' do
+    it { is_expected.to be_valid }
+    it { expect{ subject }.to change{ User.count }.by(1) }
+  end
+
+  context ':email' do
+    it { is_expected.to validate_presence_of(:email) }
+    xit { is_expected.to validate_uniqueness_of(:email).scoped_to(:provider).case_insensitive }
+  end
+
+  context ':email_confirmation' do
+    it { is_expected.to validate_confirmation_of(:email) }
+  end
+
+  context ':password' do
+    it { is_expected.to validate_presence_of(:password) }
+    it { is_expected.to validate_length_of(:password). is_at_least(8).is_at_most(128) }
+  end
+
+  context ':password_confirmation' do
+    it { is_expected.to validate_confirmation_of(:password) }
+  end
+
+  context ':username' do
+    it { is_expected.to validate_uniqueness_of(:username).case_insensitive }
+  end
 end

@@ -2,7 +2,6 @@
 #
 # Table name: users
 #
-#  id                     :bigint(8)        not null, primary key
 #  provider               :string           default("email"), not null
 #  uid                    :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
@@ -19,22 +18,24 @@
 #  confirmed_at           :datetime
 #  confirmation_sent_at   :datetime
 #  unconfirmed_email      :string
-#  name                   :string
-#  nickname               :string
-#  image                  :string
+#  username               :string
 #  email                  :string
 #  tokens                 :json
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  id                     :uuid             not null, primary key
 #
 
 FactoryBot.define do
   factory :user do
     email    { Faker::Internet.safe_email }
-    nickname { Faker::Internet.username }
+    username { Faker::Internet.username }
     password { Faker::Internet.password(8, 20) }
+    password_confirmation { password }
 
-    trait :unconfirmed
+    trait :nousername do
+      username {}
+    end
 
     trait :confirmed do
       confirmed_at { 2.days.ago }
