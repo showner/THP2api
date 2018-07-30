@@ -2,28 +2,37 @@
 #
 # Table name: users
 #
-#  provider               :string           default("email"), not null
-#  uid                    :string           default(""), not null
-#  encrypted_password     :string           default(""), not null
-#  reset_password_token   :string
-#  reset_password_sent_at :datetime
+#  id                     :uuid             not null, primary key
 #  allow_password_change  :boolean          default(FALSE)
-#  remember_created_at    :datetime
-#  sign_in_count          :integer          default(0), not null
-#  current_sign_in_at     :datetime
-#  last_sign_in_at        :datetime
-#  current_sign_in_ip     :string
-#  last_sign_in_ip        :string
+#  confirmation_sent_at   :datetime
 #  confirmation_token     :string
 #  confirmed_at           :datetime
-#  confirmation_sent_at   :datetime
+#  current_sign_in_at     :datetime
+#  current_sign_in_ip     :string
+#  email                  :string
+#  encrypted_password     :string           default(""), not null
+#  last_sign_in_at        :datetime
+#  last_sign_in_ip        :string
+#  provider               :string           default("email"), not null
+#  remember_created_at    :datetime
+#  reset_password_sent_at :datetime
+#  reset_password_token   :string
+#  sign_in_count          :integer          default(0), not null
+#  tokens                 :json
+#  uid                    :string           default(""), not null
 #  unconfirmed_email      :string
 #  username               :string
-#  email                  :string
-#  tokens                 :json
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  id                     :uuid             not null, primary key
+#
+# Indexes
+#
+#  index_users_on_confirmation_token    (confirmation_token) UNIQUE
+#  index_users_on_created_at            (created_at)
+#  index_users_on_email                 (email) UNIQUE
+#  index_users_on_reset_password_token  (reset_password_token) UNIQUE
+#  index_users_on_uid_and_provider      (uid,provider) UNIQUE
+#  index_users_on_username              (username) UNIQUE
 #
 
 FactoryBot.define do
