@@ -1,29 +1,49 @@
-# == Schema Information
+# ## Schema Information
 #
-# Table name: users
+# Table name: `users`
 #
-#  provider               :string           default("email"), not null
-#  uid                    :string           default(""), not null
-#  encrypted_password     :string           default(""), not null
-#  reset_password_token   :string
-#  reset_password_sent_at :datetime
-#  allow_password_change  :boolean          default(FALSE)
-#  remember_created_at    :datetime
-#  sign_in_count          :integer          default(0), not null
-#  current_sign_in_at     :datetime
-#  last_sign_in_at        :datetime
-#  current_sign_in_ip     :string
-#  last_sign_in_ip        :string
-#  confirmation_token     :string
-#  confirmed_at           :datetime
-#  confirmation_sent_at   :datetime
-#  unconfirmed_email      :string
-#  username               :string
-#  email                  :string
-#  tokens                 :json
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  id                     :uuid             not null, primary key
+# ### Columns
+#
+# Name                          | Type               | Attributes
+# ----------------------------- | ------------------ | ---------------------------
+# **`id`**                      | `uuid`             | `not null, primary key`
+# **`allow_password_change`**   | `boolean`          | `default(FALSE)`
+# **`confirmation_sent_at`**    | `datetime`         |
+# **`confirmation_token`**      | `string`           |
+# **`confirmed_at`**            | `datetime`         |
+# **`current_sign_in_at`**      | `datetime`         |
+# **`current_sign_in_ip`**      | `string`           |
+# **`email`**                   | `string`           |
+# **`encrypted_password`**      | `string`           | `default(""), not null`
+# **`last_sign_in_at`**         | `datetime`         |
+# **`last_sign_in_ip`**         | `string`           |
+# **`provider`**                | `string`           | `default("email"), not null`
+# **`remember_created_at`**     | `datetime`         |
+# **`reset_password_sent_at`**  | `datetime`         |
+# **`reset_password_token`**    | `string`           |
+# **`sign_in_count`**           | `integer`          | `default(0), not null`
+# **`tokens`**                  | `json`             |
+# **`uid`**                     | `string`           | `default(""), not null`
+# **`unconfirmed_email`**       | `string`           |
+# **`username`**                | `string`           |
+# **`created_at`**              | `datetime`         | `not null`
+# **`updated_at`**              | `datetime`         | `not null`
+#
+# ### Indexes
+#
+# * `index_users_on_confirmation_token` (_unique_):
+#     * **`confirmation_token`**
+# * `index_users_on_created_at`:
+#     * **`created_at`**
+# * `index_users_on_email` (_unique_):
+#     * **`email`**
+# * `index_users_on_reset_password_token` (_unique_):
+#     * **`reset_password_token`**
+# * `index_users_on_uid_and_provider` (_unique_):
+#     * **`uid`**
+#     * **`provider`**
+# * `index_users_on_username` (_unique_):
+#     * **`username`**
 #
 
 RSpec.describe User, type: :model do
