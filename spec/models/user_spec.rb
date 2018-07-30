@@ -7,6 +7,7 @@
 #  confirmation_sent_at   :datetime
 #  confirmation_token     :string
 #  confirmed_at           :datetime
+#  created_lessons_count  :integer          default(0)
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :string
 #  email                  :string
@@ -76,7 +77,7 @@ RSpec.describe User, type: :model do
     context 'lesson creation' do
       it { is_expected.to have_many(:created_lessons).class_name(:Lesson) }
       it { is_expected.to have_many(:created_lessons).with_foreign_key('creator_id') }
-      it { is_expected.to have_many(:created_lessons).dependent(:destroy).inverse_of(:creator) }
+      it { is_expected.to have_many(:created_lessons).dependent(:destroy) }
       it { is_expected.to have_many(:created_lessons).inverse_of(:creator) }
     end
     xcontext 'follows lesson link' do

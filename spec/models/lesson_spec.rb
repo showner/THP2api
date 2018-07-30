@@ -9,6 +9,14 @@
 #  updated_at  :datetime         not null
 #  creator_id  :uuid
 #
+# Indexes
+#
+#  index_lessons_on_creator_id  (creator_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (creator_id => users.id)
+#
 
 RSpec.describe Lesson, type: :model do
   describe '#validator' do
@@ -37,7 +45,9 @@ RSpec.describe Lesson, type: :model do
 
   describe '#relationship' do
     context 'lesson creation' do
+      it { is_expected.to belong_to(:creator).class_name(:User) }
       it { is_expected.to belong_to(:creator).inverse_of(:created_lessons) }
+      it { is_expected.to belong_to(:creator).counter_cache(:created_lessons_count) }
     end
     xcontext 'follows lesson link' do
     end

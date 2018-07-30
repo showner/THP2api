@@ -9,9 +9,18 @@
 #  updated_at  :datetime         not null
 #  creator_id  :uuid
 #
+# Indexes
+#
+#  index_lessons_on_creator_id  (creator_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (creator_id => users.id)
+#
 
 class Lesson < ApplicationRecord
   validates :title, presence: true, length: { maximum: 50 }
   validates :description, presence: true, length: { maximum: 300 }
-  belongs_to :creator, class_name: :User, inverse_of: :created_lessons
+  belongs_to :creator, class_name: :User, inverse_of: :created_lessons,
+                       counter_cache: :created_lessons_count
 end

@@ -9,6 +9,14 @@
 #  updated_at  :datetime         not null
 #  creator_id  :uuid
 #
+# Indexes
+#
+#  index_lessons_on_creator_id  (creator_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (creator_id => users.id)
+#
 
 FactoryBot.define do
   factory :lesson do
