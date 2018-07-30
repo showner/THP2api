@@ -43,7 +43,7 @@ RSpec.describe Lesson, type: :model do
     end
   end
 
-  describe '#BbColumns' do
+  describe '#DbColumns' do
     context ':id' do
       it { is_expected.to have_db_column(:id).of_type(:uuid) }
       it { is_expected.to have_db_column(:id).with_options(primary_key: true, null: false) }
