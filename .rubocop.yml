@@ -22,3 +22,4 @@ Metrics/BlockLength:
     - 'spec/**/*.rb'
     - 'Guardfile'
     - 'vendor/bundle'
+    - 'lib/tasks/auto_annotate_models.rake'
