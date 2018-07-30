@@ -50,4 +50,29 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  # Config http://guides.rubyonrails.org/action_mailer_basics.html#generating-urls-in-action-mailer-views
+  config.action_mailer.default_url_options = { host: 'localhost:3000' }
+
+  # Maildev config
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: "localhost",
+    port: 1025
+  }
+
+  # Mailtrap config
+  # config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.smtp_settings = {
+  #   user_name: ENV.fetch('MAILTRAP_USERNAME', ''),
+  #   password: ENV.fetch('MAILTRAP_PASSWORD', ''),
+  #   address: 'smtp.mailtrap.io',
+  #   domain: 'smtp.mailtrap.io',
+  #   port: '2525',
+  #   authentication: :cram_md5
+  # }
+
+  DeviseTokenAuth.setup do |config|
+    config.default_confirm_success_url = "http://localhost:3000"
+  end
 end

@@ -31,6 +31,8 @@ gem 'bootsnap', '>= 1.1.0', '< 1.3.1', require: false
 # gem 'fast_jsonapi'
 # Used for now
 gem 'active_model_serializers', '~> 0.10.0'
+# Auth
+gem 'devise_token_auth'
 
 group :development, :test do
   gem 'dotenv-rails'
@@ -46,7 +48,7 @@ group :development do
   gem 'guard-rspec', require: false
   gem 'guard-rubocop', require: false
   gem 'listen', '>= 3.0.5', '< 3.2'
-  gem 'rubocop', '~> 0.54.0', require: false
+  gem 'rubocop', '~> 0.58.1', require: false
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end

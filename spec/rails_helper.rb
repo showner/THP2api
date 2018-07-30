@@ -59,8 +59,9 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
   config.include FactoryBot::Syntax::Methods
   # include custom helpers created under spec/support
-  config.include RequestSpecHelper
-  config.include MyApiSpecHelper
+  config.include MySpecHelper
+  config.include MySpecMatcher
+  config.include Devise::Test::ControllerHelpers, type: :controller
 end
 
 Shoulda::Matchers.configure do |config|
