@@ -180,7 +180,7 @@ RSpec.describe User, type: :model do
   describe '#relationship' do
     context 'lesson creation' do
       it { is_expected.to have_many(:created_lessons).class_name(:Lesson) }
-      it { is_expected.to have_many(:created_lessons).with_foreign_key('creator_id') }
+      it { is_expected.to have_many(:created_lessons).with_foreign_key(:creator_id) }
       it { is_expected.to have_many(:created_lessons).dependent(:destroy) }
       it { is_expected.to have_many(:created_lessons).inverse_of(:creator) }
     end
