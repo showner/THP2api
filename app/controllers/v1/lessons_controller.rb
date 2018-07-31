@@ -33,7 +33,6 @@ module V1
 
     def update
       authorize [:v1, @lesson]
-
       @lesson.update!(update_params)
       render json: @lesson
     end
