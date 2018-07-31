@@ -32,6 +32,7 @@ module V1
     end
 
     def update
+      authorize [:v1, @lesson]
       @lesson.update!(update_params)
       render json: @lesson
     end
@@ -39,8 +40,13 @@ module V1
     def destroy
       # Maybe destroy, see later
       # @lesson.destroy
+      authorize [:v1, @lesson]
       @lesson.delete
       head :no_content
+    end
+
+    def pundit_user
+      current_v1_user
     end
 
     private

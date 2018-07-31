@@ -1,9 +1,11 @@
 class ApplicationController < ActionController::API
   include DeviseTokenAuth::Concerns::SetUserByToken
+  include Pundit
   rescue_from ActionController::ParameterMissing, with: :params_missing
   rescue_from ActionController::UnpermittedParameters, with: :unpermitted_params
   rescue_from ActiveRecord::RecordInvalid, with: :bad_params
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   # rescue_from ActionController::UrlGenerationError, with: :no_route
 
   def params_missing(error)
@@ -20,6 +22,10 @@ class ApplicationController < ActionController::API
 
   def record_not_found(error)
     render json: { error: [error.message] }, status: :not_found
+  end
+
+  def user_not_authorized(error)
+    render json: { error: [error.message] }, status: :unauthorized
   end
 
   # def no_route(error)

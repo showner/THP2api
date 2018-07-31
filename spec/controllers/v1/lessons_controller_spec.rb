@@ -123,7 +123,7 @@ RSpec.describe V1::LessonsController, type: :controller do
     end
 
     describe 'patch #update' do
-      let(:lesson) { create(:lesson) }
+      let(:lesson) { create(:lesson, creator: test_user) }
       let(:lesson_update) { attributes_for(:lesson) }
       let(:params) { { id: lesson.id, lesson: lesson_update } }
       subject { patch :update, params: params }
@@ -212,12 +212,13 @@ RSpec.describe V1::LessonsController, type: :controller do
     end
 
     describe "DELETE #destroy" do
-      let!(:lesson) { create(:lesson) }
+      let(:lesson) { create(:lesson, creator: test_user) }
       let(:params) { { id: lesson.id } }
       subject { delete :destroy, params: params }
       context "with valid id" do
         it { is_expected.to have_http_status(:no_content) }
         it 'delete in db' do
+          lesson
           expect{ subject }.to change(Lesson, :count).by(-1)
         end
       end
@@ -239,6 +240,40 @@ RSpec.describe V1::LessonsController, type: :controller do
 
       xcontext "only with extra params" do
         let(:params) { { extra: 'extra params' } }
+      end
+    end
+  end
+  # Creator != logged user
+  context 'with other auth user' do
+    before(:each) {
+      fake_user
+    }
+    describe 'patch #update' do
+      let(:lesson) { create(:lesson) }
+      let(:lesson_update) { attributes_for(:lesson) }
+      let(:params) { { id: lesson.id, lesson: lesson_update } }
+      subject { patch :update, params: params }
+
+      context 'with valid params' do
+        it { is_expected.to have_http_status(:unauthorized) }
+      end
+      context 'with extra params next to lesson' do
+        let(:params) { { id: lesson.id, lesson: lesson_update, extra: 'this extra params' } }
+        it { is_expected.to have_http_status(:forbidden) }
+      end
+    end
+
+    describe "DELETE #destroy" do
+      let!(:lesson) { create(:lesson) }
+      let(:params) { { id: lesson.id } }
+      subject { delete :destroy, params: params }
+      context "with valid id" do
+        it { is_expected.to have_http_status(:unauthorized) }
+      end
+
+      context "with extra params" do
+        let(:params) { { id: lesson.id, extra: 'extra params' } }
+        it { is_expected.to have_http_status(:forbidden) }
       end
     end
   end

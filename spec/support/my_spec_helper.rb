@@ -8,7 +8,7 @@ module MySpecHelper
     end
   end
 
-  def test_user(trait)
+  def test_user(trait = nil)
     @test_user ||= create(:user, trait)
   end
 
