@@ -33,6 +33,8 @@ gem 'bootsnap', '>= 1.1.0', '< 1.3.1', require: false
 gem 'active_model_serializers', '~> 0.10.0'
 # Auth
 gem 'devise_token_auth'
+# Policies
+gem 'pundit'
 
 group :development, :test do
   gem 'dotenv-rails'
