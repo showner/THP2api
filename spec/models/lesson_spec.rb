@@ -66,27 +66,50 @@ RSpec.describe Lesson, type: :model do
       it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
       it { is_expected.to have_db_column(:updated_at).with_options(null: false) }
     end
+    context ':course_id' do
+      it { is_expected.to have_db_column(:course_id).of_type(:uuid) }
+    end
     context ':creator_id' do
       it { is_expected.to have_db_column(:creator_id).of_type(:uuid) }
     end
   end
 
   describe '#DbIndex' do
+    context ':index_lessons_on_course_id' do
+      it { is_expected.to have_db_index(:course_id) }
+    end
     context ':index_lessons_on_creator_id' do
       it { is_expected.to have_db_index(:creator_id) }
     end
   end
 
   describe '#relationship' do
-    context 'lesson creation' do
+    let!(:user) { create(:user) }
+    let!(:course) { create(:course, creator: user) }
+    subject { create(:lesson, course: course) }
+    let(:lesson) { create(:lesson) }
+    context 'lesson belongs_to user' do
       it { is_expected.to belong_to(:creator).class_name(:User) }
       it { is_expected.to belong_to(:creator).inverse_of(:created_lessons) }
       it { is_expected.to belong_to(:creator).counter_cache(:created_lessons_count) }
     end
-    context 'follows lesson link' do
-      let(:lesson) { create(:lesson) }
+    context 'lesson belongs_to course' do
+      it { is_expected.to belong_to(:course).counter_cache(true) }
+    end
+    context 'increment created_lessons_count by 1' do
+      it { expect{ subject }.to change{ User.last.created_lessons_count }.by(1) }
+    end
+    context 'increment lessons_count by 1' do
+      it { expect{ subject }.to change{ Course.last.lessons_count }.by(1) }
+    end
+    context 'follows lesson link through creator' do
       it 'lesson should eq lesson' do
-        expect(lesson.creator.created_lessons.first).to eq(lesson)
+        expect(lesson.creator.created_lessons.last).to eq(lesson)
+      end
+    end
+    context 'follows lesson link through course' do
+      it 'lesson should eq lesson' do
+        expect(lesson.course.lessons.last).to eq(lesson)
       end
     end
   end

@@ -22,28 +22,28 @@
 require 'rails_helper'
 
 RSpec.describe Course, type: :model do
-  xdescribe '#validator' do
-    # context 'factory is valid' do
-    #   subject { create(:course) }
-    #   it { is_expected.to be_valid }
-    #   it { expect{ create(:course) }.to change{ Course.count }.by(1) }
-    # end
+  describe '#validator' do
+    context 'factory is valid' do
+      subject { create(:course) }
+      it { is_expected.to be_valid }
+      it { expect{ create(:course) }.to change{ Course.count }.by(1) }
+    end
 
-    # context ':title' do
-    #   it { is_expected.to validate_presence_of(:title) }
-    #   it { is_expected.to validate_length_of(:title).is_at_most(50) }
-    # end
+    context ':title' do
+      it { is_expected.to validate_presence_of(:title) }
+      it { is_expected.to validate_length_of(:title).is_at_most(50) }
+    end
 
-    # context ':description' do
-    #   it { is_expected.to validate_presence_of(:description) }
-    #   it { is_expected.to validate_length_of(:description).is_at_most(300) }
-    # end
+    context ':description' do
+      it { is_expected.to validate_presence_of(:description) }
+      it { is_expected.to validate_length_of(:description).is_at_most(300) }
+    end
   end
 
-  xdescribe '#scope' do
-    # context ':default_scope' do
-    #   it { expect(Lesson.all.default_scoped.to_sql).to eq Lesson.all.to_sql }
-    # end
+  describe '#scope' do
+    context ':default_scope' do
+      it { expect(Course.all.default_scoped.to_sql).to eq Course.all.to_sql }
+    end
   end
 
   describe '#DbColumns' do
@@ -76,22 +76,38 @@ RSpec.describe Course, type: :model do
   end
 
   describe '#DbIndex' do
-    context ':index_lessons_on_creator_id' do
+    context ':index_courses_on_creator_id' do
       it { is_expected.to have_db_index(:creator_id) }
     end
   end
 
-  xdescribe '#relationship' do
-    # context 'lesson creation' do
-    #   it { is_expected.to belong_to(:creator).class_name(:User) }
-    #   it { is_expected.to belong_to(:creator).inverse_of(:created_courses) }
-    #   it { is_expected.to belong_to(:creator).counter_cache(:created_courses_count) }
-    # end
-    # context 'follows course link' do
-    #   let(:course) { create(:course) }
-    #   it 'course should eq course' do
-    #     expect(course.creator.created_courses.first).to eq(course)
-    #   end
-    # end
+  describe '#relationship' do
+    let!(:user) { create(:user) }
+    let(:course) { create(:course) }
+    subject { create(:course, creator: user) }
+    let(:lesson) { create(:lesson, creator: course.creator, course: course) }
+    context 'course belongs_to user' do
+      it { is_expected.to belong_to(:creator).class_name(:User) }
+      it { is_expected.to belong_to(:creator).inverse_of(:created_courses) }
+      it { is_expected.to belong_to(:creator).counter_cache(:created_courses_count) }
+    end
+    context 'increment created_courses_count by 1' do
+      it { expect{ subject }.to change{ User.last.created_courses_count }.by(1) }
+    end
+    context 'course has_many lessons' do
+      it { is_expected.to have_many(:lessons).dependent(:destroy) }
+    end
+    context 'follows course link through creator' do
+      it 'course should eq course' do
+        lesson
+        expect(course.creator.created_courses.last).to eq(course)
+      end
+    end
+    context 'follows course link through lessons' do
+      it 'course should eq course' do
+        lesson
+        expect(course.lessons.last.course).to eq(course)
+      end
+    end
   end
 end

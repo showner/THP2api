@@ -4,7 +4,7 @@ module V1
     before_action do
       @attributes = %i[title description]
       @allow_only_params_for = {
-        create:  [lesson: @attributes],
+        create:  [:course_id, lesson: @attributes],
         destroy: [:id],
         index:   [],
         show:    [:id],
@@ -27,7 +27,7 @@ module V1
     def create
       # Choose between oneof the 2 way to write instruction (create or update)
       # lesson = current_v1_user.created_lessons.create!(create_params)
-      lesson = Lesson.create!(create_params.merge(creator: current_v1_user))
+      lesson = Lesson.create!(create_params.merge(creator: current_v1_user, course: current_course))
       render json: lesson, status: :created
     end
 
@@ -55,6 +55,10 @@ module V1
       params.require(:lesson).permit(@attributes)
     end
     alias_method :update_params, :create_params
+
+    def current_course
+      Course.find(params[:course_id])
+    end
 
     def deny_all_unpermitted_parameters
       ActionController::Parameters.action_on_unpermitted_parameters = :raise
