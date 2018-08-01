@@ -7,6 +7,7 @@
 #  confirmation_sent_at   :datetime
 #  confirmation_token     :string
 #  confirmed_at           :datetime
+#  created_courses_count  :integer          default(0)
 #  created_lessons_count  :integer          default(0)
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :string
@@ -68,5 +69,8 @@ class User < ApplicationRecord
   # https://github.com/plataformatec/devise/blob/master/lib/devise/models/validatable.rb
 
   has_many :created_lessons, class_name: :Lesson, foreign_key: :creator_id,
+                             dependent:  :destroy, inverse_of:  :creator
+
+  has_many :created_courses, class_name: :Course, foreign_key: :creator_id,
                              dependent: :destroy, inverse_of: :creator
 end

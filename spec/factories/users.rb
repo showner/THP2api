@@ -7,6 +7,7 @@
 #  confirmation_sent_at   :datetime
 #  confirmation_token     :string
 #  confirmed_at           :datetime
+#  created_courses_count  :integer          default(0)
 #  created_lessons_count  :integer          default(0)
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :string
