@@ -38,6 +38,10 @@ RSpec.describe Lesson, type: :model do
       it { is_expected.to validate_presence_of(:description) }
       it { is_expected.to validate_length_of(:description).is_at_most(300) }
     end
+
+    context ':course' do
+      it { is_expected.to validate_presence_of(:course) }
+    end
   end
 
   describe '#scope' do

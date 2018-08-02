@@ -24,6 +24,7 @@
 class Lesson < ApplicationRecord
   validates :title, presence: true, length: { maximum: 50 }
   validates :description, presence: true, length: { maximum: 300 }
+  validates :course, presence: true
 
   belongs_to :creator, class_name: :User, inverse_of: :created_lessons,
                        counter_cache: :created_lessons_count
