@@ -21,8 +21,6 @@
 #  fk_rails_...  (creator_id => users.id)
 #
 
-module V1
-  class LessonSerializer < ActiveModel::Serializer
-    attributes :id, :title, :description, :created_at, :updated_at, :creator_id, :course_id
-  end
+class LessonSerializer < ActiveModel::Serializer
+  attributes :id, :title, :description, :created_at, :updated_at, :creator_id, :course_id
 end

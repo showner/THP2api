@@ -110,4 +110,27 @@ RSpec.describe Course, type: :model do
       end
     end
   end
+  describe "#Serialization" do
+    let(:course) { create(:course) }
+    let!(:lesson) { create(:lesson, course: course, creator: course.creator) }
+    subject(:serializer) { CourseSerializer.new(course) }
+    it { is_expected.to respond_to(:serializable_hash) }
+    # Multiple wayto test serializer
+    context '1st way to test serializer' do
+      it { expect(subject.serializable_hash).to have_key(:id) }
+      it { expect(subject.serializable_hash).to have_key(:title) }
+      it { expect(subject.serializable_hash).to have_key(:description) }
+      it { expect(subject.serializable_hash).to have_key(:created_at) }
+      it { expect(subject.serializable_hash).to have_key(:updated_at) }
+      it { expect(subject.serializable_hash).to have_key(:creator_id) }
+      it { expect(subject.serializable_hash).to have_key(:lessons_count) }
+    end
+    xcontext '2nd way' do
+      it { expect(subject.serializable_hash.keys).to contain_exactly(*Course.column_names.map(&:to_sym)) }
+    end
+    xcontext '3rd way' do
+      let(:serialized_keys) { %i[id title description created_at updated_at creator_id lessons_count] }
+      it { expect(subject.serializable_hash.keys).to match_array(serialized_keys) }
+    end
+  end
 end
