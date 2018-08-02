@@ -44,4 +44,9 @@ class ApplicationController < ActionController::API
     devise_parameter_sanitizer.permit :sign_up, keys: added_attrs
     # devise_parameter_sanitizer.permit :account_update, keys: added_attrs
   end
+
+  def deny_all_unpermitted_parameters
+    ActionController::Parameters.action_on_unpermitted_parameters = :raise
+    params.permit(*@allow_only_params_for[params[:action].to_sym])
+  end
 end

@@ -60,11 +60,6 @@ module V1
       Course.find(params[:course_id])
     end
 
-    def deny_all_unpermitted_parameters
-      ActionController::Parameters.action_on_unpermitted_parameters = :raise
-      params.permit(*@allow_only_params_for[params[:action].to_sym])
-    end
-
     def find_lesson
       @lesson = Lesson.find(params[:id])
     end
