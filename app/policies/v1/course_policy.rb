@@ -1,5 +1,5 @@
 module V1
-  class LessonPolicy < ApplicationPolicy
+  class CoursePolicy < ApplicationPolicy
     def update?
       record.creator == user
     end

@@ -7,6 +7,7 @@
 #  confirmation_sent_at   :datetime
 #  confirmation_token     :string
 #  confirmed_at           :datetime
+#  created_courses_count  :integer          default(0)
 #  created_lessons_count  :integer          default(0)
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :string
@@ -93,6 +94,10 @@ RSpec.describe User, type: :model do
     context ':confirmed_at' do
       it { is_expected.to have_db_column(:confirmed_at).of_type(:datetime) }
     end
+    context ':created_courses_count' do
+      it { is_expected.to have_db_column(:created_courses_count).of_type(:integer) }
+      it { is_expected.to have_db_column(:created_courses_count).with_options(default: 0) }
+    end
     context ':created_lessons_count' do
       it { is_expected.to have_db_column(:created_lessons_count).of_type(:integer) }
       it { is_expected.to have_db_column(:created_lessons_count).with_options(default: 0) }
@@ -178,17 +183,31 @@ RSpec.describe User, type: :model do
   end
 
   describe '#relationship' do
-    context 'lesson creation' do
+    let(:user) { create(:user) }
+    let(:course) { create(:course, creator: user) }
+    let(:lesson) { create(:lesson, course: course, creator: user) }
+    context 'user has_many courses' do
+      it { is_expected.to have_many(:created_courses).class_name(:Course) }
+      it { is_expected.to have_many(:created_courses).with_foreign_key(:creator_id) }
+      it { is_expected.to have_many(:created_courses).dependent(:destroy) }
+      it { is_expected.to have_many(:created_courses).inverse_of(:creator) }
+    end
+    context 'user has_many lessons' do
       it { is_expected.to have_many(:created_lessons).class_name(:Lesson) }
       it { is_expected.to have_many(:created_lessons).with_foreign_key(:creator_id) }
       it { is_expected.to have_many(:created_lessons).dependent(:destroy) }
       it { is_expected.to have_many(:created_lessons).inverse_of(:creator) }
     end
-    context 'follows lesson link' do
-      let(:user) { create(:user) }
-      let!(:lesson) { create(:lesson, creator: user) }
+    context 'follows user link through courses' do
       it 'user should eq user' do
-        expect(user.created_lessons.first.creator).to eq(user)
+        course
+        expect(user.created_courses.last.creator).to eq(user)
+      end
+    end
+    context 'follows user link through lessons' do
+      it 'user should eq user' do
+        lesson
+        expect(user.created_lessons.last.creator).to eq(user)
       end
     end
   end

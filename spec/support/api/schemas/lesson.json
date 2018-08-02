@@ -7,7 +7,8 @@
     "description": { "type" : "string"},
     "created_at" : { "type" : "string", "format": "date-time" },
     "updated_at" : { "type" : "string", "format": "date-time" },
-    "creator_id" : { "$ref" : "#/definitions/uuid" }
+    "creator_id" : { "$ref" : "#/definitions/uuid" },
+    "course_id"  : { "$ref" : "#/definitions/uuid" }
   },
   "definitions": {
     "uuid": {

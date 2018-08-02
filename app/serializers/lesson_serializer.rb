@@ -21,11 +21,6 @@
 #  fk_rails_...  (creator_id => users.id)
 #
 
-FactoryBot.define do
-  factory :lesson do
-    title       { Faker::Educator.course.first(50) }
-    description { Faker::FamilyGuy.quote.first(300) }
-    association :creator, factory: :user
-    course
-  end
+class LessonSerializer < ActiveModel::Serializer
+  attributes :id, :title, :description, :created_at, :updated_at, :creator_id, :course_id
 end
