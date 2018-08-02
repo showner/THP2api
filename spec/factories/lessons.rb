@@ -23,7 +23,7 @@
 
 FactoryBot.define do
   factory :lesson do
-    title { Faker::Educator.course.first(50) }
+    title       { Faker::Educator.course.first(50) }
     description { Faker::FamilyGuy.quote.first(300) }
     association :creator, factory: :user
     course

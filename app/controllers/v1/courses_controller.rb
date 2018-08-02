@@ -15,8 +15,7 @@ module V1
     before_action :find_course, only: %i[show update destroy]
 
     def index
-      courses = Course.all
-      render json: courses
+      render json: Course.all
     end
 
     def show

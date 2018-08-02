@@ -15,8 +15,7 @@ module V1
     before_action :find_lesson, only: %i[show update destroy]
 
     def index
-      lessons = Lesson.all
-      render json: lessons
+      render json: Lesson.all
     end
 
     def show
@@ -57,6 +56,7 @@ module V1
     alias_method :update_params, :create_params
 
     def current_course
+      params.require(:course_id)
       Course.find(params[:course_id])
     end
 

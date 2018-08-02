@@ -45,7 +45,7 @@ RSpec.describe V1::LessonsController, type: :controller do
     end
 
     describe 'POST #create' do
-      let(:course) { create(:course, creator: @test_user) }
+      let(:course) { create(:course, creator: test_user) }
       let(:lesson) { attributes_for(:lesson) }
       let(:params) { { lesson: lesson, course_id: course.id } }
       subject { post :create, params: params }
