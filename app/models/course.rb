@@ -2,13 +2,14 @@
 #
 # Table name: courses
 #
-#  id            :uuid             not null, primary key
-#  description   :text
-#  lessons_count :integer          default(0)
-#  title         :string(50)       not null
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  creator_id    :uuid
+#  id             :uuid             not null, primary key
+#  description    :text             not null
+#  lessons_count  :integer          default(0)
+#  sessions_count :integer          default(0)
+#  title          :string(50)       not null
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  creator_id     :uuid
 #
 # Indexes
 #
@@ -27,4 +28,5 @@ class Course < ApplicationRecord
                        counter_cache: :created_courses_count
 
   has_many :lessons, dependent: :destroy
+  has_many :sessions, class_name: :CourseSession, dependent: :destroy
 end

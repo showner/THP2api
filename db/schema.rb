@@ -10,25 +10,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_01_092152) do
+ActiveRecord::Schema.define(version: 2018_08_03_085118) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
+  create_table "course_sessions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", limit: 50
+    t.datetime "starting_date", null: false
+    t.datetime "ending_date"
+    t.integer "student_max", null: false
+    t.integer "student_min", default: 2, null: false
+    t.uuid "course_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id"], name: "index_course_sessions_on_course_id"
+  end
+
   create_table "courses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title", limit: 50, null: false
-    t.text "description"
+    t.text "description", null: false
     t.integer "lessons_count", default: 0
     t.uuid "creator_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "sessions_count", default: 0
     t.index ["creator_id"], name: "index_courses_on_creator_id"
   end
 
   create_table "lessons", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title", limit: 50, null: false
-    t.text "description"
+    t.text "description", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "creator_id"
@@ -69,6 +82,7 @@ ActiveRecord::Schema.define(version: 2018_08_01_092152) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "course_sessions", "courses"
   add_foreign_key "courses", "users", column: "creator_id"
   add_foreign_key "lessons", "courses"
   add_foreign_key "lessons", "users", column: "creator_id"
