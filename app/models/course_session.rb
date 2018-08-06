@@ -22,10 +22,15 @@
 #
 
 class CourseSession < ApplicationRecord
+  attribute :starting_date, :datetime, default: -> { Time.now.tomorrow.utc.change(hour: 9, minute: 0, seconds: 0) }
+
   validates :name, length: { maximum: 50 }
   validates :starting_date, presence: true
-  validates :student_max, presence: true, numericality: { less_than: 1000 }
+  # validates :student_max, presence: true, numericality: { less_than: 1000 }
   validates :student_min, numericality: { greater_than: 1 }
+  validates :student_max, presence: true, numericality: { less_than: 1000, greater_than: ->(course_session) { course_session.student_min } }
+  # validates :student_min, numericality: { greater_than: 1
+  validates :student_min, numericality: { less_than: :student_max }, unless: :student_max.nil?, on: :update
 
   belongs_to :course, inverse_of: :sessions, counter_cache: :sessions_count
 end

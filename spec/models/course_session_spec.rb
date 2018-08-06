@@ -34,16 +34,27 @@ RSpec.describe CourseSession, type: :model do
     end
 
     context ':starting_date' do
+      subject { create(:course_session) }
       it { is_expected.to validate_presence_of(:starting_date) }
+      it { expect(subject.attributes.with_indifferent_access).to include(:starting_date) }
+      it { expect(subject.type_for_attribute(:ending_date).type).to eq :datetime }
     end
 
     context ':student_max' do
-      it { is_expected.to validate_presence_of(:student_max) }
+      subject { create(:course_session) }
       it { is_expected.to validate_numericality_of(:student_max).is_less_than(1000) }
+      it { is_expected.to validate_numericality_of(:student_max).is_greater_than(subject.student_min) }
     end
 
-    context ':student_max' do
+    context ':student_min' do
       it { is_expected.to validate_numericality_of(:student_min).is_greater_than(1) }
+    end
+
+    context ':student_min on #update' do
+      subject { create(:course_session) }
+      it { is_expected.to validate_numericality_of(:student_min).is_less_than(subject.student_max).on(:update) }
+      # Doesn't use validator, then better the above one
+      # it { expect(subject.student_max).to be > subject.student_min }
     end
   end
 
