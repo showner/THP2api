@@ -22,10 +22,10 @@
 #
 
 class CourseSession < ApplicationRecord
-  validates :name, length: { allow_nil: true, maximum: 50 }
+  validates :name, length: { maximum: 50 }
   validates :starting_date, presence: true
   validates :student_max, presence: true, numericality: { less_than: 1000 }
-  validates :student_min, numericality: { greater_than: 1, allow_nil: true }
+  validates :student_min, numericality: { greater_than: 1 }
 
   belongs_to :course, inverse_of: :sessions, counter_cache: :sessions_count
 end
