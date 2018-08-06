@@ -5,10 +5,10 @@ module V1
       @attributes = %i[title description]
       @allow_only_params_for = {
         create:  [:course_id, lesson: @attributes],
-        destroy: [:id],
-        index:   [],
-        show:    [:id],
-        update:  [:id, lesson: @attributes]
+        destroy: %i[course_id id],
+        index:   [:course_id],
+        show:    %i[course_id id],
+        update:  [:course_id, :id, lesson: @attributes]
       }
       deny_all_unpermitted_parameters
     end

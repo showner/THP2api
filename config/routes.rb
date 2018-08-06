@@ -35,7 +35,8 @@
 Rails.application.routes.draw do
   namespace :v1 do
     mount_devise_token_auth_for 'User', at: 'auth'
-    resources :lessons, except: %i[new edit]
-    resources :courses, except: %i[new edit]
+    resources :courses, except: %i[new edit] do
+      resources :lessons, except: %i[new edit]
+    end
   end
 end
