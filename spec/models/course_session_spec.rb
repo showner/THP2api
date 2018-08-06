@@ -21,8 +21,113 @@
 #  fk_rails_...  (course_id => courses.id)
 #
 
-require 'rails_helper'
-
 RSpec.describe CourseSession, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe '#validator' do
+    context 'factory is valid' do
+      subject { create(:course_session) }
+      it { is_expected.to be_valid }
+      it { expect{ subject }.to change{ CourseSession.count }.by(1) }
+    end
+
+    context ':name' do
+      it { is_expected.to validate_length_of(:name).is_at_most(50) }
+    end
+
+    context ':starting_date' do
+      it { is_expected.to validate_presence_of(:starting_date) }
+    end
+
+    context ':student_max' do
+      it { is_expected.to validate_presence_of(:student_max) }
+      it { is_expected.to validate_numericality_of(:student_max).is_less_than(1000) }
+    end
+
+    context ':student_max' do
+      it { is_expected.to validate_numericality_of(:student_min).is_greater_than(1) }
+    end
+  end
+
+  describe '#scope' do
+    context ':default_scope' do
+      it { expect(CourseSession.all.default_scoped.to_sql).to eq CourseSession.all.to_sql }
+    end
+  end
+
+  describe '#DbColumns' do
+    context ':id' do
+      it { is_expected.to have_db_column(:id).of_type(:uuid) }
+      it { is_expected.to have_db_column(:id).with_options(primary_key: true, null: false) }
+    end
+    context ':ending_date' do
+      it { is_expected.to have_db_column(:ending_date).of_type(:datetime) }
+    end
+    context ':name' do
+      it { is_expected.to have_db_column(:name).of_type(:string) }
+    end
+    context ':starting_date' do
+      it { is_expected.to have_db_column(:starting_date).of_type(:datetime) }
+      it { is_expected.to have_db_column(:starting_date).with_options(null: false) }
+    end
+    context ':student_max' do
+      it { is_expected.to have_db_column(:student_max).of_type(:integer) }
+      it { is_expected.to have_db_column(:student_max).with_options(null: false) }
+    end
+    context ':student_min' do
+      it { is_expected.to have_db_column(:student_min).of_type(:integer) }
+      it { is_expected.to have_db_column(:student_min).with_options(default: 2, null: false) }
+    end
+    context ':created_at' do
+      it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
+      it { is_expected.to have_db_column(:created_at).with_options(null: false) }
+    end
+    context ':updated_at' do
+      it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
+      it { is_expected.to have_db_column(:updated_at).with_options(null: false) }
+    end
+    context ':course_id' do
+      it { is_expected.to have_db_column(:course_id).of_type(:uuid) }
+    end
+  end
+
+  describe '#DbIndex' do
+    context ':index_course_sessions_on_course_id' do
+      it { is_expected.to have_db_index(:course_id) }
+    end
+  end
+
+  describe '#relationship' do
+    let!(:user) { create(:user) }
+    let!(:course) { create(:course, creator: user) }
+    subject { create(:course_session, course: course) }
+    let(:course_session) { create(:course_session) }
+    context 'course_session belongs_to course' do
+      it { is_expected.to belong_to(:course).inverse_of(:sessions) }
+      it { is_expected.to belong_to(:course).counter_cache(:sessions_count) }
+    end
+    context 'increment sessions_count by 1' do
+      it { expect{ subject }.to change{ Course.last.sessions_count }.by(1) }
+    end
+    context 'follows course_session link through course' do
+      it 'course_session should eq course_session' do
+        expect(course_session.course.sessions.last).to eq(course_session)
+      end
+    end
+  end
+
+  describe "#Serialization" do
+    let(:course_session) { create(:course_session) }
+    subject(:serializer) { CourseSessionSerializer.new(course_session) }
+    it { is_expected.to respond_to(:serializable_hash) }
+    context 'course_session serializer' do
+      it { expect(subject.serializable_hash).to have_key(:id) }
+      it { expect(subject.serializable_hash).to have_key(:ending_date) }
+      it { expect(subject.serializable_hash).to have_key(:name) }
+      it { expect(subject.serializable_hash).to have_key(:starting_date) }
+      it { expect(subject.serializable_hash).to have_key(:student_max) }
+      it { expect(subject.serializable_hash).to have_key(:student_min) }
+      it { expect(subject.serializable_hash).to have_key(:created_at) }
+      it { expect(subject.serializable_hash).to have_key(:updated_at) }
+      it { expect(subject.serializable_hash).to have_key(:course_id) }
+    end
+  end
 end

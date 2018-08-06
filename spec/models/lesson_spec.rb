@@ -26,7 +26,7 @@ RSpec.describe Lesson, type: :model do
     context 'factory is valid' do
       subject { create(:lesson) }
       it { is_expected.to be_valid }
-      it { expect{ create(:lesson) }.to change{ Lesson.count }.by(1) }
+      it { expect{ subject }.to change{ Lesson.count }.by(1) }
     end
 
     context ':title' do
@@ -117,6 +117,7 @@ RSpec.describe Lesson, type: :model do
       end
     end
   end
+
   describe "#Serialization" do
     let(:lesson) { create(:lesson) }
     subject(:serializer) { LessonSerializer.new(lesson) }

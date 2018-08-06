@@ -27,7 +27,7 @@ RSpec.describe Course, type: :model do
     context 'factory is valid' do
       subject { create(:course) }
       it { is_expected.to be_valid }
-      it { expect{ create(:course) }.to change{ Course.count }.by(1) }
+      it { expect{ subject }.to change{ Course.count }.by(1) }
     end
 
     context ':title' do
@@ -103,6 +103,7 @@ RSpec.describe Course, type: :model do
       it { is_expected.to have_many(:lessons).dependent(:destroy) }
     end
     context 'course has_many sessions' do
+      it { is_expected.to have_many(:sessions).class_name(:CourseSession) }
       it { is_expected.to have_many(:sessions).dependent(:destroy) }
     end
   end
