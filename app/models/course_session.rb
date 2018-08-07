@@ -27,12 +27,14 @@ class CourseSession < ApplicationRecord
   validates_datetime :starting_date, on_or_after: :tomorrow_morning
   validates_datetime :ending_date, after: ->(course_session) { course_session.starting_date + 25.minutes }, if: :ending_date
   validates :name, length: { maximum: 50 }
-  validates :starting_date, presence: true
+  # validates :starting_date, presence: true
   # validates :student_max, presence: true, numericality: { less_than: 1000 }
   validates :student_min, numericality: { greater_than: 1 }
-  validates :student_max, presence: true, numericality: { less_than: 1000, greater_than: ->(course_session) { course_session.student_min } }
+  validates :student_max, presence: true,
+                          numericality: { only_integer: true, less_than: 1000,
+                                          greater_than: ->(course_session) { course_session.student_min } }
   # validates :student_min, numericality: { greater_than: 1
-  validates :student_min, numericality: { less_than: :student_max }, unless: :student_max.nil?, on: :update
+  validates :student_min, numericality: { only_integer: true, less_than: :student_max }, unless: :student_max.nil?, on: :update
 
   belongs_to :course, inverse_of: :sessions, counter_cache: :sessions_count
 end

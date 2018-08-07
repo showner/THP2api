@@ -20,12 +20,24 @@
 #        v1_user_confirmation GET    /v1/auth/confirmation(.:format)                                                          devise_token_auth/confirmations#show
 #                             POST   /v1/auth/confirmation(.:format)                                                          devise_token_auth/confirmations#create
 #      v1_auth_validate_token GET    /v1/auth/validate_token(.:format)                                                        devise_token_auth/token_validations#validate_token
-#                  v1_lessons GET    /v1/lessons(.:format)                                                                    v1/lessons#index
-#                             POST   /v1/lessons(.:format)                                                                    v1/lessons#create
-#                   v1_lesson GET    /v1/lessons/:id(.:format)                                                                v1/lessons#show
-#                             PATCH  /v1/lessons/:id(.:format)                                                                v1/lessons#update
-#                             PUT    /v1/lessons/:id(.:format)                                                                v1/lessons#update
-#                             DELETE /v1/lessons/:id(.:format)                                                                v1/lessons#destroy
+#           v1_course_lessons GET    /v1/courses/:course_id/lessons(.:format)                                                 v1/lessons#index
+#                             POST   /v1/courses/:course_id/lessons(.:format)                                                 v1/lessons#create
+#            v1_course_lesson GET    /v1/courses/:course_id/lessons/:id(.:format)                                             v1/lessons#show
+#                             PATCH  /v1/courses/:course_id/lessons/:id(.:format)                                             v1/lessons#update
+#                             PUT    /v1/courses/:course_id/lessons/:id(.:format)                                             v1/lessons#update
+#                             DELETE /v1/courses/:course_id/lessons/:id(.:format)                                             v1/lessons#destroy
+#   v1_course_course_sessions GET    /v1/courses/:course_id/course_sessions(.:format)                                         v1/course_sessions#index
+#                             POST   /v1/courses/:course_id/course_sessions(.:format)                                         v1/course_sessions#create
+#    v1_course_course_session GET    /v1/courses/:course_id/course_sessions/:id(.:format)                                     v1/course_sessions#show
+#                             PATCH  /v1/courses/:course_id/course_sessions/:id(.:format)                                     v1/course_sessions#update
+#                             PUT    /v1/courses/:course_id/course_sessions/:id(.:format)                                     v1/course_sessions#update
+#                             DELETE /v1/courses/:course_id/course_sessions/:id(.:format)                                     v1/course_sessions#destroy
+#                  v1_courses GET    /v1/courses(.:format)                                                                    v1/courses#index
+#                             POST   /v1/courses(.:format)                                                                    v1/courses#create
+#                   v1_course GET    /v1/courses/:id(.:format)                                                                v1/courses#show
+#                             PATCH  /v1/courses/:id(.:format)                                                                v1/courses#update
+#                             PUT    /v1/courses/:id(.:format)                                                                v1/courses#update
+#                             DELETE /v1/courses/:id(.:format)                                                                v1/courses#destroy
 #          rails_service_blob GET    /rails/active_storage/blobs/:signed_id/*filename(.:format)                               active_storage/blobs#show
 #   rails_blob_representation GET    /rails/active_storage/representations/:signed_blob_id/:variation_key/*filename(.:format) active_storage/representations#show
 #          rails_disk_service GET    /rails/active_storage/disk/:encoded_key/*filename(.:format)                              active_storage/disk#show
@@ -37,6 +49,7 @@ Rails.application.routes.draw do
     mount_devise_token_auth_for 'User', at: 'auth'
     resources :courses, except: %i[new edit] do
       resources :lessons, except: %i[new edit]
+      resources :course_sessions, except: %i[new edit]
     end
   end
 end

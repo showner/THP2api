@@ -1,0 +1,21 @@
+{
+  "type"      : "object",
+  "required"  : ["id", "starting_date", "student_max", "created_at", "updated_at"],
+  "properties": {
+    "id"            : { "$ref" : "#/definitions/uuid" },
+    "ending_date"   : { "type" : ["string", "null"], "format": "date-time" },
+    "name"          : { "type" : ["integer", "null"] },
+    "starting_date" : { "type" : "string", "format": "date-time" },
+    "student_max"   : { "type" : "integer" },
+    "student_min"   : { "type" : "integer" },
+    "created_at"    : { "type" : "string", "format": "date-time" },
+    "updated_at"    : { "type" : "string", "format": "date-time" },
+    "course_id"     : { "$ref" : "#/definitions/uuid" }
+  },
+  "definitions": {
+    "uuid": {
+      "type": "string",
+      "pattern": "^[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}$"
+    }
+  }
+}
