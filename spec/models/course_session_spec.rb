@@ -29,6 +29,12 @@ RSpec.describe CourseSession, type: :model do
       it { expect{ subject }.to change{ CourseSession.count }.by(1) }
     end
 
+    context ':ending_date' do
+      subject { create(:course_session) }
+      it { expect(subject.attributes.with_indifferent_access).to include(:ending_date) }
+      it { expect(subject.type_for_attribute(:ending_date).type).to eq :datetime }
+    end
+
     context ':name' do
       it { is_expected.to validate_length_of(:name).is_at_most(50) }
     end
@@ -37,7 +43,7 @@ RSpec.describe CourseSession, type: :model do
       subject { create(:course_session) }
       it { is_expected.to validate_presence_of(:starting_date) }
       it { expect(subject.attributes.with_indifferent_access).to include(:starting_date) }
-      it { expect(subject.type_for_attribute(:ending_date).type).to eq :datetime }
+      it { expect(subject.type_for_attribute(:starting_date).type).to eq :datetime }
     end
 
     context ':student_max' do
@@ -53,8 +59,20 @@ RSpec.describe CourseSession, type: :model do
     context ':student_min on #update' do
       subject { create(:course_session) }
       it { is_expected.to validate_numericality_of(:student_min).is_less_than(subject.student_max).on(:update) }
-      # Doesn't use validator, then better the above one
-      # it { expect(subject.student_max).to be > subject.student_min }
+    end
+
+    context "with wrong dates" do
+      it "shouldn't allow to start a course session in the past" do
+        expect{ create(:course_session, :with_error_starting_in_past) }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+
+      it "shouldn't allow to end a course session in the past" do
+        expect{ create(:course_session, :with_error_ending_in_past) }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+
+      it "shouldn't allow to end a course session before it starts" do
+        expect{ create(:course_session, :with_error_ending_before_starting) }.to raise_error(ActiveRecord::RecordInvalid)
+      end
     end
   end
 

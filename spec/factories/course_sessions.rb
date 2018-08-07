@@ -23,14 +23,27 @@
 
 FactoryBot.define do
   factory :course_session do
-    ending_date   { Faker::Date.between(3.weeks.from_now, 4.weeks.from_now) }
-    name          { Faker::Book.title.first(50) }
+    # ending_date   { Faker::Date.between(3.weeks.from_now, 4.weeks.from_now) }
+    # name          { Faker::Book.title.first(50) }
     starting_date { Faker::Date.between(1.week.from_now, 2.weeks.from_now) }
     student_max   { 999 }
     association :course
 
     trait :student_10_min do
       student_min { 10 }
+    end
+
+    trait :with_error_ending_in_past do
+      ending_date 1.day.ago
+    end
+
+    trait :with_error_starting_in_past do
+      starting_date 1.day.ago
+    end
+
+    trait :with_error_ending_before_starting do
+      ending_date   1.day.from_now
+      starting_date 2.days.from_now
     end
   end
 end

@@ -35,6 +35,8 @@ gem 'active_model_serializers', '~> 0.10.0'
 gem 'devise_token_auth'
 # Policies
 gem 'pundit'
+# Helper to validate datetime
+gem 'validates_timeliness', '~> 5.0.0.alpha3'
 
 group :development, :test do
   gem 'dotenv-rails'

@@ -22,8 +22,10 @@
 #
 
 class CourseSession < ApplicationRecord
-  attribute :starting_date, :datetime, default: -> { Time.now.tomorrow.utc.change(hour: 9, minute: 0, seconds: 0) }
+  attribute :starting_date, :datetime, default: -> { Time.now.tomorrow.utc.change(hour: 6, minute: 0, seconds: 0) }
 
+  validates_datetime :starting_date, on_or_after: :tomorrow_morning
+  validates_datetime :ending_date, after: ->(course_session) { course_session.starting_date + 25.minutes }, if: :ending_date
   validates :name, length: { maximum: 50 }
   validates :starting_date, presence: true
   # validates :student_max, presence: true, numericality: { less_than: 1000 }
