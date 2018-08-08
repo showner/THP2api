@@ -26,12 +26,12 @@
 #                             PATCH  /v1/courses/:course_id/lessons/:id(.:format)                                             v1/lessons#update
 #                             PUT    /v1/courses/:course_id/lessons/:id(.:format)                                             v1/lessons#update
 #                             DELETE /v1/courses/:course_id/lessons/:id(.:format)                                             v1/lessons#destroy
-#   v1_course_course_sessions GET    /v1/courses/:course_id/course_sessions(.:format)                                         v1/course_sessions#index
-#                             POST   /v1/courses/:course_id/course_sessions(.:format)                                         v1/course_sessions#create
-#    v1_course_course_session GET    /v1/courses/:course_id/course_sessions/:id(.:format)                                     v1/course_sessions#show
-#                             PATCH  /v1/courses/:course_id/course_sessions/:id(.:format)                                     v1/course_sessions#update
-#                             PUT    /v1/courses/:course_id/course_sessions/:id(.:format)                                     v1/course_sessions#update
-#                             DELETE /v1/courses/:course_id/course_sessions/:id(.:format)                                     v1/course_sessions#destroy
+#          v1_course_sessions GET    /v1/courses/:course_id/sessions(.:format)                                                v1/course_sessions#index
+#                             POST   /v1/courses/:course_id/sessions(.:format)                                                v1/course_sessions#create
+#           v1_course_session GET    /v1/courses/:course_id/sessions/:id(.:format)                                            v1/course_sessions#show
+#                             PATCH  /v1/courses/:course_id/sessions/:id(.:format)                                            v1/course_sessions#update
+#                             PUT    /v1/courses/:course_id/sessions/:id(.:format)                                            v1/course_sessions#update
+#                             DELETE /v1/courses/:course_id/sessions/:id(.:format)                                            v1/course_sessions#destroy
 #                  v1_courses GET    /v1/courses(.:format)                                                                    v1/courses#index
 #                             POST   /v1/courses(.:format)                                                                    v1/courses#create
 #                   v1_course GET    /v1/courses/:id(.:format)                                                                v1/courses#show
@@ -49,7 +49,7 @@ Rails.application.routes.draw do
     mount_devise_token_auth_for 'User', at: 'auth'
     resources :courses, except: %i[new edit] do
       resources :lessons, except: %i[new edit]
-      resources :course_sessions, except: %i[new edit]
+      resources :sessions, except: %i[new edit], controller: :course_sessions
     end
   end
 end
