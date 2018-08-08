@@ -13,6 +13,7 @@ module V1
       deny_all_unpermitted_parameters
     end
     before_action :find_lesson, only: %i[show update destroy]
+    before_action :find_course, only: :create
 
     def index
       render json: Lesson.all
@@ -56,12 +57,16 @@ module V1
     alias_method :update_params, :create_params
 
     def current_course
-      params.require(:course_id)
       Course.find(params[:course_id])
     end
 
     def find_lesson
       @lesson = Lesson.find(params[:id])
+    end
+
+    def find_course
+      params.require(:course_id)
+      Course.find(params[:course_id])
     end
   end
 end

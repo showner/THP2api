@@ -48,6 +48,11 @@ RSpec.describe V1::CourseSessionsController, type: :controller do
         let(:params) { course_params.merge(id: course_session.id, another_params: Faker::Lorem.word) }
         it { is_expected.to have_http_status(:forbidden) }
       end
+
+      context ":id is not valid and has extras params" do
+        let(:params) { course_params.merge(id: Faker::Lorem.word, another_params: Faker::Lorem.word) }
+        it { is_expected.to have_http_status(:forbidden) }
+      end
     end
 
     describe 'POST #create' do
@@ -77,10 +82,8 @@ RSpec.describe V1::CourseSessionsController, type: :controller do
       end
 
       context "without params" do
-        it {
-          params.delete(:course_session)
-          is_expected.to have_http_status(:forbidden)
-        }
+        let(:params) { { course_id: course.id } }
+        it { is_expected.to have_http_status(:forbidden) }
       end
 
       context "without student_max" do
@@ -127,6 +130,7 @@ RSpec.describe V1::CourseSessionsController, type: :controller do
 
       context "with invalid ending_date:before starting_date" do
         it {
+          course_session[:starting_date] = 1.week.from_now
           course_session[:ending_date] = 4.days.from_now
           is_expected.to have_http_status(:forbidden)
         }

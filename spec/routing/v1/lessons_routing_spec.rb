@@ -1,12 +1,12 @@
 RSpec.describe V1::LessonsController, type: :routing do
-  describe "GET #index" do
+  xdescribe "GET #index" do
     context "routes to index" do
       subject { get 'v1/lessons' }
       it { is_expected.to be_routable }
     end
   end
 
-  describe "GET #show" do
+  xdescribe "GET #show" do
     context "routes to show" do
       let(:request) { get 'v1/lessons/' + 'fake_id' }
       subject { request }
@@ -14,21 +14,21 @@ RSpec.describe V1::LessonsController, type: :routing do
     end
   end
 
-  describe "POST #create" do
+  xdescribe "POST #create" do
     context "routes to create" do
       subject { post 'v1/lessons' }
       it { is_expected.to be_routable }
     end
   end
 
-  describe "PATCH #update" do
+  xdescribe "PATCH #update" do
     context "routes to update" do
       subject { patch 'v1/lessons/' + 'fake_id' }
       it { is_expected.to be_routable }
     end
   end
 
-  describe "DELETE #destroy" do
+  xdescribe "DELETE #destroy" do
     context "routes to destroy" do
       subject { delete 'v1/lessons/' + 'fake_id' }
       it { is_expected.to be_routable }

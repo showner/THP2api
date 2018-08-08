@@ -61,6 +61,7 @@ RSpec.describe Lesson, type: :model do
     end
     context ':title' do
       it { is_expected.to have_db_column(:title).of_type(:string) }
+      it { is_expected.to have_db_column(:title).with_options(limit: 50, null: false) }
     end
     context ':created_at' do
       it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
