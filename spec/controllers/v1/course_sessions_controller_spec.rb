@@ -59,6 +59,11 @@ RSpec.describe V1::CourseSessionsController, type: :controller do
         include_examples 'course_session_examples', :created
       end
 
+      context 'with complete valid params' do
+        let(:course_session) { attributes_for(:course_session, :complete) }
+        include_examples 'course_session_examples', :created
+      end
+
       context 'with extra params next to course_session' do
         let(:params) { course_params.merge(course_session: course_session, extra: 'this extra params') }
         it { is_expected.to have_http_status(:forbidden) }
@@ -98,9 +103,31 @@ RSpec.describe V1::CourseSessionsController, type: :controller do
           is_expected.to have_http_status(:forbidden)
         }
       end
+
       context "with invalid student_max:too_high" do
         it {
           course_session[:student_max] = 1001
+          is_expected.to have_http_status(:forbidden)
+        }
+      end
+
+      xcontext "with invalid ending_date:string instead of datetime" do
+        it {
+          course_session[:ending_date] = "not-a-valid-date"
+          is_expected.to have_http_status(:forbidden)
+        }
+      end
+
+      context "with invalid ending_date:in_past" do
+        it {
+          course_session[:ending_date] = 1.day.ago
+          is_expected.to have_http_status(:forbidden)
+        }
+      end
+
+      context "with invalid ending_date:before starting_date" do
+        it {
+          course_session[:ending_date] = 4.days.from_now
           is_expected.to have_http_status(:forbidden)
         }
       end
@@ -158,12 +185,12 @@ RSpec.describe V1::CourseSessionsController, type: :controller do
       end
 
       context "without course_session:starting_date" do
-        let(:course_session_update) { attributes_for(:course_session).except!(:starting_date) }
+        let(:course_session_update) { attributes_for(:course_session, :complete).except!(:starting_date) }
         include_examples 'course_session_examples', :ok
       end
 
       context "without course_session:student_max" do
-        let(:course_session_update) { attributes_for(:course_session).except!(:student_max) }
+        let(:course_session_update) { attributes_for(:course_session, :complete).except!(:student_max) }
         include_examples 'course_session_examples', :ok
       end
 
@@ -186,6 +213,7 @@ RSpec.describe V1::CourseSessionsController, type: :controller do
           is_expected.to have_http_status(:forbidden)
         }
       end
+
       context "with invalid course_session:student_max:too_high" do
         it {
           course_session_update[:student_max] = 1001

@@ -23,11 +23,15 @@
 
 FactoryBot.define do
   factory :course_session do
-    # ending_date   { Faker::Date.between(3.weeks.from_now, 4.weeks.from_now) }
-    # name          { Faker::Book.title.first(50) }
-    starting_date { Faker::Date.between(1.week.from_now, 2.weeks.from_now) }
-    student_max   { 999 }
+    starting_date { Faker::Time.between(1.week.from_now, 2.weeks.from_now) }
+    student_max   { rand(11...1000) }
     association :course
+
+    trait :complete do
+      ending_date   { Faker::Time.between(3.weeks.from_now, 4.weeks.from_now) }
+      # ending_date   { starting_date + 1.day } Need to change way of writing test (attributes_for except)
+      name          { Faker::Book.title.first(50) }
+    end
 
     trait :student_10_min do
       student_min { 10 }

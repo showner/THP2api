@@ -41,7 +41,6 @@ RSpec.describe CourseSession, type: :model do
 
     context ':starting_date' do
       subject { create(:course_session) }
-      it { is_expected.to validate_presence_of(:starting_date) }
       it { expect(subject.attributes.with_indifferent_access).to include(:starting_date) }
       it { expect(subject.type_for_attribute(:starting_date).type).to eq :datetime }
     end
