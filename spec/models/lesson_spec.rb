@@ -3,7 +3,7 @@
 # Table name: lessons
 #
 #  id          :uuid             not null, primary key
-#  description :text
+#  description :text             not null
 #  title       :string(50)       not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
@@ -26,7 +26,7 @@ RSpec.describe Lesson, type: :model do
     context 'factory is valid' do
       subject { create(:lesson) }
       it { is_expected.to be_valid }
-      it { expect{ create(:lesson) }.to change{ Lesson.count }.by(1) }
+      it { expect{ subject }.to change{ Lesson.count }.by(1) }
     end
 
     context ':title' do
@@ -57,6 +57,7 @@ RSpec.describe Lesson, type: :model do
     end
     context ':description' do
       it { is_expected.to have_db_column(:description).of_type(:text) }
+      it { is_expected.to have_db_column(:description).with_options(null: false) }
     end
     context ':title' do
       it { is_expected.to have_db_column(:title).of_type(:string) }
@@ -117,12 +118,12 @@ RSpec.describe Lesson, type: :model do
       end
     end
   end
+
   describe "#Serialization" do
     let(:lesson) { create(:lesson) }
     subject(:serializer) { LessonSerializer.new(lesson) }
     it { is_expected.to respond_to(:serializable_hash) }
-    # Multiple wayto test serializer
-    context '1st way to test serializer' do
+    context 'lesson serializer' do
       it { expect(subject.serializable_hash).to have_key(:id) }
       it { expect(subject.serializable_hash).to have_key(:title) }
       it { expect(subject.serializable_hash).to have_key(:description) }
@@ -130,13 +131,6 @@ RSpec.describe Lesson, type: :model do
       it { expect(subject.serializable_hash).to have_key(:updated_at) }
       it { expect(subject.serializable_hash).to have_key(:creator_id) }
       it { expect(subject.serializable_hash).to have_key(:course_id) }
-    end
-    xcontext '2nd way' do
-      it { expect(subject.serializable_hash.keys).to contain_exactly(*Lesson.column_names.map(&:to_sym)) }
-    end
-    xcontext '3rd way' do
-      let(:serialized_keys) { %i[id title description created_at updated_at creator_id course_id] }
-      it { expect(subject.serializable_hash.keys).to match_array(serialized_keys) }
     end
   end
 end

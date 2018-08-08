@@ -2,13 +2,14 @@
 #
 # Table name: courses
 #
-#  id            :uuid             not null, primary key
-#  description   :text
-#  lessons_count :integer          default(0)
-#  title         :string(50)       not null
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  creator_id    :uuid
+#  id             :uuid             not null, primary key
+#  description    :text             not null
+#  lessons_count  :integer          default(0)
+#  sessions_count :integer          default(0)
+#  title          :string(50)       not null
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  creator_id     :uuid
 #
 # Indexes
 #
@@ -26,7 +27,7 @@ RSpec.describe Course, type: :model do
     context 'factory is valid' do
       subject { create(:course) }
       it { is_expected.to be_valid }
-      it { expect{ create(:course) }.to change{ Course.count }.by(1) }
+      it { expect{ subject }.to change{ Course.count }.by(1) }
     end
 
     context ':title' do
@@ -51,8 +52,13 @@ RSpec.describe Course, type: :model do
       it { is_expected.to have_db_column(:id).of_type(:uuid) }
       it { is_expected.to have_db_column(:id).with_options(primary_key: true, null: false) }
     end
+    context ':sessions_count' do
+      it { is_expected.to have_db_column(:sessions_count).of_type(:integer) }
+      it { is_expected.to have_db_column(:sessions_count).with_options(default: 0) }
+    end
     context ':description' do
       it { is_expected.to have_db_column(:description).of_type(:text) }
+      it { is_expected.to have_db_column(:description).with_options(null: false) }
     end
     context ':lessons_count' do
       it { is_expected.to have_db_column(:lessons_count).of_type(:integer) }
@@ -85,7 +91,6 @@ RSpec.describe Course, type: :model do
     let!(:user) { create(:user) }
     let(:course) { create(:course) }
     subject { create(:course, creator: user) }
-    let(:lesson) { create(:lesson, creator: course.creator, course: course) }
     context 'course belongs_to user' do
       it { is_expected.to belong_to(:creator).class_name(:User) }
       it { is_expected.to belong_to(:creator).inverse_of(:created_courses) }
@@ -97,16 +102,30 @@ RSpec.describe Course, type: :model do
     context 'course has_many lessons' do
       it { is_expected.to have_many(:lessons).dependent(:destroy) }
     end
-    context 'follows course link through creator' do
+    context 'course has_many sessions' do
+      it { is_expected.to have_many(:sessions).class_name(:CourseSession) }
+      it { is_expected.to have_many(:sessions).dependent(:destroy) }
+    end
+  end
+  describe '#Follows' do
+    let(:course) { create(:course) }
+    let(:lesson) { create(:lesson, creator: course.creator, course: course) }
+    let(:course_session) { create(:course_session, course: course) }
+    context 'course link through creator' do
       it 'course should eq course' do
-        lesson
         expect(course.creator.created_courses.last).to eq(course)
       end
     end
-    context 'follows course link through lessons' do
+    context 'course link through lessons' do
       it 'course should eq course' do
         lesson
         expect(course.lessons.last.course).to eq(course)
+      end
+    end
+    context 'course link through sessions' do
+      it 'course should eq course' do
+        course_session
+        expect(course.sessions.last.course).to eq(course)
       end
     end
   end
@@ -115,8 +134,7 @@ RSpec.describe Course, type: :model do
     let!(:lesson) { create(:lesson, course: course, creator: course.creator) }
     subject(:serializer) { CourseSerializer.new(course) }
     it { is_expected.to respond_to(:serializable_hash) }
-    # Multiple wayto test serializer
-    context '1st way to test serializer' do
+    context 'course serializer' do
       it { expect(subject.serializable_hash).to have_key(:id) }
       it { expect(subject.serializable_hash).to have_key(:title) }
       it { expect(subject.serializable_hash).to have_key(:description) }
@@ -124,13 +142,11 @@ RSpec.describe Course, type: :model do
       it { expect(subject.serializable_hash).to have_key(:updated_at) }
       it { expect(subject.serializable_hash).to have_key(:creator_id) }
       it { expect(subject.serializable_hash).to have_key(:lessons_count) }
+      it { expect(subject.serializable_hash).to have_key(:lessons) }
     end
-    xcontext '2nd way' do
-      it { expect(subject.serializable_hash.keys).to contain_exactly(*Course.column_names.map(&:to_sym)) }
-    end
-    xcontext '3rd way' do
-      let(:serialized_keys) { %i[id title description created_at updated_at creator_id lessons_count] }
-      it { expect(subject.serializable_hash.keys).to match_array(serialized_keys) }
+    context 'course serializer' do
+      it { expect(subject.serializable_hash).to_not have_key(:sessions) }
+      it { expect(subject.serializable_hash).to_not have_key(:sessions_count) }
     end
   end
 end

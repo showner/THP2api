@@ -6,6 +6,7 @@ class ApplicationController < ActionController::API
   rescue_from ActiveRecord::RecordInvalid, with: :bad_params
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  # rescue_from ActiveRecord::NotNullViolation, with: :not_null_violation
   # rescue_from ActionController::UrlGenerationError, with: :no_route
 
   def params_missing(error)
@@ -27,6 +28,11 @@ class ApplicationController < ActionController::API
   def user_not_authorized(error)
     render json: { error: [error.message] }, status: :unauthorized
   end
+
+  # Maybe throw this one
+  # def not_null_violation(error)
+  #   render json: { error: [error.message] }, status: :forbidden
+  # end
 
   # def no_route(error)
   #   binding.pry

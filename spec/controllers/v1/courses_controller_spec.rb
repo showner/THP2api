@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe V1::CoursesController, type: :controller do
-  # Without authenticated user
+  # With authenticated user
   context 'with auth user' do
     before(:each) {
       fake_user
@@ -182,7 +182,7 @@ RSpec.describe V1::CoursesController, type: :controller do
           is_expected.to have_http_status(:forbidden)
         }
       end
-      context "with invalid course:title:nil" do
+      context "with invalid course:title:too_long" do
         it {
           course_update[:title] = Faker::Lorem.characters(55)
           is_expected.to have_http_status(:forbidden)

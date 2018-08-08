@@ -3,7 +3,7 @@
 # Table name: lessons
 #
 #  id          :uuid             not null, primary key
-#  description :text
+#  description :text             not null
 #  title       :string(50)       not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
