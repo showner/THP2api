@@ -13,7 +13,7 @@ module V1
       deny_all_unpermitted_parameters
     end
     before_action :find_course_session, only: %i[show update destroy]
-    before_action :find_course, only: :create
+    before_action :current_course, only: %i[create index]
 
     def index
       render json: current_course.sessions
@@ -59,11 +59,6 @@ module V1
 
     def find_course_session
       @course_session = CourseSession.find(params[:id])
-    end
-
-    def find_course
-      params.require(:course_id)
-      Course.find(params[:course_id])
     end
   end
 end
