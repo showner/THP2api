@@ -47,6 +47,7 @@ end
 
 group :development do
   gem 'annotate', require: false
+  gem 'bundler-audit'
   gem 'guard', require: false
   gem 'guard-annotate', require: false
   gem 'guard-rspec', require: false

@@ -4,3 +4,12 @@
 require_relative 'config/application'
 
 Rails.application.load_tasks
+
+unless Rails.env.production?
+  require 'bundler/audit/task'
+  Bundler::Audit::Task.new
+
+  task default: 'bundle:audit'
+  # To be launched in package.json
+  task audit: 'bundle:audit'
+end
