@@ -10,12 +10,13 @@ RSpec.describe V1::CoursesController, type: :controller do
       course_count = 5
       let!(:courses) { create_list(:course, course_count) }
       subject { get :index }
-      context 'with valid request'
-      it { is_expected.to have_http_status(:ok) }
-      it "returns #{course_count} Courses" do
-        subject
-        expect(response_from_json.size).to eq(course_count)
-        expect(response_from_json.map{ |e| e[:id] }).to eq(courses.map(&:id))
+      context 'with valid request' do
+        it { is_expected.to have_http_status(:ok) }
+        it "returns #{course_count} Courses" do
+          subject
+          expect(response_from_json.size).to eq(course_count)
+          expect(response_from_json.map{ |e| e[:id] }).to eq(courses.map(&:id))
+        end
       end
 
       context 'with extra params' do

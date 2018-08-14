@@ -10,17 +10,17 @@ RSpec.describe V1::CourseSessionsController, type: :controller do
     let(:course) { create(:course) }
     let(:course_params) { { course_id: course.id } }
     let(:params) { course_params }
-
     describe "GET #index" do
       course_session_count = 5
-      let!(:course_sessions) { create_list(:course_session, course_session_count) }
+      let!(:course_sessions) { create_list(:course_session, course_session_count, course: course) }
       subject { get :index, params: params }
-      context 'with valid request'
-      it { is_expected.to have_http_status(:ok) }
-      it "returns #{course_session_count} CourseSession" do
-        subject
-        expect(response_from_json.size).to eq(course_session_count)
-        expect(response_from_json.map{ |e| e[:id] }).to eq(course_sessions.map(&:id))
+      context 'with valid request' do
+        it { is_expected.to have_http_status(:ok) }
+        it "returns #{course_session_count} CourseSession" do
+          subject
+          expect(response_from_json.size).to eq(course_session_count)
+          expect(response_from_json.map{ |e| e[:id] }).to eq(course_sessions.map(&:id))
+        end
       end
 
       context 'with extra params' do

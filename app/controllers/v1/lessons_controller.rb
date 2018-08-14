@@ -16,7 +16,7 @@ module V1
     before_action :find_course, only: :create
 
     def index
-      render json: Lesson.all
+      render json: current_course.lessons
     end
 
     def show
