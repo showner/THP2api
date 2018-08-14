@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_03_085118) do
+ActiveRecord::Schema.define(version: 2018_08_14_093226) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -50,6 +50,15 @@ ActiveRecord::Schema.define(version: 2018_08_03_085118) do
     t.index ["creator_id"], name: "index_lessons_on_creator_id"
   end
 
+  create_table "organizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", limit: 50, null: false
+    t.text "website", null: false
+    t.uuid "creator_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["creator_id"], name: "index_organizations_on_creator_id"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
@@ -74,6 +83,7 @@ ActiveRecord::Schema.define(version: 2018_08_03_085118) do
     t.datetime "updated_at", null: false
     t.integer "created_lessons_count", default: 0
     t.integer "created_courses_count", default: 0
+    t.integer "created_organizations_count", default: 0
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["created_at"], name: "index_users_on_created_at"
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -86,4 +96,5 @@ ActiveRecord::Schema.define(version: 2018_08_03_085118) do
   add_foreign_key "courses", "users", column: "creator_id"
   add_foreign_key "lessons", "courses"
   add_foreign_key "lessons", "users", column: "creator_id"
+  add_foreign_key "organizations", "users", column: "creator_id"
 end
