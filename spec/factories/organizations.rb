@@ -2,12 +2,13 @@
 #
 # Table name: organizations
 #
-#  id         :uuid             not null, primary key
-#  name       :string(50)       not null
-#  website    :text             not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  creator_id :uuid
+#  id            :uuid             not null, primary key
+#  members_count :integer          default(0)
+#  name          :string(50)       not null
+#  website       :text
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  creator_id    :uuid
 #
 # Indexes
 #

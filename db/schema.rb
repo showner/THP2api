@@ -53,8 +53,6 @@ ActiveRecord::Schema.define(version: 2018_08_14_114050) do
   create_table "organization_memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "organization_id"
     t.uuid "member_id"
-    t.integer "organizations_count", default: 0
-    t.integer "members_count", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["member_id"], name: "index_organization_memberships_on_member_id"
@@ -63,10 +61,11 @@ ActiveRecord::Schema.define(version: 2018_08_14_114050) do
 
   create_table "organizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", limit: 50, null: false
-    t.text "website", null: false
+    t.text "website"
     t.uuid "creator_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "members_count", default: 0
     t.index ["creator_id"], name: "index_organizations_on_creator_id"
   end
 
@@ -95,6 +94,7 @@ ActiveRecord::Schema.define(version: 2018_08_14_114050) do
     t.integer "created_lessons_count", default: 0
     t.integer "created_courses_count", default: 0
     t.integer "created_organizations_count", default: 0
+    t.integer "organizations_count", default: 0
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["created_at"], name: "index_users_on_created_at"
     t.index ["email"], name: "index_users_on_email", unique: true

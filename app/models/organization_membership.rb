@@ -2,13 +2,11 @@
 #
 # Table name: organization_memberships
 #
-#  id                  :uuid             not null, primary key
-#  members_count       :integer          default(0)
-#  organizations_count :integer          default(0)
-#  created_at          :datetime         not null
-#  updated_at          :datetime         not null
-#  member_id           :uuid
-#  organization_id     :uuid
+#  id              :uuid             not null, primary key
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  member_id       :uuid
+#  organization_id :uuid
 #
 # Indexes
 #
@@ -22,8 +20,10 @@
 #
 
 class OrganizationMembership < ApplicationRecord
-  belongs_to :organization, class_name: :Organizations,
-                            counter_cache: :organizations_count
+  belongs_to :organization, class_name: :Organization,
+                            counter_cache: :members_count,
+                            inverse_of: :organization_memberships
   belongs_to :member, class_name: :User,
-                      counter_cache: :members_count
+                      counter_cache: :organizations_count,
+                      inverse_of: :organization_memberships
 end

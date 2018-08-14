@@ -2,13 +2,11 @@
 #
 # Table name: organization_memberships
 #
-#  id                  :uuid             not null, primary key
-#  members_count       :integer          default(0)
-#  organizations_count :integer          default(0)
-#  created_at          :datetime         not null
-#  updated_at          :datetime         not null
-#  member_id           :uuid
-#  organization_id     :uuid
+#  id              :uuid             not null, primary key
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  member_id       :uuid
+#  organization_id :uuid
 #
 # Indexes
 #
