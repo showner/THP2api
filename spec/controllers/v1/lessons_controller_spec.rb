@@ -13,14 +13,15 @@ RSpec.describe V1::LessonsController, type: :controller do
 
     describe "GET #index" do
       lesson_count = 5
-      let!(:lessons) { create_list(:lesson, lesson_count) }
+      let!(:lessons) { create_list(:lesson, lesson_count, course: course) }
       subject { get :index, params: params }
-      context 'with valid request'
-      it { is_expected.to have_http_status(:ok) }
-      it "returns #{lesson_count} Lessons" do
-        subject
-        expect(response_from_json.size).to eq(lesson_count)
-        expect(response_from_json.map{ |e| e[:id] }).to eq(lessons.map(&:id))
+      context 'with valid request' do
+        it { is_expected.to have_http_status(:ok) }
+        it "returns #{lesson_count} Lessons" do
+          subject
+          expect(response_from_json.size).to eq(lesson_count)
+          expect(response_from_json.map{ |e| e[:id] }).to eq(lessons.map(&:id))
+        end
       end
 
       context 'with extra params' do
