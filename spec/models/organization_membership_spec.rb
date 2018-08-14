@@ -1,0 +1,28 @@
+# == Schema Information
+#
+# Table name: organization_memberships
+#
+#  id                  :uuid             not null, primary key
+#  members_count       :integer          default(0)
+#  organizations_count :integer          default(0)
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  member_id           :uuid
+#  organization_id     :uuid
+#
+# Indexes
+#
+#  index_organization_memberships_on_member_id        (member_id)
+#  index_organization_memberships_on_organization_id  (organization_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (member_id => users.id)
+#  fk_rails_...  (organization_id => organizations.id)
+#
+
+require 'rails_helper'
+
+RSpec.describe OrganizationMembership, type: :model do
+  pending "add some examples to (or delete) #{__FILE__}"
+end
