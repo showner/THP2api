@@ -62,6 +62,7 @@ group :test do
   gem 'faker'
   gem 'json-schema'
   gem 'nyan-cat-formatter'
+  gem 'rspec_junit_formatter'
   gem 'shoulda-matchers', '~> 3.1'
   gem 'simplecov', require: false
 end
