@@ -21,5 +21,7 @@
 
 FactoryBot.define do
   factory :organization_membership do
+    association :member, factory: :user
+    association :organization
   end
 end

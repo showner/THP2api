@@ -21,9 +21,9 @@
 
 class OrganizationMembership < ApplicationRecord
   belongs_to :organization, class_name: :Organization,
-                            counter_cache: :members_count,
-                            inverse_of: :organization_memberships
+                            inverse_of: :organization_memberships,
+                            counter_cache: :members_count
   belongs_to :member, class_name: :User,
-                      counter_cache: :organizations_count,
-                      inverse_of: :organization_memberships
+                      inverse_of: :organization_memberships,
+                      counter_cache: :organizations_count
 end

@@ -21,5 +21,7 @@
 
 FactoryBot.define do
   factory :organization do
+    name { Faker::Company.name.first(50) }
+    association :creator, factory: :user
   end
 end

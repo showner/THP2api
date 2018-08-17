@@ -19,6 +19,7 @@
 #  fk_rails_...  (creator_id => users.id)
 #
 
-class LessonSerializer < ActiveModel::Serializer
-  attributes :id, :name, :website, :created_at, :updated_at, :creator_id
+class OrganizationSerializer < ActiveModel::Serializer
+  attributes :id, :name, :website, :created_at, :updated_at, :creator_id, :members_count
+  has_many :members
 end
