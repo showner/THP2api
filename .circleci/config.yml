@@ -42,7 +42,7 @@ jobs:
       # Database setup
       - run:
           name: Database setup
-          command: bin/rails db:schema:load --trace
+          command: bin/rails db:create db:migrate --trace
 
       - run:
           name: run rubocop
@@ -54,8 +54,7 @@ jobs:
           command: |
             mkdir /tmp/test-results
             TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)"
-            COVERAGE=true
-            bundle exec rspec --format progress \
+            COVERAGE=true bundle exec rspec --format progress \
                             --format RspecJunitFormatter \
                             --out /tmp/test-results/rspec.xml \
                             --format progress \
