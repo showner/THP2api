@@ -13,8 +13,6 @@ jobs:
           POSTGRES_USER: root
           POSTGRES_DB: circle-test_test
 
-    working_directory: ~/repo
-
     steps:
       - checkout
 
@@ -66,4 +64,4 @@ jobs:
       - store_artifacts:
           path: /tmp/test-results
       - store_artifacts:
-          path: /coverage
+          path: coverage
