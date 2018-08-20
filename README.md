@@ -14,3 +14,7 @@ Test: lesson index shouldnt return lessons from other course
 
 https://github.com/awesome-print/awesome_print 
 https://github.com/cldwalker/hirb
+
+# Implement
+
+Add [Rubocop-rspec](https://github.com/rubocop-hq/rubocop-rspec)

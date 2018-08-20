@@ -46,6 +46,12 @@ Rails.application.configure do
   # Config http://guides.rubyonrails.org/action_mailer_basics.html#generating-urls-in-action-mailer-views
   config.action_mailer.default_url_options = { host: 'localhost:3000' }
 
+  config.action_mailer.smtp_settings = {
+    address: ENV.fetch('MAILER_HOST', 'localhost'),
+    port:    ENV.fetch('MAILER_PORT', 1025),
+    openssl_verify_mode: OpenSSL::SSL::VERIFY_NONE
+  }
+
   DeviseTokenAuth.setup do |config|
     config.default_confirm_success_url = "http://localhost:3000"
   end

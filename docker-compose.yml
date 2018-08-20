@@ -1,0 +1,31 @@
+version: '3'
+services:
+  postgres:
+    image: 'postgres:10.5'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=app
+    ports:
+      - 127.0.0.1:5432:5432
+  maildev:
+    image: 'djfarrelly/maildev'
+    ports:
+      - 127.0.0.1:1025:25
+      - 127.0.0.1:1080:80
+  app:
+    build: 
+      context: ./
+      dockerfile: ./Dockerfile.dev
+    depends_on:
+      - postgres
+    command: ["/srv/lib/docker/wait-for-it.sh", "database:5432", "--", "/srv/lib/docker/entrypoint.sh", "rails", "server", "--pid", "tmp/pids/server.development.pid"]
+    environment:
+      - MAILER_HOST=maildev
+      - MAILER_PORT=25
+      - PGUSER=postgres
+      - PGPASSWORD=app
+      - PGHOST=postgres
+    ports:
+      - 127.0.0.1:3000:3000
+    volumes:
+      - .:/srv
