@@ -57,8 +57,9 @@ Rails.application.configure do
   # Maildev config
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    address: "localhost",
-    port: 1025
+    address: ENV.fetch('MAILER_HOST', 'localhost'),
+    port:    ENV.fetch('MAILER_PORT', 1025),
+    openssl_verify_mode: OpenSSL::SSL::VERIFY_NONE
   }
 
   # Mailtrap config
