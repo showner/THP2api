@@ -38,16 +38,16 @@ FactoryBot.define do
     end
 
     trait :with_error_ending_in_past do
-      ending_date 1.day.ago
+      ending_date { 1.day.ago }
     end
 
     trait :with_error_starting_in_past do
-      starting_date 1.day.ago
+      starting_date { 1.day.ago }
     end
 
     trait :with_error_ending_before_starting do
-      ending_date   1.day.from_now
-      starting_date 2.days.from_now
+      ending_date   { 1.day.from_now }
+      starting_date { 2.days.from_now }
     end
   end
 end

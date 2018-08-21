@@ -2,30 +2,32 @@
 #
 # Table name: users
 #
-#  id                     :uuid             not null, primary key
-#  allow_password_change  :boolean          default(FALSE)
-#  confirmation_sent_at   :datetime
-#  confirmation_token     :string
-#  confirmed_at           :datetime
-#  created_courses_count  :integer          default(0)
-#  created_lessons_count  :integer          default(0)
-#  current_sign_in_at     :datetime
-#  current_sign_in_ip     :string
-#  email                  :string
-#  encrypted_password     :string           default(""), not null
-#  last_sign_in_at        :datetime
-#  last_sign_in_ip        :string
-#  provider               :string           default("email"), not null
-#  remember_created_at    :datetime
-#  reset_password_sent_at :datetime
-#  reset_password_token   :string
-#  sign_in_count          :integer          default(0), not null
-#  tokens                 :json
-#  uid                    :string           default(""), not null
-#  unconfirmed_email      :string
-#  username               :string
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
+#  id                          :uuid             not null, primary key
+#  allow_password_change       :boolean          default(FALSE)
+#  confirmation_sent_at        :datetime
+#  confirmation_token          :string
+#  confirmed_at                :datetime
+#  created_courses_count       :integer          default(0)
+#  created_lessons_count       :integer          default(0)
+#  created_organizations_count :integer          default(0)
+#  current_sign_in_at          :datetime
+#  current_sign_in_ip          :string
+#  email                       :string
+#  encrypted_password          :string           default(""), not null
+#  last_sign_in_at             :datetime
+#  last_sign_in_ip             :string
+#  organizations_count         :integer          default(0)
+#  provider                    :string           default("email"), not null
+#  remember_created_at         :datetime
+#  reset_password_sent_at      :datetime
+#  reset_password_token        :string
+#  sign_in_count               :integer          default(0), not null
+#  tokens                      :json
+#  uid                         :string           default(""), not null
+#  unconfirmed_email           :string
+#  username                    :string
+#  created_at                  :datetime         not null
+#  updated_at                  :datetime         not null
 #
 # Indexes
 #
@@ -73,4 +75,12 @@ class User < ApplicationRecord
 
   has_many :created_courses, class_name: :Course, foreign_key: :creator_id,
                              dependent: :destroy, inverse_of: :creator
+
+  has_many :created_organizations, class_name: :Organization,
+                                   foreign_key: :creator_id,
+                                   dependent: :destroy, inverse_of: :creator
+
+  has_many :organization_memberships, foreign_key: :member_id,
+                                      dependent: :destroy, inverse_of: :member
+  has_many :organizations, through: :organization_memberships
 end
