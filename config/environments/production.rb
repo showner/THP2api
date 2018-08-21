@@ -88,7 +88,7 @@ Rails.application.configure do
     config.current_environment = ENV.fetch('SENTRY_ENV', 'production')
   end
 
-  DeviseTokenAuth.configure do |config|
+  DeviseTokenAuth.setup do |config|
     config.default_confirm_success_url = ENV.fetch('CONFIRM_SUCCESS_URL')
   end
 end
