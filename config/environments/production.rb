@@ -91,4 +91,14 @@ Rails.application.configure do
   DeviseTokenAuth.setup do |config|
     config.default_confirm_success_url = ENV.fetch('CONFIRM_SUCCESS_URL')
   end
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    user_name: ENV.fetch('MAILTRAP_USERNAME'),
+    password: ENV.fetch('MAILTRAP_PASSWORD'),
+    address: 'smtp.mailtrap.io',
+    domain: 'smtp.mailtrap.io',
+    port: '2525',
+    authentication: :cram_md5
+  }
 end
