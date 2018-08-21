@@ -51,5 +51,6 @@ Rails.application.routes.draw do
       resources :lessons, except: %i[new edit]
       resources :sessions, except: %i[new edit], controller: :course_sessions
     end
+    resources :organizations, except: %i[new edit]
   end
 end

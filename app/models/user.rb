@@ -75,4 +75,12 @@ class User < ApplicationRecord
 
   has_many :created_courses, class_name: :Course, foreign_key: :creator_id,
                              dependent: :destroy, inverse_of: :creator
+
+  has_many :created_organizations, class_name: :Organization,
+                                   foreign_key: :creator_id,
+                                   dependent: :destroy, inverse_of: :creator
+
+  has_many :organization_memberships, foreign_key: :member_id,
+                                      dependent: :destroy, inverse_of: :member
+  has_many :organizations, through: :organization_memberships
 end
