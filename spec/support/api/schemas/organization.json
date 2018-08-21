@@ -1,0 +1,20 @@
+{
+  "type"      : "object",
+  "required"  : ["id", "name", "website", "created_at", "updated_at"],
+  "properties": {
+    "id"            : { "$ref" : "#/definitions/uuid" },
+    "name"          : { "type" : "string"},
+    "website"       : { "type" : ["string", "null"] },
+    "created_at"    : { "type" : "string", "format": "date-time" },
+    "updated_at"    : { "type" : "string", "format": "date-time" },
+    "creator_id"    : { "$ref" : "#/definitions/uuid" },
+    "members_count" : { "type" : "integer"},
+    "members"       : { "type" : "array"}
+  },
+  "definitions": {
+    "uuid": {
+      "type": "string",
+      "pattern": "^[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}$"
+    }
+  }
+}

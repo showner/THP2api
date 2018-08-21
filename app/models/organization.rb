@@ -21,7 +21,7 @@
 
 class Organization < ApplicationRecord
   validates :name, presence: true, length: { maximum: 50 }, uniqueness: { case_sensitive: false }
-  validates :website, length: { maximum: 2000 }, uniqueness: { case_sensitive: false }
+  validates :website, length: { maximum: 2000 }, uniqueness: { case_sensitive: false, allow_nil: true }
 
   belongs_to :creator, class_name: :User, inverse_of: :created_organizations,
                        counter_cache: :created_organizations_count
