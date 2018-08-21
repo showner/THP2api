@@ -102,4 +102,6 @@ Rails.application.configure do
     port: '2525',
     authentication: :cram_md5
   }
+  # To be disabled in real prod
+  config.public_file_server.enabled = true
 end
