@@ -87,4 +87,8 @@ Rails.application.configure do
   Raven.configure do |config|
     config.current_environment = ENV.fetch('SENTRY_ENV', 'production')
   end
+
+  DeviseTokenAuth.configure do |config|
+    config.default_confirm_success_url = ENV.fetch('CONFIRM_SUCCESS_URL')
+  end
 end
