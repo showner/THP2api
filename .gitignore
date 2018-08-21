@@ -25,3 +25,4 @@ yarn-error.log
 .env*
 spec/examples.txt
 coverage
+config/skylight.yml
