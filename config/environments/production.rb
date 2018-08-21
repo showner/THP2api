@@ -92,6 +92,7 @@ Rails.application.configure do
     config.default_confirm_success_url = ENV.fetch('CONFIRM_SUCCESS_URL')
   end
 
+  config.action_mailer.default_url_options = { host: ENV.fetch('HOST') }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     user_name: ENV.fetch('MAILTRAP_USERNAME'),
@@ -101,6 +102,4 @@ Rails.application.configure do
     port: '2525',
     authentication: :cram_md5
   }
-
-  config.action_mailer.default_url_options = { host: ENV.fetch('HOST') }
 end
