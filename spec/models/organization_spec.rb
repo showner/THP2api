@@ -36,7 +36,7 @@ RSpec.describe Organization, type: :model do
     end
 
     context ':website' do
-      it { is_expected.to validate_uniqueness_of(:website).case_insensitive }
+      it { is_expected.to validate_uniqueness_of(:website).case_insensitive.allow_nil }
       it { is_expected.to validate_length_of(:website).is_at_most(2000) }
     end
   end
