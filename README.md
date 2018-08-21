@@ -1,3 +1,8 @@
+# Priority Steps
+
+Add indexes to course, organization, etc...
+
+
 # README
 
 In prod, you should change the mail_sender in config/initializer/devise.rb
