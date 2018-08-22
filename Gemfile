@@ -72,9 +72,10 @@ group :test do
 end
 
 group :production do
+  gem 'rack-timeout'
   # From heroku dev-center for sentry addon
   gem 'sentry-raven'
-  gem "skylight"
+  gem 'skylight'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
