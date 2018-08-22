@@ -1,8 +1,6 @@
 # Priority Steps
 
 Add indexes to course, organization, etc...
-organization_shared look marvs
-
 
 # README
 
