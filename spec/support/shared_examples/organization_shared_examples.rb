@@ -13,9 +13,9 @@ RSpec.shared_examples 'organization_examples' do |parameter|
   it 'returns organization schema' do
     is_expected.to match_response_schema('organization')
   end
-  xit 'returns valid organization object' do
-    pending
+  it 'returns valid organization object' do
     subject
+    Organization.last.destroy
     organization = Organization.new(response_from_json)
     expect(organization).to be_valid
   end

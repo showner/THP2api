@@ -13,6 +13,7 @@
 # Indexes
 #
 #  index_organizations_on_creator_id  (creator_id)
+#  index_organizations_on_name        (name) UNIQUE
 #
 # Foreign Keys
 #
@@ -79,6 +80,10 @@ RSpec.describe Organization, type: :model do
   describe '#DbIndex' do
     context ':index_organizations_on_creator_id' do
       it { is_expected.to have_db_index(:creator_id) }
+    end
+
+    context ':index_organizations_on_name' do
+      it { is_expected.to have_db_index(:name).unique(true) }
     end
   end
 

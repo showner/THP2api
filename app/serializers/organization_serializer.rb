@@ -13,6 +13,7 @@
 # Indexes
 #
 #  index_organizations_on_creator_id  (creator_id)
+#  index_organizations_on_name        (name) UNIQUE
 #
 # Foreign Keys
 #
