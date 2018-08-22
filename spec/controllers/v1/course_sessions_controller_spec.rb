@@ -3,62 +3,77 @@ require 'rails_helper'
 RSpec.describe V1::CourseSessionsController, type: :controller do
   # With authenticated user
   context 'with auth user' do
-    before(:each) {
+    before {
       fake_user
     }
+
     # creating course for routing
     let(:course) { create(:course) }
     let(:course_params) { { course_id: course.id } }
     let(:params) { course_params }
+
     describe "GET #index" do
       course_session_count = 5
+      subject(:course_session_request) { get :index, params: params }
+
       let!(:course_sessions) { create_list(:course_session, course_session_count, course: course) }
-      subject { get :index, params: params }
+
       context 'with valid request' do
         it { is_expected.to have_http_status(:ok) }
-        it "returns #{course_session_count} CourseSession" do
-          subject
+
+        it "returns #{course_session_count} CourseSession count" do
+          course_session_request
           expect(response_from_json.size).to eq(course_session_count)
+        end
+
+        it "returns same ids CourseSession" do
+          course_session_request
           expect(response_from_json.map{ |e| e[:id] }).to eq(course_sessions.map(&:id))
         end
       end
 
       context 'with extra params' do
         subject { get :index, params: params.merge(another_params: Faker::Lorem.word) }
+
         it { is_expected.to have_http_status(:forbidden) }
       end
     end
 
     describe 'GET #show' do
+      subject(:course_session_request) { get :show, params: params }
+
       let(:course_session) { create(:course_session, course: course) }
       let(:course_session_params) { { id: course_session.id } }
       let(:params) { course_params.merge(course_session_params) }
-      subject { get :show, params: params }
 
-      context ':id exists' do
+      context 'with :id exists' do
         include_examples 'course_session_examples', :ok
       end
 
-      context ":id is not valid " do
+      context 'with :id is not valid ' do
         let(:params) { course_params.merge(id: Faker::Lorem.word) }
+
         it { is_expected.to have_http_status(:not_found) }
       end
 
-      context "has extras params" do
+      context 'when has extras params' do
         let(:params) { course_params.merge(id: course_session.id, another_params: Faker::Lorem.word) }
+
         it { is_expected.to have_http_status(:forbidden) }
       end
 
-      context ":id is not valid and has extras params" do
+      context 'with :id is not valid and has extras params' do
         let(:params) { course_params.merge(id: Faker::Lorem.word, another_params: Faker::Lorem.word) }
+
         it { is_expected.to have_http_status(:forbidden) }
       end
     end
 
     describe 'POST #create' do
+      subject(:course_session_request) { post :create, params: params }
+
       let(:course_session) { attributes_for(:course_session) }
       let(:params) { { course_session: course_session, course_id: course.id } }
-      subject { post :create, params: params }
 
       context 'with valid params' do
         include_examples 'course_session_examples', :created
@@ -66,11 +81,13 @@ RSpec.describe V1::CourseSessionsController, type: :controller do
 
       context 'with complete valid params' do
         let(:course_session) { attributes_for(:course_session, :complete) }
+
         include_examples 'course_session_examples', :created
       end
 
       context 'with extra params next to course_session' do
         let(:params) { course_params.merge(course_session: course_session, extra: 'this extra params') }
+
         it { is_expected.to have_http_status(:forbidden) }
       end
 
@@ -78,11 +95,13 @@ RSpec.describe V1::CourseSessionsController, type: :controller do
         let(:params) do
           { course_id: course.id, course_session: course_session.merge(extra: 'this extra params') }
         end
+
         it { is_expected.to have_http_status(:forbidden) }
       end
 
       context "without params" do
         let(:params) { { course_id: course.id } }
+
         it { is_expected.to have_http_status(:forbidden) }
       end
 
@@ -146,10 +165,11 @@ RSpec.describe V1::CourseSessionsController, type: :controller do
     end
 
     describe 'patch #update' do
+      subject(:course_session_request) { patch :update, params: params }
+
       let(:course_session) { create(:course_session) }
       let(:course_session_update) { attributes_for(:course_session) }
       let(:params) { course_params.merge(id: course_session.id, course_session: course_session_update) }
-      subject { patch :update, params: params }
 
       context 'with valid params' do
         include_examples 'course_session_examples', :ok
@@ -157,20 +177,24 @@ RSpec.describe V1::CourseSessionsController, type: :controller do
 
       xcontext 'without params' do
         let(:params) { {} }
+
         it { is_expected.to have_http_status(:forbidden) }
       end
 
       xcontext "without id params" do
         let(:params) { { course_session: course_session_update } }
+
         it { is_expected.to have_http_status(:forbidden) }
       end
 
       xcontext "with invalid id params" do
+        pending
         let(:params) { { id: Faker::Number.number(10), course_session: course_session_update } }
       end
 
       context 'with extra params next to course_session' do
         let(:params) { course_params.merge(id: course_session.id, course_session: course_session_update, extra: 'this extra params') }
+
         it { is_expected.to have_http_status(:forbidden) }
       end
 
@@ -178,6 +202,7 @@ RSpec.describe V1::CourseSessionsController, type: :controller do
         let(:params) do
           { course_id: course.id, id: course_session.id, course_session: course_session_update.merge(extra: 'this extra params') }
         end
+
         it { is_expected.to have_http_status(:forbidden) }
       end
 
@@ -190,11 +215,13 @@ RSpec.describe V1::CourseSessionsController, type: :controller do
 
       context "without course_session:starting_date" do
         let(:course_session_update) { attributes_for(:course_session, :complete).except!(:starting_date) }
+
         include_examples 'course_session_examples', :ok
       end
 
       context "without course_session:student_max" do
         let(:course_session_update) { attributes_for(:course_session, :complete).except!(:student_max) }
+
         include_examples 'course_session_examples', :ok
       end
 
@@ -204,6 +231,7 @@ RSpec.describe V1::CourseSessionsController, type: :controller do
           is_expected.to have_http_status(:forbidden)
         }
       end
+
       context "with invalid course_session:starting_date:in_past" do
         it {
           course_session_update[:starting_date] = 1.day.ago
@@ -235,33 +263,39 @@ RSpec.describe V1::CourseSessionsController, type: :controller do
     end
 
     describe "DELETE #destroy" do
+      subject(:course_session_request) { delete :destroy, params: params }
+
       let(:course_session) { create(:course_session) }
       let(:params) { course_params.merge(id: course_session.id) }
-      subject { delete :destroy, params: params }
+
       context "with valid id" do
         it { is_expected.to have_http_status(:no_content) }
         it 'delete in db' do
           course_session
-          expect{ subject }.to change(CourseSession, :count).by(-1)
+          expect{ course_session_request }.to change(CourseSession, :count).by(-1)
         end
       end
 
       xcontext "with invalid id" do
         let(:params) { { id: Faker::Number.number(10) } }
         # Controller To be changed to forbidden
+
         it { is_expected.to have_http_status(:forbidden) }
       end
 
       context "with extra params" do
         let(:params) { course_params.merge(id: course_session.id, extra: 'extra params') }
+
         it { is_expected.to have_http_status(:forbidden) }
       end
 
       xcontext "without params" do
+        pending
         let(:params) { {} }
       end
 
       xcontext "only with extra params" do
+        pending
         let(:params) { { extra: 'extra params' } }
       end
     end
@@ -269,6 +303,7 @@ RSpec.describe V1::CourseSessionsController, type: :controller do
   # Is logged and part of the organization
   #
   # Without authenticated user
+
   context 'without auth user' do
     # creating course for routing
     let(:course) { create(:course) }
@@ -276,28 +311,32 @@ RSpec.describe V1::CourseSessionsController, type: :controller do
     let(:params) { course_params }
 
     describe "GET #index" do
-      course_session_count = 5
-      let!(:course_sessions) { create_list(:course_session, course_session_count) }
       subject { get :index, params: course_params }
+
+      course_session_count = 5
+      let(:course_sessions) { create_list(:course_session, course_session_count) }
+
       context 'with valid request' do
         it { is_expected.to have_http_status(:unauthorized) }
       end
     end
 
     describe 'GET #show' do
-      let(:course_session) { create(:course_session) }
-      let(:params) { course_params.merge(id: course_session.id) }
       subject { get :show, params: params }
 
-      context ":id exists " do
+      let(:course_session) { create(:course_session) }
+      let(:params) { course_params.merge(id: course_session.id) }
+
+      context 'with :id exists ' do
         it { is_expected.to have_http_status(:unauthorized) }
       end
     end
 
     describe 'POST #create' do
+      subject { post :create, params: params }
+
       let(:course_session) { attributes_for(:course_session) }
       let(:params) { course_params.merge(course_session: course_session) }
-      subject { post :create, params: params }
 
       context 'with valid params' do
         it { is_expected.to have_http_status(:unauthorized) }
@@ -305,10 +344,11 @@ RSpec.describe V1::CourseSessionsController, type: :controller do
     end
 
     describe 'patch #update' do
+      subject { patch :update, params: params }
+
       let(:course_session) { create(:course_session) }
       let(:course_session_update) { attributes_for(:course_session) }
       let(:params) { course_params.merge(id: course_session.id, course_session: course_session_update) }
-      subject { patch :update, params: params }
 
       context 'with valid params' do
         it { is_expected.to have_http_status(:unauthorized) }
@@ -316,9 +356,11 @@ RSpec.describe V1::CourseSessionsController, type: :controller do
     end
 
     describe "DELETE #destroy" do
+      subject { delete :destroy, params: params }
+
       let!(:course_session) { create(:course_session) }
       let(:params) { course_params.merge(id: course_session.id) }
-      subject { delete :destroy, params: params }
+
       context "with valid id" do
         it { is_expected.to have_http_status(:unauthorized) }
       end

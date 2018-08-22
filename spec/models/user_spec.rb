@@ -41,145 +41,176 @@
 
 RSpec.describe User, type: :model do
   describe '#validator' do
-    context 'factory is valid' do
-      subject { create(:user) }
+    context 'when factory is valid' do
+      subject(:user) { create(:user) }
+
       it { is_expected.to be_valid }
-      it { expect{ subject }.to change{ User.count }.by(1) }
+      it { expect{ user }.to change(User, :count).by(1) }
     end
 
-    context ':email' do
-      subject { create(:user) }
+    context 'with :email' do
+      subject(:user) { create(:user) }
+
       it { is_expected.to validate_presence_of(:email) }
       it { is_expected.to validate_uniqueness_of(:email).scoped_to(:provider).case_insensitive }
     end
 
-    context ':email_confirmation' do
+    context 'with :email_confirmation' do
       it { is_expected.to validate_confirmation_of(:email) }
     end
 
-    context ':password' do
+    context 'with :password' do
       it { is_expected.to validate_presence_of(:password) }
       it { is_expected.to validate_length_of(:password).is_at_least(8).is_at_most(128) }
     end
 
-    context ':password_confirmation' do
+    context 'with :password_confirmation' do
       it { is_expected.to validate_confirmation_of(:password) }
     end
 
-    context ':username' do
+    context 'with :username' do
       subject { create(:user) }
+
       it { is_expected.to validate_uniqueness_of(:username).case_insensitive }
     end
   end
 
   describe '#scope' do
-    context ':default_scope' do
+    context 'with :default_scope' do
       it { expect(User.all.default_scoped.to_sql).to eq User.all.to_sql }
     end
   end
 
   describe '#DbColumns' do
-    context ':id' do
+    context 'with :id' do
       it { is_expected.to have_db_column(:id).of_type(:uuid) }
       it { is_expected.to have_db_column(:id).with_options(primary_key: true, null: false) }
     end
-    context ':allow_password_change' do
+
+    context 'with :allow_password_change' do
       it { is_expected.to have_db_column(:allow_password_change).of_type(:boolean) }
       it { is_expected.to have_db_column(:allow_password_change).with_options(default: false) }
     end
-    context ':confirmation_sent_at' do
+
+    context 'with :confirmation_sent_at' do
       it { is_expected.to have_db_column(:confirmation_sent_at).of_type(:datetime) }
     end
-    context ':confirmation_token' do
+
+    context 'with :confirmation_token' do
       it { is_expected.to have_db_column(:confirmation_token).of_type(:string) }
     end
-    context ':confirmed_at' do
+
+    context 'with :confirmed_at' do
       it { is_expected.to have_db_column(:confirmed_at).of_type(:datetime) }
     end
-    context ':created_courses_count' do
+
+    context 'with :created_courses_count' do
       it { is_expected.to have_db_column(:created_courses_count).of_type(:integer) }
       it { is_expected.to have_db_column(:created_courses_count).with_options(default: 0) }
     end
-    context ':created_lessons_count' do
+
+    context 'with :created_lessons_count' do
       it { is_expected.to have_db_column(:created_lessons_count).of_type(:integer) }
       it { is_expected.to have_db_column(:created_lessons_count).with_options(default: 0) }
     end
-    context ':current_sign_in_at' do
+
+    context 'with :current_sign_in_at' do
       it { is_expected.to have_db_column(:current_sign_in_at).of_type(:datetime) }
     end
-    context ':current_sign_in_ip' do
+
+    context 'with :current_sign_in_ip' do
       it { is_expected.to have_db_column(:current_sign_in_ip).of_type(:string) }
     end
-    context ':email' do
+
+    context 'with :email' do
       it { is_expected.to have_db_column(:email).of_type(:string) }
     end
-    context ':encrypted_password' do
+
+    context 'with :encrypted_password' do
       it { is_expected.to have_db_column(:encrypted_password).of_type(:string) }
       it { is_expected.to have_db_column(:encrypted_password).with_options(default: '', null: false) }
     end
-    context ':last_sign_in_at' do
+
+    context 'with :last_sign_in_at' do
       it { is_expected.to have_db_column(:last_sign_in_at).of_type(:datetime) }
     end
-    context ':last_sign_in_ip' do
+
+    context 'with :last_sign_in_ip' do
       it { is_expected.to have_db_column(:last_sign_in_ip).of_type(:string) }
     end
-    context ':provider' do
+
+    context 'with :provider' do
       it { is_expected.to have_db_column(:provider).of_type(:string) }
       it { is_expected.to have_db_column(:provider).with_options(default: 'email', null: false) }
     end
-    context ':remember_created_at' do
+
+    context 'with :remember_created_at' do
       it { is_expected.to have_db_column(:remember_created_at).of_type(:datetime) }
     end
-    context ':reset_password_sent_at' do
+
+    context 'with :reset_password_sent_at' do
       it { is_expected.to have_db_column(:reset_password_sent_at).of_type(:datetime) }
     end
-    context ':reset_password_token' do
+
+    context 'with :reset_password_token' do
       it { is_expected.to have_db_column(:reset_password_token).of_type(:string) }
     end
-    context ':sign_in_count' do
+
+    context 'with :sign_in_count' do
       it { is_expected.to have_db_column(:sign_in_count).of_type(:integer) }
       it { is_expected.to have_db_column(:sign_in_count).with_options(default: 0, null: false) }
     end
-    context ':tokens' do
+
+    context 'with :tokens' do
       it { is_expected.to have_db_column(:tokens).of_type(:json) }
     end
-    context ':uid' do
+
+    context 'with :uid' do
       it { is_expected.to have_db_column(:uid).of_type(:string) }
       it { is_expected.to have_db_column(:uid).with_options(default: '', null: false) }
     end
-    context ':unconfirmed_email' do
+
+    context 'with :unconfirmed_email' do
       it { is_expected.to have_db_column(:unconfirmed_email).of_type(:string) }
     end
-    context ':username' do
+
+    context 'with :username' do
       it { is_expected.to have_db_column(:username).of_type(:string) }
     end
-    context ':created_at' do
+
+    context 'with :created_at' do
       it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
       it { is_expected.to have_db_column(:created_at).with_options(null: false) }
     end
-    context ':updated_at' do
+
+    context 'with :updated_at' do
       it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
       it { is_expected.to have_db_column(:updated_at).with_options(null: false) }
     end
   end
 
   describe '#DbIndex' do
-    context ':index_users_on_confirmation_token' do
+    context 'with :index_users_on_confirmation_token' do
       it { is_expected.to have_db_index(:confirmation_token).unique(true) }
     end
-    context ':index_users_on_created_at' do
+
+    context 'with :index_users_on_created_at' do
       it { is_expected.to have_db_index(:created_at) }
     end
-    context ':index_users_on_email' do
+
+    context 'with :index_users_on_email' do
       it { is_expected.to have_db_index(:email).unique(true) }
     end
-    context ':index_users_on_reset_password_token' do
+
+    context 'with :index_users_on_reset_password_token' do
       it { is_expected.to have_db_index(:reset_password_token).unique(true) }
     end
-    context ':index_users_on_uid_and_provider' do
+
+    context 'with :index_users_on_uid_and_provider' do
       it { is_expected.to have_db_index(%i[uid provider]).unique(true) }
     end
-    context ':index_users_on_username' do
+
+    context 'with :index_users_on_username' do
       it { is_expected.to have_db_index(:username).unique(true) }
     end
   end
@@ -188,25 +219,29 @@ RSpec.describe User, type: :model do
     let(:user) { create(:user) }
     let(:course) { create(:course, creator: user) }
     let(:lesson) { create(:lesson, course: course, creator: user) }
-    context 'user has_many courses' do
+
+    context 'when user has_many courses' do
       it { is_expected.to have_many(:created_courses).class_name(:Course) }
       it { is_expected.to have_many(:created_courses).with_foreign_key(:creator_id) }
       it { is_expected.to have_many(:created_courses).dependent(:destroy) }
       it { is_expected.to have_many(:created_courses).inverse_of(:creator) }
     end
-    context 'user has_many lessons' do
+
+    context 'when user has_many lessons' do
       it { is_expected.to have_many(:created_lessons).class_name(:Lesson) }
       it { is_expected.to have_many(:created_lessons).with_foreign_key(:creator_id) }
       it { is_expected.to have_many(:created_lessons).dependent(:destroy) }
       it { is_expected.to have_many(:created_lessons).inverse_of(:creator) }
     end
-    context 'follows user link through courses' do
+
+    context 'when follows user link through courses' do
       it 'user should eq user' do
         course
         expect(user.created_courses.last.creator).to eq(user)
       end
     end
-    context 'follows user link through lessons' do
+
+    context 'when follows user link through lessons' do
       it 'user should eq user' do
         lesson
         expect(user.created_lessons.last.creator).to eq(user)

@@ -3,59 +3,67 @@ require 'rails_helper'
 RSpec.describe V1::LessonsController, type: :controller do
   # With authenticated user
   context 'with auth user' do
-    before(:each) {
-      fake_user
-    }
-    # creating course for routing
+    before { fake_user }
+
     let(:course) { create(:course) }
     let(:course_params) { { course_id: course.id } }
     let(:params) { course_params }
 
     describe "GET #index" do
+      subject(:lesson_request) { get :index, params: params }
+
       lesson_count = 5
       let!(:lessons) { create_list(:lesson, lesson_count, course: course) }
-      subject { get :index, params: params }
+
       context 'with valid request' do
         it { is_expected.to have_http_status(:ok) }
         it "returns #{lesson_count} Lessons" do
-          subject
+          lesson_request
           expect(response_from_json.size).to eq(lesson_count)
+        end
+        it "returns #{lesson_count} Lessons" do
+          lesson_request
           expect(response_from_json.map{ |e| e[:id] }).to eq(lessons.map(&:id))
         end
       end
 
       context 'with extra params' do
         subject { get :index, params: params.merge(another_params: Faker::Lorem.word) }
+
         it { is_expected.to have_http_status(:forbidden) }
       end
     end
 
     describe 'GET #show' do
+      subject(:lesson_request) { get :show, params: params }
+
       let(:lesson) { create(:lesson, course: course) }
       let(:lesson_params) { { id: lesson.id } }
       let(:params) { course_params.merge(lesson_params) }
-      subject { get :show, params: params }
 
-      context ':id exists' do
+      context 'with :id exists' do
         include_examples 'lesson_examples', :ok
       end
 
-      context ":id is not valid " do
+      context 'with :id is not valid' do
         let(:params) { course_params.merge(id: Faker::Lorem.word) }
+
         it { is_expected.to have_http_status(:not_found) }
       end
 
-      context "has extras params" do
+      context 'when has extras params' do
         let(:params) { course_params.merge(id: lesson.id, another_params: Faker::Lorem.word) }
+
         it { is_expected.to have_http_status(:forbidden) }
       end
     end
 
     describe 'POST #create' do
+      subject(:lesson_request) { post :create, params: params }
+
       let(:course) { create(:course, creator: test_user) }
       let(:lesson) { attributes_for(:lesson) }
       let(:params) { { lesson: lesson, course_id: course.id } }
-      subject { post :create, params: params }
 
       context 'with valid params' do
         include_examples 'lesson_examples', :created
@@ -63,6 +71,7 @@ RSpec.describe V1::LessonsController, type: :controller do
 
       context 'with extra params next to lesson' do
         let(:params) { course_params.merge(lesson: lesson, extra: 'this extra params') }
+
         it { is_expected.to have_http_status(:forbidden) }
       end
 
@@ -70,6 +79,7 @@ RSpec.describe V1::LessonsController, type: :controller do
         let(:params) do
           { course_id: course.id, lesson: lesson.merge(extra: 'this extra params') }
         end
+
         it { is_expected.to have_http_status(:forbidden) }
       end
 
@@ -100,6 +110,7 @@ RSpec.describe V1::LessonsController, type: :controller do
           is_expected.to have_http_status(:forbidden)
         }
       end
+
       context "with invalid title:too_long" do
         it {
           lesson[:title] = Faker::Lorem.characters(55)
@@ -113,6 +124,7 @@ RSpec.describe V1::LessonsController, type: :controller do
           is_expected.to have_http_status(:forbidden)
         }
       end
+
       context "with invalid description:too_long" do
         it {
           lesson[:description] = Faker::Lorem.characters(350)
@@ -130,10 +142,11 @@ RSpec.describe V1::LessonsController, type: :controller do
     end
 
     describe 'patch #update' do
+      subject(:lesson_request) { patch :update, params: params }
+
       let(:lesson) { create(:lesson, creator: test_user) }
       let(:lesson_update) { attributes_for(:lesson) }
       let(:params) { course_params.merge(id: lesson.id, lesson: lesson_update) }
-      subject { patch :update, params: params }
 
       context 'with valid params' do
         include_examples 'lesson_examples', :ok
@@ -141,20 +154,24 @@ RSpec.describe V1::LessonsController, type: :controller do
 
       xcontext 'without params' do
         let(:params) { {} }
+
         it { is_expected.to have_http_status(:forbidden) }
       end
 
       xcontext "without id params" do
         let(:params) { { lesson: lesson_update } }
+
         it { is_expected.to have_http_status(:forbidden) }
       end
 
       xcontext "with invalid id params" do
+        pending
         let(:params) { { id: Faker::Number.number(10), lesson: lesson_update } }
       end
 
       context 'with extra params next to lesson' do
         let(:params) { course_params.merge(id: lesson.id, lesson: lesson_update, extra: 'this extra params') }
+
         it { is_expected.to have_http_status(:forbidden) }
       end
 
@@ -162,6 +179,7 @@ RSpec.describe V1::LessonsController, type: :controller do
         let(:params) do
           { course_id: course.id, id: lesson.id, lesson: lesson_update.merge(extra: 'this extra params') }
         end
+
         it { is_expected.to have_http_status(:forbidden) }
       end
 
@@ -174,11 +192,13 @@ RSpec.describe V1::LessonsController, type: :controller do
 
       context "without lesson:title" do
         let(:lesson_update) { attributes_for(:lesson).except!(:title) }
+
         include_examples 'lesson_examples', :ok
       end
 
       context "without lesson:description" do
         let(:lesson_update) { attributes_for(:lesson).except!(:description) }
+
         include_examples 'lesson_examples', :ok
       end
 
@@ -188,6 +208,7 @@ RSpec.describe V1::LessonsController, type: :controller do
           is_expected.to have_http_status(:forbidden)
         }
       end
+
       context "with invalid lesson:title:too_long" do
         it {
           lesson_update[:title] = Faker::Lorem.characters(55)
@@ -201,6 +222,7 @@ RSpec.describe V1::LessonsController, type: :controller do
           is_expected.to have_http_status(:forbidden)
         }
       end
+
       context "with invalid lesson:description:too_long" do
         it {
           lesson_update[:description] = Faker::Lorem.characters(350)
@@ -218,77 +240,92 @@ RSpec.describe V1::LessonsController, type: :controller do
     end
 
     describe "DELETE #destroy" do
+      subject(:lesson_request) { delete :destroy, params: params }
+
       let(:lesson) { create(:lesson, creator: test_user) }
       let(:params) { course_params.merge(id: lesson.id) }
-      subject { delete :destroy, params: params }
+
       context "with valid id" do
         it { is_expected.to have_http_status(:no_content) }
         it 'delete in db' do
           lesson
-          expect{ subject }.to change(Lesson, :count).by(-1)
+          expect{ lesson_request }.to change(Lesson, :count).by(-1)
         end
       end
 
       xcontext "with invalid id" do
         let(:params) { { id: Faker::Number.number(10) } }
+
         # Controller To be changed to forbidden
+
         it { is_expected.to have_http_status(:forbidden) }
       end
 
       context "with extra params" do
         let(:params) { course_params.merge(id: lesson.id, extra: 'extra params') }
+
         it { is_expected.to have_http_status(:forbidden) }
       end
 
       xcontext "without params" do
+        pending
         let(:params) { {} }
       end
 
       xcontext "only with extra params" do
+        pending
         let(:params) { { extra: 'extra params' } }
       end
     end
   end
+
   # Creator != logged user
+
   context 'with other auth user' do
-    before(:each) {
-      fake_user
-    }
-    # creating course for routing
+    before { fake_user }
+
     let(:course) { create(:course) }
     let(:course_params) { { course_id: course.id } }
     let(:params) { course_params }
 
     describe 'patch #update' do
+      subject { patch :update, params: params }
+
       let(:lesson) { create(:lesson) }
       let(:lesson_update) { attributes_for(:lesson) }
       let(:params) { course_params.merge(id: lesson.id, lesson: lesson_update) }
-      subject { patch :update, params: params }
 
       context 'with valid params' do
         it { is_expected.to have_http_status(:unauthorized) }
       end
+
       context 'with extra params next to lesson' do
         let(:params) { course_params.merge(id: lesson.id, lesson: lesson_update, extra: 'this extra params') }
+
         it { is_expected.to have_http_status(:forbidden) }
       end
     end
 
     describe "DELETE #destroy" do
+      subject { delete :destroy, params: params }
+
       let!(:lesson) { create(:lesson) }
       let(:params) { course_params.merge(id: lesson.id) }
-      subject { delete :destroy, params: params }
+
       context "with valid id" do
         it { is_expected.to have_http_status(:unauthorized) }
       end
 
       context "with extra params" do
         let(:params) { course_params.merge(id: lesson.id, extra: 'extra params') }
+
         it { is_expected.to have_http_status(:forbidden) }
       end
     end
   end
+
   # Without authenticated user
+
   context 'without auth user' do
     # creating course for routing
     let(:course) { create(:course) }
@@ -296,28 +333,32 @@ RSpec.describe V1::LessonsController, type: :controller do
     let(:params) { course_params }
 
     describe "GET #index" do
-      lesson_count = 5
-      let!(:lessons) { create_list(:lesson, lesson_count) }
       subject { get :index, params: course_params }
+
+      lesson_count = 5
+      let(:lessons) { create_list(:lesson, lesson_count) }
+
       context 'with valid request' do
         it { is_expected.to have_http_status(:unauthorized) }
       end
     end
 
     describe 'GET #show' do
-      let(:lesson) { create(:lesson) }
-      let(:params) { course_params.merge(id: lesson.id) }
       subject { get :show, params: params }
 
-      context ":id exists " do
+      let(:lesson) { create(:lesson) }
+      let(:params) { course_params.merge(id: lesson.id) }
+
+      context 'with :id exists' do
         it { is_expected.to have_http_status(:unauthorized) }
       end
     end
 
     describe 'POST #create' do
+      subject { post :create, params: params }
+
       let(:lesson) { attributes_for(:lesson) }
       let(:params) { course_params.merge(lesson: lesson) }
-      subject { post :create, params: params }
 
       context 'with valid params' do
         it { is_expected.to have_http_status(:unauthorized) }
@@ -325,10 +366,11 @@ RSpec.describe V1::LessonsController, type: :controller do
     end
 
     describe 'patch #update' do
+      subject { patch :update, params: params }
+
       let(:lesson) { create(:lesson) }
       let(:lesson_update) { attributes_for(:lesson) }
       let(:params) { course_params.merge(id: lesson.id, lesson: lesson_update) }
-      subject { patch :update, params: params }
 
       context 'with valid params' do
         it { is_expected.to have_http_status(:unauthorized) }
@@ -336,9 +378,11 @@ RSpec.describe V1::LessonsController, type: :controller do
     end
 
     describe "DELETE #destroy" do
+      subject { delete :destroy, params: params }
+
       let!(:lesson) { create(:lesson) }
       let(:params) { course_params.merge(id: lesson.id) }
-      subject { delete :destroy, params: params }
+
       context "with valid id" do
         it { is_expected.to have_http_status(:unauthorized) }
       end
