@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/Showner/THP2api/tree/master.svg?style=svg)](https://circleci.com/gh/Showner/THP2api/tree/master)
+
 # Priority Steps
 
 Add indexes to course, organization, etc...
