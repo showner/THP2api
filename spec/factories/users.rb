@@ -41,8 +41,8 @@
 
 FactoryBot.define do
   factory :user do
-    email    { Faker::Internet.safe_email }
-    username { Faker::Internet.username }
+    email    { Faker::Internet.unique.safe_email }
+    username { Faker::Internet.unique.username }
     password { Faker::Internet.password(8, 20) }
     password_confirmation { password }
 
