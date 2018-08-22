@@ -37,6 +37,10 @@ gem 'devise_token_auth'
 gem 'pundit'
 # Helper to validate datetime
 gem 'validates_timeliness', '~> 5.0.0.alpha3'
+# Logs
+gem 'lograge'
+gem 'logstash-event'
+gem 'logstash-logger'
 
 group :development, :test do
   gem 'dotenv-rails'
@@ -68,9 +72,10 @@ group :test do
 end
 
 group :production do
+  gem 'rack-timeout'
   # From heroku dev-center for sentry addon
   gem 'sentry-raven'
-  gem "skylight"
+  gem 'skylight'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
