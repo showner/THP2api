@@ -16,6 +16,7 @@ Create index lesson and session (course_session) only for admins
 #### LOOK THIS
 
 Can't continue to use dependent destroy
+Concerns
 
 
 # Rubytools

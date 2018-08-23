@@ -2,7 +2,7 @@ module V1
   class CourseSessionsController < ApplicationController
     before_action :authenticate_v1_user!
     before_action do
-      @attributes = %i[name starting_date ending_date student_min student_max]
+      @attributes = %i[name starting_date ending_date student_min student_max creator]
       @allow_only_params_for = {
         create:  [:course_id, course_session: @attributes],
         destroy: %i[course_id id],

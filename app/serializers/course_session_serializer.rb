@@ -11,17 +11,20 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  course_id     :uuid
+#  creator_id    :uuid
 #
 # Indexes
 #
-#  index_course_sessions_on_course_id  (course_id)
+#  index_course_sessions_on_course_id   (course_id)
+#  index_course_sessions_on_creator_id  (creator_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (course_id => courses.id)
+#  fk_rails_...  (creator_id => organizations.id)
 #
 
 class CourseSessionSerializer < ActiveModel::Serializer
   attributes :id, :ending_date, :name, :starting_date, :student_max, :student_min,
-             :created_at, :updated_at, :course_id
+             :created_at, :updated_at, :course_id, :creator_id
 end

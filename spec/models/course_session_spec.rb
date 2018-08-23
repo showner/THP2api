@@ -11,14 +11,17 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  course_id     :uuid
+#  creator_id    :uuid
 #
 # Indexes
 #
-#  index_course_sessions_on_course_id  (course_id)
+#  index_course_sessions_on_course_id   (course_id)
+#  index_course_sessions_on_creator_id  (creator_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (course_id => courses.id)
+#  fk_rails_...  (creator_id => organizations.id)
 #
 
 RSpec.describe CourseSession, type: :model do
@@ -167,6 +170,7 @@ RSpec.describe CourseSession, type: :model do
       it { expect(serializer.serializable_hash).to have_key(:created_at) }
       it { expect(serializer.serializable_hash).to have_key(:updated_at) }
       it { expect(serializer.serializable_hash).to have_key(:course_id) }
+      it { expect(serializer.serializable_hash).to have_key(:creator_id) }
     end
   end
 end
