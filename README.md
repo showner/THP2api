@@ -3,6 +3,9 @@
 # Priority Steps
 
 Course_session index method: scope of data return
+user spec: organization_count
+(db columns in user, organization, course_session)
+user follow link through organization && organization_memberships mirror those too
 
 # README
 
@@ -28,4 +31,3 @@ https://github.com/cldwalker/hirb
 
 # Implement
 
-Add [Rubocop-rspec](https://github.com/rubocop-hq/rubocop-rspec)
