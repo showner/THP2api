@@ -1,3 +1,4 @@
+require: rubocop-rspec
 
 inherit_from:
   - http://relaxed.ruby.style/rubocop.yml
@@ -9,6 +10,8 @@ AllCops:
     - 'db/schema.rb'
     - 'vendor/**/*'
     - 'bin/*'
+    # should be fixed soon or later
+    - 'spec/controllers/application_controller_spec.rb'
 
 Rails:
   Enabled: True
@@ -23,3 +26,6 @@ Metrics/BlockLength:
     - 'Guardfile'
     - 'vendor/bundle'
     - 'lib/tasks/auto_annotate_models.rake'
+
+RSpec/NestedGroups:
+  Max: 4
