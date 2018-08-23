@@ -2,9 +2,9 @@ module V1
   class CourseSessionsController < ApplicationController
     before_action :authenticate_v1_user!
     before_action do
-      @attributes = %i[name starting_date ending_date student_min student_max creator]
+      @attributes = %i[name starting_date ending_date student_min student_max]
       @allow_only_params_for = {
-        create:  [:course_id, course_session: @attributes],
+        create:  [:course_id, :creator_id, course_session: @attributes],
         destroy: %i[course_id id],
         index:   [:course_id],
         show:    %i[course_id id],
@@ -14,6 +14,7 @@ module V1
     end
     before_action :find_course_session, only: %i[show update destroy]
     before_action :current_course, only: %i[create index]
+    before_action :current_organization, only: %i[create]
 
     def index
       render json: current_course.sessions
@@ -27,7 +28,8 @@ module V1
     def create
       # Choose between oneof the 2 way to write instruction (create or update)
       # lesson = current_v1_user.created_lessons.create!(create_params)
-      course_session = CourseSession.create!(create_params.merge(course: current_course))
+      course_session = CourseSession.create!(create_params.merge(course: current_course,
+                                                                 creator: current_organization))
       render json: course_session, status: :created
     end
 
@@ -59,6 +61,11 @@ module V1
 
     def find_course_session
       @course_session = CourseSession.find(params[:id])
+    end
+
+    def current_organization
+      params.require(:creator_id)
+      Organization.find(params[:creator_id])
     end
   end
 end
