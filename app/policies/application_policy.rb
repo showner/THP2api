@@ -1,8 +1,8 @@
 class ApplicationPolicy
-  attr_reader :user, :record
+  attr_reader :current_v1_user, :record
 
-  def initialize(user, record)
-    @user = user
+  def initialize(current_v1_user, record)
+    @current_v1_user = current_v1_user
     @record = record
   end
 
