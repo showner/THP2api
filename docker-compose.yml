@@ -18,6 +18,7 @@ services:
       dockerfile: ./Dockerfile.dev
     depends_on:
       - postgres
+      - maildev
     command: ["/srv/lib/docker/wait-for-it.sh", "database:5432", "--", "/srv/lib/docker/entrypoint.sh", "rails", "server", "--pid", "tmp/pids/server.development.pid"]
     environment:
       - MAILER_HOST=maildev
@@ -29,3 +30,14 @@ services:
       - 127.0.0.1:3000:3000
     volumes:
       - .:/srv
+  dep:
+    image: busybox
+    depends_on:
+      - postgres
+      - maildev
+    environment:
+      - MAILER_HOST=maildev
+      - MAILER_PORT=25
+      - PGUSER=postgres
+      - PGPASSWORD=app
+      - PGHOST=postgres
