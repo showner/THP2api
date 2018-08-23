@@ -17,6 +17,9 @@ module V1
     before_action :current_organization, only: %i[create]
 
     def index
+      # authorize [:v1, current_organization]
+      # render json: @current_organization.created_sessions
+      # TO BE CHANGED
       render json: current_course.sessions
     end
 
