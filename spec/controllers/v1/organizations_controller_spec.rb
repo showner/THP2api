@@ -29,6 +29,18 @@ RSpec.describe V1::OrganizationsController, type: :controller do
 
         it { is_expected.to have_http_status(:forbidden) }
       end
+
+      context 'when organizations have course_sessions' do
+        let(:organizations) { create_list(:organization, organization_count, :with_sessions) }
+
+        it 'returns only ids for created sessions inside returned organizations' do
+          organizations
+          organization_request
+          created_sessions = response_from_json.map{ |a_organization| a_organization['created_sessions'] }
+          # binding.pry
+          expect(created_sessions).to all(all(be_valid_uuid))
+        end
+      end
     end
 
     describe 'GET #show' do

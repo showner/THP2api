@@ -23,5 +23,5 @@
 class CourseSerializer < ActiveModel::Serializer
   attributes :id, :title, :description, :created_at, :updated_at, :creator_id,
              :lessons_count
-  has_many :lessons
+  has_many(:lessons) { object.lessons.pluck(:id) }
 end

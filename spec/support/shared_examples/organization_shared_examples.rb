@@ -1,5 +1,6 @@
 RSpec.shared_examples 'organization_examples' do |parameter|
   it 'returns last organization' do
+    # binding.pry
     organization_request
     organization = Organization.new(response_from_json)
     expect(organization).to eq Organization.last

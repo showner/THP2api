@@ -140,6 +140,7 @@ RSpec.describe Organization, type: :model do
     let(:organization) { create(:organization) }
 
     it { is_expected.to respond_to(:serializable_hash) }
+
     context 'with organization serializer' do
       it { expect(serializer.serializable_hash).to have_key(:id) }
       it { expect(serializer.serializable_hash).to have_key(:name) }
@@ -148,8 +149,9 @@ RSpec.describe Organization, type: :model do
       it { expect(serializer.serializable_hash).to have_key(:updated_at) }
       it { expect(serializer.serializable_hash).to have_key(:creator_id) }
       it { expect(serializer.serializable_hash).to have_key(:members_count) }
-      it { expect(serializer.serializable_hash).to have_key(:members) }
+      # it { expect(serializer.serializable_hash).to have_key(:members) }
       it { expect(serializer.serializable_hash).to have_key(:created_sessions_count) }
+      it { expect(serializer.serializable_hash).to have_key(:created_sessions) }
     end
   end
 end
