@@ -22,6 +22,6 @@
 FactoryBot.define do
   factory :organization_membership do
     association :member, factory: :user
-    association :organization
+    organization { build(:organization, creator: member) }
   end
 end

@@ -78,6 +78,7 @@ RSpec.describe OrganizationMembership, type: :model do
 
     context 'when follows organization_membership link through user' do
       it 'organization_membership should eq organization_membership' do
+        organization_membership.save
         expect(organization_membership.member.organization_memberships.last).to eq(organization_membership)
       end
     end

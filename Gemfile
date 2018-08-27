@@ -41,6 +41,7 @@ gem 'validates_timeliness', '~> 5.0.0.alpha3'
 gem 'lograge'
 gem 'logstash-event'
 gem 'logstash-logger'
+gem 'rack-attack'
 
 group :development, :test do
   gem 'dotenv-rails'

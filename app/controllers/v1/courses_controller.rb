@@ -35,10 +35,8 @@ module V1
     end
 
     def destroy
-      # Maybe destroy, see later
-      # @course.destroy
       authorize [:v1, @course]
-      @course.delete
+      @course.destroy
       head :no_content
     end
 

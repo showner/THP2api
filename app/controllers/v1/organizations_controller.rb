@@ -39,7 +39,6 @@ module V1
     end
 
     def destroy
-      # Maybe destroy, see later
       authorize [:v1, @organization]
       @organization.destroy
       head :no_content
