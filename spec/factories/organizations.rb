@@ -31,9 +31,9 @@ FactoryBot.define do
 
     name { Faker::Company.unique.name.first(50) }
     association :creator, factory: :user
-    # after(:create) do |organization|
-    #   organization.members << organization.creator
-    # end
+    after(:create) do |organization|
+      organization.members << organization.creator
+    end
 
     trait :with_sessions do
       after(:create) do |organization, attributes|

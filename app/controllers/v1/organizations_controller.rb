@@ -40,9 +40,8 @@ module V1
 
     def destroy
       # Maybe destroy, see later
-      # @lesson.destroy
       authorize [:v1, @organization]
-      @organization.delete
+      @organization.destroy
       head :no_content
     end
 
