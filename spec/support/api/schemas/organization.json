@@ -9,7 +9,7 @@
     "updated_at"             : { "type" : "string", "format": "date-time" },
     "creator_id"             : { "$ref" : "#/definitions/uuid" },
     "members_count"          : { "type" : "integer"},
-    // "members"                : { "type" : "array"},
+    "members"                : { "type" : "array"},
     "created_sessions_count" : { "type" : "integer"},
     "created_sessions"       : { "type" : "array"}
   },

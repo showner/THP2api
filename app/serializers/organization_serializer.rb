@@ -24,7 +24,7 @@
 class OrganizationSerializer < ActiveModel::Serializer
   attributes :id, :name, :website, :created_at, :updated_at, :creator_id, :members_count,
              :created_sessions_count
-  # has_many(:members) { object.members.pluck(:id) }
+  has_many(:members) { object.members.pluck(:id) }
   has_many(:created_sessions) { object.created_sessions.pluck(:id) }
 
   # def this
