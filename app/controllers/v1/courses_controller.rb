@@ -40,10 +40,6 @@ module V1
       head :no_content
     end
 
-    def pundit_user
-      current_v1_user
-    end
-
     private
 
     def create_params

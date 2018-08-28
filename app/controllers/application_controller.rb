@@ -43,6 +43,10 @@ class ApplicationController < ActionController::API
 
   serialization_scope :current_v1_user
 
+  def pundit_user
+    current_v1_user
+  end
+
   protected
 
   def configure_permitted_parameters
