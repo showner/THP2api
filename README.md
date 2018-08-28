@@ -2,11 +2,6 @@
 
 # Priority Steps
 
-Course_session index method: scope of data return
-user spec: organization_count
-(db columns in user, organization, course_session)
-user follow link through organization && organization_memberships mirror those too
-
 # README
 
 In prod, you should change the mail_sender in config/initializer/devise.rb
@@ -17,9 +12,9 @@ Test in all controllers response Parse is as expected (ex: status Forbidden => v
 Routing Specs
 Create index lesson and session (course_session) only for admins
 
-
 #### LOOK THIS
 
+Course_session index method: scope of data return
 Can't continue to use dependent destroy
 Concerns
 

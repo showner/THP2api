@@ -114,6 +114,11 @@ RSpec.describe User, type: :model do
       it { is_expected.to have_db_column(:created_lessons_count).with_options(default: 0) }
     end
 
+    context 'with :created_organizations_count' do
+      it { is_expected.to have_db_column(:created_organizations_count).of_type(:integer) }
+      it { is_expected.to have_db_column(:created_organizations_count).with_options(default: 0) }
+    end
+
     context 'with :current_sign_in_at' do
       it { is_expected.to have_db_column(:current_sign_in_at).of_type(:datetime) }
     end
@@ -137,6 +142,11 @@ RSpec.describe User, type: :model do
 
     context 'with :last_sign_in_ip' do
       it { is_expected.to have_db_column(:last_sign_in_ip).of_type(:string) }
+    end
+
+    context 'with :organizations_count' do
+      it { is_expected.to have_db_column(:organizations_count).of_type(:integer) }
+      it { is_expected.to have_db_column(:organizations_count).with_options(default: 0) }
     end
 
     context 'with :provider' do
@@ -216,7 +226,7 @@ RSpec.describe User, type: :model do
   end
 
   describe '#relationship' do
-    let(:user) { create(:user) }
+    let(:user) { create(:user, :with_organizations) }
     let(:course) { create(:course, creator: user) }
     let(:lesson) { create(:lesson, course: course, creator: user) }
 
@@ -245,6 +255,24 @@ RSpec.describe User, type: :model do
       it 'user should eq user' do
         lesson
         expect(user.created_lessons.last.creator).to eq(user)
+      end
+    end
+
+    context 'when follows user link through organizations' do
+      it 'user should eq user' do
+        expect(user.created_organizations.last.creator).to eq(user)
+      end
+    end
+
+    context 'when follows user link through organization_memberships' do
+      it 'user should eq user' do
+        expect(user.organization_memberships.last.member).to eq(user)
+      end
+    end
+
+    context 'when follows user link of organization through organization_memberships' do
+      it 'user should eq user' do
+        expect(user.created_organizations.last.members.last).to eq(user)
       end
     end
   end

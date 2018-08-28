@@ -41,6 +41,12 @@
 
 FactoryBot.define do
   factory :user do
+    transient do
+      organizations_count      { 3 }
+      organizations_max        { 5 }
+      organizations_min        { 1 }
+    end
+
     email    { Faker::Internet.unique.safe_email }
     username { Faker::Internet.unique.username }
     password { Faker::Internet.password(8, 20) }
@@ -52,6 +58,16 @@ FactoryBot.define do
 
     trait :confirmed do
       confirmed_at { 2.days.ago }
+    end
+
+    trait :with_organizations do
+      after(:create) do |user, attributes|
+        if attributes.methods.include?(:organizations_count)
+          create_list(:organization, attributes.organizations_count, creator: user)
+        else
+          create_list(:organization, rand(attributes.organizations_min..attributes.organizations_max), creator: user)
+        end
+      end
     end
   end
 end

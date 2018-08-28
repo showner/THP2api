@@ -123,20 +123,27 @@ RSpec.describe CourseSession, type: :model do
     context 'with :course_id' do
       it { is_expected.to have_db_column(:course_id).of_type(:uuid) }
     end
+
+    context 'with :creator_id' do
+      it { is_expected.to have_db_column(:creator_id).of_type(:uuid) }
+    end
   end
 
   describe '#DbIndex' do
     context 'with :index_course_sessions_on_course_id' do
       it { is_expected.to have_db_index(:course_id) }
     end
+
+    context 'with :index_course_sessions_on_creator_id' do
+      it { is_expected.to have_db_index(:creator_id) }
+    end
   end
 
   describe '#relationship' do
-    subject(:sub_course_session) { create(:course_session, course: course) }
+    subject(:sub_course_session) { create(:course_session, course: course, creator: organization) }
 
-    let!(:user) { create(:user) }
-    let!(:course) { create(:course, creator: user) }
-    let(:course_session) { create(:course_session) }
+    let(:course) { create(:course) }
+    let(:organization) { create(:organization) }
 
     context 'when course_session belongs_to course' do
       it { is_expected.to belong_to(:course).inverse_of(:sessions) }
@@ -144,12 +151,38 @@ RSpec.describe CourseSession, type: :model do
     end
 
     context 'when increment sessions_count by 1' do
-      it { expect{ sub_course_session }.to change{ Course.last.sessions_count }.by(1) }
+      it do
+        course
+        expect{ sub_course_session }.to change{ Course.last.sessions_count }.by(1)
+      end
     end
+
+    context 'when course_session belongs_to organization' do
+      it { is_expected.to belong_to(:creator).class_name(:Organization) }
+      it { is_expected.to belong_to(:creator).inverse_of(:created_sessions) }
+      it { is_expected.to belong_to(:creator).counter_cache(:created_sessions_count) }
+    end
+
+    context 'when increment sessions_count by 1' do
+      it do
+        organization
+        expect{ sub_course_session }.to change{ Organization.last.created_sessions_count }.by(1)
+      end
+    end
+  end
+
+  describe '#Follows' do
+    subject(:course_session) { create(:course_session) }
 
     context 'when follows course_session link through course' do
       it 'course_session should eq course_session' do
         expect(course_session.course.sessions.last).to eq(course_session)
+      end
+    end
+
+    context 'when follows course_session link through organization' do
+      it 'course_session should eq course_session' do
+        expect(course_session.creator.created_sessions.last).to eq(course_session)
       end
     end
   end
