@@ -226,10 +226,6 @@ RSpec.describe User, type: :model do
   end
 
   describe '#relationship' do
-    let(:user) { create(:user, :with_organizations) }
-    let(:course) { create(:course, creator: user) }
-    let(:lesson) { create(:lesson, course: course, creator: user) }
-
     context 'when user has_many courses' do
       it { is_expected.to have_many(:created_courses).class_name(:Course) }
       it { is_expected.to have_many(:created_courses).with_foreign_key(:creator_id) }
@@ -243,6 +239,12 @@ RSpec.describe User, type: :model do
       it { is_expected.to have_many(:created_lessons).dependent(:destroy) }
       it { is_expected.to have_many(:created_lessons).inverse_of(:creator) }
     end
+  end
+
+  describe '#Follows' do
+    let(:user) { create(:user, :with_organizations) }
+    let(:course) { create(:course, creator: user) }
+    let(:lesson) { create(:lesson, course: course, creator: user) }
 
     context 'when follows user link through courses' do
       it 'user should eq user' do

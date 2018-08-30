@@ -142,8 +142,8 @@ RSpec.describe CourseSession, type: :model do
   describe '#relationship' do
     subject(:sub_course_session) { create(:course_session, course: course, creator: organization) }
 
-    let(:course) { create(:course) }
-    let(:organization) { create(:organization) }
+    let!(:course) { create(:course) }
+    let!(:organization) { create(:organization) }
 
     context 'when course_session belongs_to course' do
       it { is_expected.to belong_to(:course).inverse_of(:sessions) }
@@ -151,10 +151,7 @@ RSpec.describe CourseSession, type: :model do
     end
 
     context 'when increment sessions_count by 1' do
-      it do
-        course
-        expect{ sub_course_session }.to change{ Course.last.sessions_count }.by(1)
-      end
+      it { expect{ sub_course_session }.to change{ Course.last.sessions_count }.by(1) }
     end
 
     context 'when course_session belongs_to organization' do
@@ -164,10 +161,7 @@ RSpec.describe CourseSession, type: :model do
     end
 
     context 'when increment sessions_count by 1' do
-      it do
-        organization
-        expect{ sub_course_session }.to change{ Organization.last.created_sessions_count }.by(1)
-      end
+      it { expect{ sub_course_session }.to change{ Organization.last.created_sessions_count }.by(1) }
     end
   end
 

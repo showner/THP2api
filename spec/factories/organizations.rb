@@ -37,7 +37,7 @@ FactoryBot.define do
 
     trait :with_sessions do
       after(:create) do |organization, attributes|
-        course = create(:course)
+        course = create(:course, creator: organization.creator)
         if attributes.methods.include?(:sessions_count)
           create_list(:course_session, attributes.sessions_count, course: course, creator: organization)
         else

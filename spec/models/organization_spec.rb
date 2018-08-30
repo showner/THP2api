@@ -104,7 +104,7 @@ RSpec.describe Organization, type: :model do
     subject(:sub_organization) { create(:organization, creator: user) }
 
     let(:sub_organization_sessions) { create(:organization, :with_sessions, sessions_count: 1, creator: user) }
-    let(:user) { create(:user) }
+    let!(:user) { create(:user) }
 
     context 'when organization belongs_to user' do
       it { is_expected.to belong_to(:creator).class_name(:User) }
@@ -113,10 +113,7 @@ RSpec.describe Organization, type: :model do
     end
 
     context 'when increment created_courses_count by 1' do
-      it do
-        user
-        expect{ sub_organization }.to change{ User.last.created_organizations_count }.by(1)
-      end
+      it { expect{ sub_organization }.to change{ User.last.created_organizations_count }.by(1) }
     end
 
     context 'when organization has_many organization_memberships' do
@@ -137,9 +134,7 @@ RSpec.describe Organization, type: :model do
     end
 
     context 'when increment course_session count by 1' do
-      it do
-        expect{ sub_organization_sessions }.to change(CourseSession, :count).by(1)
-      end
+      it { expect{ sub_organization_sessions }.to change(CourseSession, :count).by(1) }
     end
   end
 
