@@ -4,7 +4,7 @@ class CreateInvitations < ActiveRecord::Migration[5.2]
       t.string :destination_email, null: false
       # sender_name
       # sender_email
-      t.references :interest, type: :uuid, polymorphic: true, index: true
+      t.references :interest, type: :uuid, polymorphic: true
       t.references :invitee, type: :uuid, foreign_key: { to_table: :users }, index: true
       t.references :emitter, type: :uuid, foreign_key: { to_table: :users }, index: true
 
