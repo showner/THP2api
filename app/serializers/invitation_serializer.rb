@@ -23,8 +23,7 @@
 #  fk_rails_...  (invitee_id => users.id)
 #
 
-require 'rails_helper'
-
-RSpec.describe Invitation, type: :model do
-  pending
+class InvitationSerializer < ActiveModel::Serializer
+  attributes :id, :destination_email, :created_at, :updated_at, :emitter_id,
+             :interest_id, :interest_type, :invitee_id
 end
