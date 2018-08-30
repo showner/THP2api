@@ -42,4 +42,6 @@ class CourseSession < ApplicationRecord
   belongs_to :course, inverse_of: :sessions, counter_cache: :sessions_count
   belongs_to :creator, class_name: :Organization, inverse_of: :created_sessions,
                        counter_cache: :created_sessions_count
+
+  has_many :invitations, as: :interest, dependent: :destroy
 end

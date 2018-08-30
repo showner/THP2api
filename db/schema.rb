@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_22_073958) do
+ActiveRecord::Schema.define(version: 2018_08_30_093530) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -39,6 +39,19 @@ ActiveRecord::Schema.define(version: 2018_08_22_073958) do
     t.datetime "updated_at", null: false
     t.integer "sessions_count", default: 0
     t.index ["creator_id"], name: "index_courses_on_creator_id"
+  end
+
+  create_table "invitations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "destination_email", null: false
+    t.string "interest_type"
+    t.uuid "interest_id"
+    t.uuid "invitee_id"
+    t.uuid "emitter_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["emitter_id"], name: "index_invitations_on_emitter_id"
+    t.index ["interest_type", "interest_id"], name: "index_invitations_on_interest_type_and_interest_id"
+    t.index ["invitee_id"], name: "index_invitations_on_invitee_id"
   end
 
   create_table "lessons", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -99,6 +112,8 @@ ActiveRecord::Schema.define(version: 2018_08_22_073958) do
     t.integer "created_courses_count", default: 0
     t.integer "created_organizations_count", default: 0
     t.integer "organizations_count", default: 0
+    t.integer "emitted_invitations_count", default: 0
+    t.integer "received_invitations_count", default: 0
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["created_at"], name: "index_users_on_created_at"
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -110,6 +125,8 @@ ActiveRecord::Schema.define(version: 2018_08_22_073958) do
   add_foreign_key "course_sessions", "courses"
   add_foreign_key "course_sessions", "organizations", column: "creator_id"
   add_foreign_key "courses", "users", column: "creator_id"
+  add_foreign_key "invitations", "users", column: "emitter_id"
+  add_foreign_key "invitations", "users", column: "invitee_id"
   add_foreign_key "lessons", "courses"
   add_foreign_key "lessons", "users", column: "creator_id"
   add_foreign_key "organization_memberships", "organizations"

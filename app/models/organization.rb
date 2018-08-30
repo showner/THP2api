@@ -35,4 +35,6 @@ class Organization < ApplicationRecord
                                       dependent: :destroy, inverse_of: :organization
 
   has_many :members, through: :organization_memberships
+
+  has_many :invitations, as: :interest, dependent: :destroy
 end

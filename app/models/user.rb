@@ -13,11 +13,13 @@
 #  current_sign_in_at          :datetime
 #  current_sign_in_ip          :string
 #  email                       :string
+#  emitted_invitations_count   :integer          default(0)
 #  encrypted_password          :string           default(""), not null
 #  last_sign_in_at             :datetime
 #  last_sign_in_ip             :string
 #  organizations_count         :integer          default(0)
 #  provider                    :string           default("email"), not null
+#  received_invitations_count  :integer          default(0)
 #  remember_created_at         :datetime
 #  reset_password_sent_at      :datetime
 #  reset_password_token        :string
@@ -83,4 +85,9 @@ class User < ApplicationRecord
   has_many :organization_memberships, foreign_key: :member_id,
                                       dependent: :destroy, inverse_of: :member
   has_many :organizations, through: :organization_memberships
+
+  has_many :received_invitations, class_name: :invitations, foreign_key: :invitee_id,
+                                  dependent: :destroy, inverse_of: :invitee
+  has_many :emitted_invitations, class_name: :invitations, foreign_key: :emitter_id,
+                                 dependent: :destroy, inverse_of: :emitter
 end
