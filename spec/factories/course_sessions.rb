@@ -11,19 +11,23 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  course_id     :uuid
+#  creator_id    :uuid
 #
 # Indexes
 #
-#  index_course_sessions_on_course_id  (course_id)
+#  index_course_sessions_on_course_id   (course_id)
+#  index_course_sessions_on_creator_id  (creator_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (course_id => courses.id)
+#  fk_rails_...  (creator_id => organizations.id)
 #
 
 FactoryBot.define do
   factory :course_session do
     student_max { rand(11...1000) }
+    association :creator, factory: :organization
     association :course
 
     trait :complete do

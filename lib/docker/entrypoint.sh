@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 
-rails db:setup
+rails db:create db:migrate
 
 exec "$@"

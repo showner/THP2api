@@ -27,6 +27,8 @@ module V1
       # Choose between oneof the 2 way to write instruction (create or update)
       # lesson = current_v1_user.created_lessons.create!(create_params)
       organization = Organization.create!(create_params.merge(creator: current_v1_user))
+      organization.members << current_v1_user
+      # binding.pry
       render json: organization, status: :created
     end
 
@@ -37,15 +39,9 @@ module V1
     end
 
     def destroy
-      # Maybe destroy, see later
-      # @lesson.destroy
       authorize [:v1, @organization]
-      @organization.delete
+      @organization.destroy
       head :no_content
-    end
-
-    def pundit_user
-      current_v1_user
     end
 
     private

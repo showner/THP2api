@@ -41,6 +41,12 @@ class ApplicationController < ActionController::API
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 
+  serialization_scope :current_v1_user
+
+  def pundit_user
+    current_v1_user
+  end
+
   protected
 
   def configure_permitted_parameters

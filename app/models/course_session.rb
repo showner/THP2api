@@ -11,14 +11,17 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  course_id     :uuid
+#  creator_id    :uuid
 #
 # Indexes
 #
-#  index_course_sessions_on_course_id  (course_id)
+#  index_course_sessions_on_course_id   (course_id)
+#  index_course_sessions_on_creator_id  (creator_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (course_id => courses.id)
+#  fk_rails_...  (creator_id => organizations.id)
 #
 
 class CourseSession < ApplicationRecord
@@ -37,4 +40,6 @@ class CourseSession < ApplicationRecord
   # validates :student_min, numericality: { only_integer: true, greater_than: 1, less_than: :student_max }, unless: :student_max.nil?, on: :update
 
   belongs_to :course, inverse_of: :sessions, counter_cache: :sessions_count
+  belongs_to :creator, class_name: :Organization, inverse_of: :created_sessions,
+                       counter_cache: :created_sessions_count
 end

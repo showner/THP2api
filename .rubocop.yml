@@ -10,8 +10,6 @@ AllCops:
     - 'db/schema.rb'
     - 'vendor/**/*'
     - 'bin/*'
-    # should be fixed soon or later
-    - 'spec/controllers/application_controller_spec.rb'
 
 Rails:
   Enabled: True
@@ -29,3 +27,6 @@ Metrics/BlockLength:
 
 RSpec/NestedGroups:
   Max: 4
+
+RSpec/ImplicitSubject:
+  Enabled: false

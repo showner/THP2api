@@ -38,15 +38,9 @@ module V1
     end
 
     def destroy
-      # Maybe destroy, see later
-      # @lesson.destroy
       authorize [:v1, @lesson]
-      @lesson.delete
+      @lesson.destroy
       head :no_content
-    end
-
-    def pundit_user
-      current_v1_user
     end
 
     private

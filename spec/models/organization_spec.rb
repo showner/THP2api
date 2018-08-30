@@ -2,13 +2,14 @@
 #
 # Table name: organizations
 #
-#  id            :uuid             not null, primary key
-#  members_count :integer          default(0)
-#  name          :string(50)       not null
-#  website       :text
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  creator_id    :uuid
+#  id                     :uuid             not null, primary key
+#  created_sessions_count :integer          default(0)
+#  members_count          :integer          default(0)
+#  name                   :string(50)       not null
+#  website                :text
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  creator_id             :uuid
 #
 # Indexes
 #
@@ -55,6 +56,11 @@ RSpec.describe Organization, type: :model do
       it { is_expected.to have_db_column(:id).with_options(primary_key: true, null: false) }
     end
 
+    context 'with :created_sessions_count' do
+      it { is_expected.to have_db_column(:created_sessions_count).of_type(:integer) }
+      it { is_expected.to have_db_column(:created_sessions_count).with_options(default: 0) }
+    end
+
     context 'with :members_count' do
       it { is_expected.to have_db_column(:members_count).of_type(:integer) }
       it { is_expected.to have_db_column(:members_count).with_options(default: 0) }
@@ -97,8 +103,8 @@ RSpec.describe Organization, type: :model do
   describe '#relationship' do
     subject(:sub_organization) { create(:organization, creator: user) }
 
+    let(:sub_organization_sessions) { create(:organization, :with_sessions, sessions_count: 1, creator: user) }
     let!(:user) { create(:user) }
-    let(:organization) { create(:organization) }
 
     context 'when organization belongs_to user' do
       it { is_expected.to belong_to(:creator).class_name(:User) }
@@ -119,16 +125,46 @@ RSpec.describe Organization, type: :model do
     context 'when organization has_many members through organization_memberships' do
       it { is_expected.to have_many(:members).through(:organization_memberships) }
     end
+
+    context 'when organization has_many created_sessions' do
+      it { is_expected.to have_many(:created_sessions).class_name(:CourseSession) }
+      it { is_expected.to have_many(:created_sessions).with_foreign_key(:creator_id) }
+      it { is_expected.to have_many(:created_sessions).dependent(:destroy) }
+      it { is_expected.to have_many(:created_sessions).inverse_of(:creator) }
+    end
+
+    context 'when increment course_session count by 1' do
+      it { expect{ sub_organization_sessions }.to change(CourseSession, :count).by(1) }
+    end
   end
 
   describe '#Follows' do
     subject { organization }
 
-    let(:organization) { create(:organization) }
+    let(:user) { create(:user) }
+    let(:organization) { create(:organization, :with_sessions, creator: user) }
 
     context 'when organization link through user' do
       it 'organization should eq organization' do
         expect(organization.creator.created_organizations.last).to eq(organization)
+      end
+    end
+
+    context 'when organization link through course_session' do
+      it 'organization should eq organization' do
+        expect(organization.created_sessions.last.creator).to eq(organization)
+      end
+    end
+
+    context 'when follows organization link through organization_memberships' do
+      it 'organization should eq organization' do
+        expect(organization.organization_memberships.last.organization).to eq(organization)
+      end
+    end
+
+    context 'when follows organization link of user through organization_memberships' do
+      it 'organization should eq organization' do
+        expect(organization.members.last.created_organizations.last).to eq(organization)
       end
     end
   end
@@ -139,6 +175,7 @@ RSpec.describe Organization, type: :model do
     let(:organization) { create(:organization) }
 
     it { is_expected.to respond_to(:serializable_hash) }
+
     context 'with organization serializer' do
       it { expect(serializer.serializable_hash).to have_key(:id) }
       it { expect(serializer.serializable_hash).to have_key(:name) }
@@ -147,7 +184,9 @@ RSpec.describe Organization, type: :model do
       it { expect(serializer.serializable_hash).to have_key(:updated_at) }
       it { expect(serializer.serializable_hash).to have_key(:creator_id) }
       it { expect(serializer.serializable_hash).to have_key(:members_count) }
-      it { expect(serializer.serializable_hash).to have_key(:members) }
+      # it { expect(serializer.serializable_hash).to have_key(:members) }
+      it { expect(serializer.serializable_hash).to have_key(:created_sessions_count) }
+      it { expect(serializer.serializable_hash).to have_key(:created_sessions) }
     end
   end
 end

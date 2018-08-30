@@ -2,13 +2,14 @@
 #
 # Table name: organizations
 #
-#  id            :uuid             not null, primary key
-#  members_count :integer          default(0)
-#  name          :string(50)       not null
-#  website       :text
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  creator_id    :uuid
+#  id                     :uuid             not null, primary key
+#  created_sessions_count :integer          default(0)
+#  members_count          :integer          default(0)
+#  name                   :string(50)       not null
+#  website                :text
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  creator_id             :uuid
 #
 # Indexes
 #
@@ -27,7 +28,11 @@ class Organization < ApplicationRecord
   belongs_to :creator, class_name: :User, inverse_of: :created_organizations,
                        counter_cache: :created_organizations_count
 
+  has_many :created_sessions, class_name: :CourseSession, foreign_key: :creator_id,
+                              dependent:  :destroy, inverse_of:  :creator
+
   has_many :organization_memberships, foreign_key: :organization_id,
                                       dependent: :destroy, inverse_of: :organization
+
   has_many :members, through: :organization_memberships
 end

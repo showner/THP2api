@@ -3,9 +3,7 @@ require 'rails_helper'
 RSpec.describe V1::CourseSessionsController, type: :controller do
   # With authenticated user
   context 'with auth user' do
-    before {
-      fake_user
-    }
+    before { fake_user }
 
     # creating course for routing
     let(:course) { create(:course) }
@@ -72,8 +70,9 @@ RSpec.describe V1::CourseSessionsController, type: :controller do
     describe 'POST #create' do
       subject(:course_session_request) { post :create, params: params }
 
+      let(:organization) { create(:organization) }
       let(:course_session) { attributes_for(:course_session) }
-      let(:params) { { course_session: course_session, course_id: course.id } }
+      let(:params) { { course_session: course_session, course_id: course.id, creator_id: organization.id } }
 
       context 'with valid params' do
         include_examples 'course_session_examples', :created
