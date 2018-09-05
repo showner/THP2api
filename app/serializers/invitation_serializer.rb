@@ -3,7 +3,7 @@
 # Table name: invitations
 #
 #  id                :uuid             not null, primary key
-#  destination_email :string           not null
+#  destination_email :string
 #  interest_type     :string
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null

@@ -86,8 +86,8 @@ class User < ApplicationRecord
                                       dependent: :destroy, inverse_of: :member
   has_many :organizations, through: :organization_memberships
 
-  has_many :received_invitations, class_name: :invitations, foreign_key: :invitee_id,
+  has_many :received_invitations, class_name: :Invitation, foreign_key: :invitee_id,
                                   dependent: :destroy, inverse_of: :invitee
-  has_many :emitted_invitations, class_name: :invitations, foreign_key: :emitter_id,
+  has_many :emitted_invitations, class_name: :Invitation, foreign_key: :emitter_id,
                                  dependent: :destroy, inverse_of: :emitter
 end

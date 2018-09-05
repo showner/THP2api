@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 2018_08_30_093530) do
   end
 
   create_table "invitations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "destination_email", null: false
+    t.string "destination_email"
     t.string "interest_type"
     t.uuid "interest_id"
     t.uuid "invitee_id"

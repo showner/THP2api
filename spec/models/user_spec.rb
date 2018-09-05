@@ -133,6 +133,11 @@ RSpec.describe User, type: :model do
       it { is_expected.to have_db_column(:email).of_type(:string) }
     end
 
+    context 'with :emitted_invitations_count' do
+      it { is_expected.to have_db_column(:emitted_invitations_count).of_type(:integer) }
+      it { is_expected.to have_db_column(:emitted_invitations_count).with_options(default: 0) }
+    end
+
     context 'with :encrypted_password' do
       it { is_expected.to have_db_column(:encrypted_password).of_type(:string) }
       it { is_expected.to have_db_column(:encrypted_password).with_options(default: '', null: false) }
@@ -154,6 +159,11 @@ RSpec.describe User, type: :model do
     context 'with :provider' do
       it { is_expected.to have_db_column(:provider).of_type(:string) }
       it { is_expected.to have_db_column(:provider).with_options(default: 'email', null: false) }
+    end
+
+    context 'with :received_invitations_count' do
+      it { is_expected.to have_db_column(:received_invitations_count).of_type(:integer) }
+      it { is_expected.to have_db_column(:received_invitations_count).with_options(default: 0) }
     end
 
     context 'with :remember_created_at' do
@@ -241,12 +251,38 @@ RSpec.describe User, type: :model do
       it { is_expected.to have_many(:created_lessons).dependent(:destroy) }
       it { is_expected.to have_many(:created_lessons).inverse_of(:creator) }
     end
+
+    context 'when user has_many organization_memberships' do
+      it { is_expected.to have_many(:organization_memberships).with_foreign_key(:member_id) }
+      it { is_expected.to have_many(:organization_memberships).dependent(:destroy) }
+      it { is_expected.to have_many(:organization_memberships).inverse_of(:member) }
+    end
+
+    context 'when user has_many organizations' do
+      it { is_expected.to have_many(:organizations).through(:organization_memberships) }
+    end
+
+    context 'when user has_many received_invitations' do
+      it { is_expected.to have_many(:received_invitations).class_name(:Invitation) }
+      it { is_expected.to have_many(:received_invitations).with_foreign_key(:invitee_id) }
+      it { is_expected.to have_many(:received_invitations).dependent(:destroy) }
+      it { is_expected.to have_many(:received_invitations).inverse_of(:invitee) }
+    end
+
+    context 'when user has_many emitted_invitations' do
+      it { is_expected.to have_many(:emitted_invitations).class_name(:Invitation) }
+      it { is_expected.to have_many(:emitted_invitations).with_foreign_key(:emitter_id) }
+      it { is_expected.to have_many(:emitted_invitations).dependent(:destroy) }
+      it { is_expected.to have_many(:emitted_invitations).inverse_of(:emitter) }
+    end
   end
 
   describe '#Follows' do
     let(:user) { create(:user, :with_organizations) }
     let(:course) { create(:course, creator: user) }
     let(:lesson) { create(:lesson, course: course, creator: user) }
+    let(:invitation_sent) { create(:invitation, :with_invitee, emitter: user) }
+    let(:invitation_received) { create(:invitation, :with_emitter, invitee: user) }
 
     context 'when follows user link through courses' do
       it 'user should eq user' do
@@ -277,6 +313,20 @@ RSpec.describe User, type: :model do
     context 'when follows user link of organization through organization_memberships' do
       it 'user should eq user' do
         expect(user.created_organizations.last.members.last).to eq(user)
+      end
+    end
+
+    context 'when follows user link through emitted_invitations' do
+      it 'user should eq user' do
+        invitation_sent
+        expect(user.emitted_invitations.last.emitter).to eq(user)
+      end
+    end
+
+    context 'when follows user link through received_invitations' do
+      it 'user should eq user' do
+        invitation_received
+        expect(user.received_invitations.last.invitee).to eq(user)
       end
     end
   end
