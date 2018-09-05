@@ -1,10 +1,10 @@
 module V1
-  class InvitationController < ApplicationController
+  class InvitationsController < ApplicationController
     before_action :authenticate_v1_user!
     before_action do
-      @attributes = %i[destination_email]
+      @attributes = %i[destination_email interest_id interest_type invitee]
       @allow_only_params_for = {
-        create:  [:interest_id, :interest_type, invitation: @attributes],
+        create:  [invitation: @attributes],
         destroy: %i[id],
         index:   [],
         show:    %i[id],
