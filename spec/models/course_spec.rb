@@ -119,6 +119,10 @@ RSpec.describe Course, type: :model do
       it { is_expected.to have_many(:sessions).class_name(:CourseSession) }
       it { is_expected.to have_many(:sessions).dependent(:destroy) }
     end
+
+    context 'when course has_many invitations' do
+      it { is_expected.to have_many(:invitations).dependent(:destroy) }
+    end
   end
 
   describe '#Follows' do
