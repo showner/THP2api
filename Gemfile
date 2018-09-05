@@ -46,6 +46,7 @@ gem 'rack-attack'
 group :development, :test do
   gem 'dotenv-rails'
   gem 'factory_bot_rails'
+  gem 'faker'
   gem 'pry-byebug'
   gem 'rspec-rails'
 end
@@ -65,7 +66,6 @@ group :development do
 end
 
 group :test do
-  gem 'faker'
   gem 'json-schema'
   gem 'nyan-cat-formatter'
   gem 'rspec_junit_formatter'
