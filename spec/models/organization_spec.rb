@@ -136,6 +136,10 @@ RSpec.describe Organization, type: :model do
     context 'when increment course_session count by 1' do
       it { expect{ sub_organization_sessions }.to change(CourseSession, :count).by(1) }
     end
+
+    context 'when organization has_many invitations' do
+      it { is_expected.to have_many(:invitations).dependent(:destroy) }
+    end
   end
 
   describe '#Follows' do

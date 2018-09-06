@@ -1,6 +1,6 @@
 {
   "type"      : "object",
-  "required"  : ["id", "title", "description", "created_at", "updated_at"],
+  "required"  : ["id", "title", "description", "created_at", "updated_at", "creator_id", "course_id"],
   "properties": {
     "id"         : { "$ref" : "#/definitions/uuid" },
     "title"      : { "type" : "string"},

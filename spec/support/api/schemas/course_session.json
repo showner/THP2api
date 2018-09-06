@@ -1,6 +1,6 @@
 {
   "type"      : "object",
-  "required"  : ["id", "starting_date", "student_max", "created_at", "updated_at"],
+  "required"  : ["id", "student_max", "created_at", "updated_at", "course_id", "creator_id"],
   "properties": {
     "id"            : { "$ref" : "#/definitions/uuid" },
     "ending_date"   : { "type" : ["string", "null"], "format": "date-time" },

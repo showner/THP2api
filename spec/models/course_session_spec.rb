@@ -163,6 +163,10 @@ RSpec.describe CourseSession, type: :model do
     context 'when increment sessions_count by 1' do
       it { expect{ sub_course_session }.to change{ Organization.last.created_sessions_count }.by(1) }
     end
+
+    context 'when course_session has_many invitations' do
+      it { is_expected.to have_many(:invitations).dependent(:destroy) }
+    end
   end
 
   describe '#Follows' do

@@ -38,6 +38,18 @@
 #                             PATCH  /v1/courses/:id(.:format)                                                                v1/courses#update
 #                             PUT    /v1/courses/:id(.:format)                                                                v1/courses#update
 #                             DELETE /v1/courses/:id(.:format)                                                                v1/courses#destroy
+#            v1_organizations GET    /v1/organizations(.:format)                                                              v1/organizations#index
+#                             POST   /v1/organizations(.:format)                                                              v1/organizations#create
+#             v1_organization GET    /v1/organizations/:id(.:format)                                                          v1/organizations#show
+#                             PATCH  /v1/organizations/:id(.:format)                                                          v1/organizations#update
+#                             PUT    /v1/organizations/:id(.:format)                                                          v1/organizations#update
+#                             DELETE /v1/organizations/:id(.:format)                                                          v1/organizations#destroy
+#              v1_invitations GET    /v1/invitations(.:format)                                                                v1/invitations#index
+#                             POST   /v1/invitations(.:format)                                                                v1/invitations#create
+#               v1_invitation GET    /v1/invitations/:id(.:format)                                                            v1/invitations#show
+#                             PATCH  /v1/invitations/:id(.:format)                                                            v1/invitations#update
+#                             PUT    /v1/invitations/:id(.:format)                                                            v1/invitations#update
+#                             DELETE /v1/invitations/:id(.:format)                                                            v1/invitations#destroy
 #          rails_service_blob GET    /rails/active_storage/blobs/:signed_id/*filename(.:format)                               active_storage/blobs#show
 #   rails_blob_representation GET    /rails/active_storage/representations/:signed_blob_id/:variation_key/*filename(.:format) active_storage/representations#show
 #          rails_disk_service GET    /rails/active_storage/disk/:encoded_key/*filename(.:format)                              active_storage/disk#show
@@ -52,5 +64,6 @@ Rails.application.routes.draw do
       resources :sessions, except: %i[new edit], controller: :course_sessions
     end
     resources :organizations, except: %i[new edit]
+    resources :invitations, except: %i[new edit]
   end
 end
