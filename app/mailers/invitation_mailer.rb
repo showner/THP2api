@@ -2,10 +2,10 @@ class InvitationMailer < ApplicationMailer
   # attr_reader @invitation
   default from: 'showner@showner.fr'
 
-  def notice_invitee
+  def notice_invitee(invitation)
     # binding.pry
-    @invitee = params.invitee
-    @invitation = params
+    @invitee = invitation.invitee
+    @invitation = invitation
     mail(to: @invitee.email, subject: 'Invitation')
   end
 end

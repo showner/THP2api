@@ -25,7 +25,7 @@ module V1
       # Choose between oneof the 2 way to write instruction (create or update)
       # lesson = current_v1_user.created_lessons.create!(create_params)
       @invitation = Invitation.create!(create_params.merge(emitter: current_v1_user))
-      InvitationMailer.with(@invitation).notice_invitee.deliver_later
+      InvitationMailer.notice_invitee(@invitation).deliver_later
       # binding.pry
       render json: @invitation, status: :created
     end
