@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Invitation</title>
+</head>
+<body>
+  <h1>you received this mail because of this: <%= @invitee.email %> email</h1>
+  <p>follow the link : <%= link_to('to follow', v1_invitation_url(@invitation)) %> </p>
+</body>
+</html>

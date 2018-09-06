@@ -52,7 +52,7 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   # Config http://guides.rubyonrails.org/action_mailer_basics.html#generating-urls-in-action-mailer-views
-  config.action_mailer.default_url_options = { host: 'localhost:3000' }
+  config.action_mailer.default_url_options = { host: ENV.fetch('FRONT_URL', 'localhost:3000') }
 
   # Maildev config
   config.action_mailer.delivery_method = :smtp
