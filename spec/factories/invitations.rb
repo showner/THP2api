@@ -13,6 +13,7 @@
 #
 # Indexes
 #
+#  index_invitations_on_destination_email              (destination_email)
 #  index_invitations_on_emitter_id                     (emitter_id)
 #  index_invitations_on_interest_type_and_interest_id  (interest_type,interest_id)
 #  index_invitations_on_invitee_id                     (invitee_id)
@@ -34,6 +35,10 @@ FactoryBot.define do
 
     trait :with_invitee do
       association :invitee, factory: :user
+    end
+
+    trait :with_interest do
+      association :interest, factory: :course
     end
 
     trait :with_invalid_interest do

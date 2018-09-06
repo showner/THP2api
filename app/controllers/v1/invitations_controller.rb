@@ -8,7 +8,7 @@ module V1
         destroy: %i[id],
         index:   [],
         show:    %i[id],
-        update:  [:id, invitation: @attributes]
+        update:  [:id, invitation: %i[interest_id interest_type]]
       }
       deny_all_unpermitted_parameters
     end

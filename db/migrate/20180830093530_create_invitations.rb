@@ -9,6 +9,9 @@ class CreateInvitations < ActiveRecord::Migration[5.2]
       t.references :emitter, type: :uuid, foreign_key: { to_table: :users }, index: true
 
       t.timestamps
+
+      t.index :destination_email
+      # t.index :sender_email
     end
 
     change_table :users, bulk: true do

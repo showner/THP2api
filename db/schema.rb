@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 2018_08_30_093530) do
     t.uuid "emitter_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["destination_email"], name: "index_invitations_on_destination_email"
     t.index ["emitter_id"], name: "index_invitations_on_emitter_id"
     t.index ["interest_type", "interest_id"], name: "index_invitations_on_interest_type_and_interest_id"
     t.index ["invitee_id"], name: "index_invitations_on_invitee_id"

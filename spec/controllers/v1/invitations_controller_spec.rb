@@ -114,7 +114,8 @@ RSpec.describe V1::InvitationsController, type: :controller do
       subject(:invitation_request) { patch :update, params: params }
 
       let(:invitation) { create(:invitation, :with_email, emitter: test_user) }
-      let(:invitation_update) { attributes_for(:invitation, :with_email) }
+      let(:course) { create(:course, creator: test_user) }
+      let(:invitation_update) { { interest_type: course.class, interest_id: course.id } }
       let(:params) { { id: invitation.id, invitation: invitation_update } }
 
       context 'with valid params' do
