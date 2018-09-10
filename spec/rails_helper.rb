@@ -77,3 +77,5 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
+
+ActiveJob::Base.queue_adapter = :test

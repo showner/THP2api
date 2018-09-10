@@ -42,6 +42,8 @@ gem 'lograge'
 gem 'logstash-event'
 gem 'logstash-logger'
 gem 'rack-attack'
+# Background Job
+gem 'sidekiq'
 
 group :development, :test do
   gem 'dotenv-rails'

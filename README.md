@@ -28,3 +28,7 @@ https://github.com/cldwalker/hirb
 
 # Implement
 
+# Ressources
+### Sidekiq
+- Sidekiq config [devise and activejob](https://github.com/plataformatec/devise#activejob-integration)
+- for Docker: add `- REDIS_URL=redis://redis` in app env vars

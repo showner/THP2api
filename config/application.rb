@@ -34,5 +34,7 @@ module THP2api
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
     config.middleware.use Rack::Attack
+    # https://github.com/mperham/sidekiq/wiki/Active-Job
+    config.active_job.queue_adapter = :sidekiq
   end
 end

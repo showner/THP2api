@@ -90,4 +90,8 @@ class User < ApplicationRecord
                                   dependent: :destroy, inverse_of: :invitee
   has_many :emitted_invitations, class_name: :Invitation, foreign_key: :emitter_id,
                                  dependent: :destroy, inverse_of: :emitter
+
+  def send_devise_notification(notification, *args)
+    devise_mailer.send(notification, self, *args).deliver_later
+  end
 end
