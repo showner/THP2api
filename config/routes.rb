@@ -58,7 +58,7 @@
 
 Rails.application.routes.draw do
   concern :paginatable do
-    get '(page/:page)', action: :index, on: :collection, as: ''
+    get '(page/:page(/size/:page_size))', action: :index, on: :collection, as: ''
   end
 
   namespace :v1 do
@@ -68,6 +68,6 @@ Rails.application.routes.draw do
       resources :sessions, except: %i[new edit], controller: :course_sessions, concerns: :paginatable
     end
     resources :organizations, except: %i[new edit], concerns: :paginatable
-    resources :invitations, except: %i[new edit]
+    resources :invitations, except: %i[new edit index]
   end
 end
