@@ -6,23 +6,50 @@ RSpec.describe V1::CoursesController, type: :controller do
     before { fake_user }
 
     describe "GET #index" do
-      subject(:course_request) { get :index }
+      subject(:course_request) { get :index, params: params }
 
-      before { create_list(:course, 5) }
+      let!(:courses) { create_list(:course, courses_count) }
 
-      let(:courses_page_one) { Course.order(created_at: :asc).limit(5) }
+      let(:params)           { {} }
+      let(:courses_page_one) { Course.order(created_at: :asc).limit(page_size) }
+      let(:courses_count)    { 8 }
+      let(:page_last_count)  { courses_count - (page_last_index - 1) * page_size }
+      let(:page_last_index)  { (courses_count / page_size.to_f).ceil }
+      let(:page_size)        { 5 }
 
       context 'with valid request' do
         it { is_expected.to have_http_status(:ok) }
 
         it "returns 5 Courses" do
           course_request
-          expect(response_from_json_as('courses').size).to eq(5)
+          expect(response_from_json_as('courses').size).to eq(page_size)
         end
 
         it "returns the 5 Courses" do
           course_request
           expect(response_from_json_as('courses').map{ |e| e[:id] }).to eq(courses_page_one.map(&:id))
+        end
+      end
+
+      it "expects pagination metadata to have the right pages'count" do
+        course_request
+        expect(response_from_json['meta']['total_pages']).to be(page_last_index)
+      end
+
+      xcontext 'with default pagination' do
+        before { course_request }
+
+        let(:params) do
+          { page: page_last_index }
+        end
+
+        it 'expects to be paginated (returning a subset of invitations)' do
+          # expect(response_from_json['invitations'].size).to eq(page_last_count)
+          # binding.pry
+          expect(response_from_json_as('courses').size).to eq(page_last_count)
+        end
+        it 'expects to find the last invitation on the last page' do
+          expect(response_from_json_as('courses').last).to eq(courses.last)
         end
       end
 
