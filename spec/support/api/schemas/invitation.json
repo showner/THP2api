@@ -1,15 +1,19 @@
 {
   "type"      : "object",
-  "required"  : ["id", "created_at", "updated_at"],
-  "properties": {
-    "id"                : { "$ref" : "#/definitions/uuid" },
-    "destination_email" : { "type" : ["string", "null"] },
-    "interest_type"     : { "type" : ["string", "null"] },
-    "created_at"        : { "type" : "string", "format": "date-time" },
-    "updated_at"        : { "type" : "string", "format": "date-time" },
-    "emitter_id"        : { "oneOf": [{ "type": "null" },{ "$ref" : "#/definitions/uuid" }] },
-    "interest_id"       : { "oneOf": [{ "type": "null" },{ "$ref" : "#/definitions/uuid" }] },
-    "invitee_id"        : { "oneOf": [{ "type": "null" },{ "$ref" : "#/definitions/uuid" }] }
+  "required"  : ["invitation"],
+  "invitation": {
+    "type": "object",
+    "properties": {
+      "id"                : { "$ref" : "#/definitions/uuid" },
+      "destination_email" : { "type" : ["string", "null"] },
+      "interest_type"     : { "type" : ["string", "null"] },
+      "created_at"        : { "type" : "string", "format": "date-time" },
+      "updated_at"        : { "type" : "string", "format": "date-time" },
+      "emitter_id"        : { "oneOf": [{ "type": "null" },{ "$ref" : "#/definitions/uuid" }] },
+      "interest_id"       : { "oneOf": [{ "type": "null" },{ "$ref" : "#/definitions/uuid" }] },
+      "invitee_id"        : { "oneOf": [{ "type": "null" },{ "$ref" : "#/definitions/uuid" }] }
+    },
+    "required"  : ["id", "created_at", "updated_at"]
   },
   "definitions": {
     "uuid": {

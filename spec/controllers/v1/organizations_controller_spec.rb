@@ -8,19 +8,20 @@ RSpec.describe V1::OrganizationsController, type: :controller do
     describe "GET #index" do
       subject(:organization_request) { get :index }
 
-      organization_count = 5
-      let!(:organizations) { create_list(:organization, organization_count) }
+      before { create_list(:organization, 8) }
+
+      let(:organizations_page_one) { Organization.order(created_at: :asc).limit(5) }
 
       context 'with valid request' do
         it { is_expected.to have_http_status(:ok) }
-        it "returns #{organization_count} Organizations" do
+        it "returns 5 Organizations" do
           organization_request
-          expect(response_from_json.size).to eq(organization_count)
+          expect(response_from_json_as('organizations').size).to eq(5)
         end
 
-        it "returns #{organization_count} Organizations" do
+        it "returns the 5 Organizations" do
           organization_request
-          expect(response_from_json.map{ |e| e[:id] }).to eq(organizations.map(&:id))
+          expect(response_from_json_as('organizations').map{ |e| e[:id] }).to eq(organizations_page_one.map(&:id))
         end
       end
 
@@ -31,13 +32,13 @@ RSpec.describe V1::OrganizationsController, type: :controller do
       end
 
       context 'when organizations have course_sessions' do
-        let(:organizations) { create_list(:organization, organization_count, :with_sessions) }
+        let(:organizations) { create_list(:organization, 5, :with_sessions) }
 
         it 'returns only ids for created sessions inside returned organizations' do
           organizations
           organization_request
-          created_sessions = response_from_json.map{ |a_organization| a_organization['created_sessions'] }
           # binding.pry
+          created_sessions = response_from_json_as('organizations').map{ |a_organization| a_organization['created_sessions'] }
           expect(created_sessions).to all(all(be_valid_uuid))
         end
       end

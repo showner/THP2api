@@ -22,6 +22,7 @@
 #
 
 class Organization < ApplicationRecord
+  paginates_per 5
   validates :name, presence: true, length: { maximum: 50 }, uniqueness: { case_sensitive: false }
   validates :website, length: { maximum: 2000 }, uniqueness: { case_sensitive: false, allow_nil: true }
 

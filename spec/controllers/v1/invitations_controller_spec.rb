@@ -5,32 +5,6 @@ RSpec.describe V1::InvitationsController, type: :controller do
   context 'with auth user' do
     before { fake_user }
 
-    xdescribe "GET #index" do
-      subject(:invitation_request) { get :index }
-
-      invitation_count = 5
-      let!(:invitations) { create_list(:valid_invitation, invitation_count) }
-
-      context 'with valid request' do
-        it { is_expected.to have_http_status(:ok) }
-        it "returns #{invitation_count} invitations" do
-          invitation_request
-          expect(response_from_json.size).to eq(invitation_count)
-        end
-
-        it "returns #{invitation_count} invitations" do
-          invitation_request
-          expect(response_from_json.map{ |e| e[:id] }).to eq(invitations.map(&:id))
-        end
-      end
-
-      context 'with extra params' do
-        subject { get :index, params: { another_params: Faker::Lorem.word } }
-
-        it { is_expected.to have_http_status(:forbidden) }
-      end
-    end
-
     describe 'GET #show' do
       subject(:invitation_request) { get :show, params: params }
 

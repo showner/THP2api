@@ -8,20 +8,21 @@ RSpec.describe V1::CoursesController, type: :controller do
     describe "GET #index" do
       subject(:course_request) { get :index }
 
-      course_count = 5
-      let!(:courses) { create_list(:course, course_count) }
+      before { create_list(:course, 5) }
+
+      let(:courses_page_one) { Course.order(created_at: :asc).limit(5) }
 
       context 'with valid request' do
         it { is_expected.to have_http_status(:ok) }
 
-        it "returns #{course_count} Courses" do
+        it "returns 5 Courses" do
           course_request
-          expect(response_from_json.size).to eq(course_count)
+          expect(response_from_json_as('courses').size).to eq(5)
         end
 
-        it "returns #{course_count} Courses" do
+        it "returns the 5 Courses" do
           course_request
-          expect(response_from_json.map{ |e| e[:id] }).to eq(courses.map(&:id))
+          expect(response_from_json_as('courses').map{ |e| e[:id] }).to eq(courses_page_one.map(&:id))
         end
       end
 

@@ -57,13 +57,17 @@
 #        rails_direct_uploads POST   /rails/active_storage/direct_uploads(.:format)                                           active_storage/direct_uploads#create
 
 Rails.application.routes.draw do
+  concern :paginatable do
+    get '(page/:page)', action: :index, on: :collection, as: ''
+  end
+
   namespace :v1 do
     mount_devise_token_auth_for 'User', at: 'auth'
-    resources :courses, except: %i[new edit] do
-      resources :lessons, except: %i[new edit]
-      resources :sessions, except: %i[new edit], controller: :course_sessions
+    resources :courses, except: %i[new edit], concerns: :paginatable do
+      resources :lessons, except: %i[new edit], concerns: :paginatable
+      resources :sessions, except: %i[new edit], controller: :course_sessions, concerns: :paginatable
     end
-    resources :organizations, except: %i[new edit]
+    resources :organizations, except: %i[new edit], concerns: :paginatable
     resources :invitations, except: %i[new edit]
   end
 end

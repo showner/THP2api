@@ -6,7 +6,7 @@ module V1
       @allow_only_params_for = {
         create:  [course: @attributes],
         destroy: [:id],
-        index:   [],
+        index:   %i[page page_size],
         show:    [:id],
         update:  [:id, course: @attributes]
       }
@@ -15,7 +15,8 @@ module V1
     before_action :find_course, only: %i[show update destroy]
 
     def index
-      render json: Course.all
+      @courses = Course.order(created_at: :asc).page(params[:page]).per(params[:page_size])
+      render json: @courses, meta: pagination_dict(@courses)
     end
 
     def show
