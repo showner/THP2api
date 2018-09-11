@@ -25,6 +25,7 @@
 #
 
 class Invitation < ApplicationRecord
+  paginates_per 5
   # validates :destination_email, presence: true
   belongs_to :invitee, optional: true, class_name: :User, inverse_of: :received_invitations,
                        counter_cache: :received_invitations_count

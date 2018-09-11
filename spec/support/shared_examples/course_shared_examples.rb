@@ -1,7 +1,7 @@
 RSpec.shared_examples 'course_examples' do |parameter|
   it 'returns last course' do
     course_request
-    course = Course.new(response_from_json)
+    course = Course.new(response_from_json_as('course'))
     expect(course).to eq Course.last
   end
 
@@ -19,24 +19,24 @@ RSpec.shared_examples 'course_examples' do |parameter|
 
   it 'returns valid Course object' do
     course_request
-    course = Course.new(response_from_json)
+    course = Course.new(response_from_json_as('course'))
     expect(course).to be_valid
   end
 
   context 'when returns valid id' do
     before { course_request }
 
-    it { expect(response_from_json).to have_key(:id) }
-    it { expect(response_from_json[:id]).not_to be_blank }
-    it { expect(response_from_json[:id]).to be_valid_uuid }
+    it { expect(response_from_json_as('course')).to have_key(:id) }
+    it { expect(response_from_json_as('course')[:id]).not_to be_blank }
+    it { expect(response_from_json_as('course')[:id]).to be_valid_uuid }
   end
 
   context 'when returns valid timestamps' do
     before { course_request }
 
-    it { expect(response_from_json).to have_key(:created_at) }
-    it { expect(response_from_json).to have_key(:updated_at) }
-    it { expect(response_from_json[:created_at]).to be_valid_date }
-    it { expect(response_from_json[:updated_at]).to be_valid_date }
+    it { expect(response_from_json_as('course')).to have_key(:created_at) }
+    it { expect(response_from_json_as('course')).to have_key(:updated_at) }
+    it { expect(response_from_json_as('course')[:created_at]).to be_valid_date }
+    it { expect(response_from_json_as('course')[:updated_at]).to be_valid_date }
   end
 end

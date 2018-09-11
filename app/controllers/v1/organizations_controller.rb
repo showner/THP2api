@@ -6,7 +6,7 @@ module V1
       @allow_only_params_for = {
         create:  [organization: @attributes],
         destroy: %i[id],
-        index:   [],
+        index:   %i[page page_size],
         show:    %i[id],
         update:  [:id, organization: @attributes]
       }
@@ -15,7 +15,9 @@ module V1
     before_action :find_organization, only: %i[show update destroy]
 
     def index
-      render json: Organization.all
+      @organizations = Organization.order(created_at: :asc).page(params[:page]).per(params[:page_size])
+      # binding.pry
+      render json: @organizations, meta: pagination_dict(@organizations)
     end
 
     def show

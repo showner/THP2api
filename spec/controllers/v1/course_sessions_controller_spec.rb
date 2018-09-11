@@ -11,22 +11,24 @@ RSpec.describe V1::CourseSessionsController, type: :controller do
     let(:params) { course_params }
 
     describe "GET #index" do
-      course_session_count = 5
       subject(:course_session_request) { get :index, params: params }
 
-      let!(:course_sessions) { create_list(:course_session, course_session_count, course: course) }
+      before { create_list(:course_session, 8, course: course) }
+
+      let(:course_sessions_page_one) { CourseSession.order(created_at: :asc).limit(5) }
 
       context 'with valid request' do
         it { is_expected.to have_http_status(:ok) }
 
-        it "returns #{course_session_count} CourseSession count" do
+        it "returns 5 CourseSession count" do
           course_session_request
-          expect(response_from_json.size).to eq(course_session_count)
+          expect(response_from_json_as('course_sessions').size).to eq(5)
         end
 
-        it "returns same ids CourseSession" do
+        it "returns the 5 CourseSession" do
           course_session_request
-          expect(response_from_json.map{ |e| e[:id] }).to eq(course_sessions.map(&:id))
+          # binding.pry
+          expect(response_from_json_as('course_sessions').map{ |e| e[:id] }).to eq(course_sessions_page_one.map(&:id))
         end
       end
 

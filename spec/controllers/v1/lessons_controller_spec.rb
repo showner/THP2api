@@ -12,18 +12,19 @@ RSpec.describe V1::LessonsController, type: :controller do
     describe "GET #index" do
       subject(:lesson_request) { get :index, params: params }
 
-      lesson_count = 5
-      let!(:lessons) { create_list(:lesson, lesson_count, course: course) }
+      before { create_list(:lesson, 8, course: course) }
+
+      let(:lessons_page_one) { Lesson.order(created_at: :asc).limit(5) }
 
       context 'with valid request' do
         it { is_expected.to have_http_status(:ok) }
-        it "returns #{lesson_count} Lessons" do
+        it "returns 5 Lessons" do
           lesson_request
-          expect(response_from_json.size).to eq(lesson_count)
+          expect(response_from_json_as('lessons').size).to eq(5)
         end
-        it "returns #{lesson_count} Lessons" do
+        it "returns the 5 Lessons" do
           lesson_request
-          expect(response_from_json.map{ |e| e[:id] }).to eq(lessons.map(&:id))
+          expect(response_from_json_as('lessons').map{ |e| e[:id] }).to eq(lessons_page_one.map(&:id))
         end
       end
 

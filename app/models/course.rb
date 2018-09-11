@@ -21,6 +21,7 @@
 #
 
 class Course < ApplicationRecord
+  paginates_per 5
   validates :title, presence: true, length: { maximum: 50 }
   validates :description, presence: true, length: { maximum: 300 }
 

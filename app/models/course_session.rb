@@ -25,6 +25,7 @@
 #
 
 class CourseSession < ApplicationRecord
+  paginates_per 5
   attribute :starting_date, :datetime, default: -> { Time.now.tomorrow.utc.change(hour: 6, minute: 0, seconds: 0) }
 
   validates_datetime :starting_date, on_or_after: :tomorrow_morning

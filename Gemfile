@@ -44,6 +44,8 @@ gem 'logstash-logger'
 gem 'rack-attack'
 # Background Job
 gem 'sidekiq'
+# Pagination
+gem 'kaminari'
 
 group :development, :test do
   gem 'dotenv-rails'

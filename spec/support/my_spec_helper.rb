@@ -10,6 +10,12 @@ module MySpecHelper
     end
   end
 
+  def response_from_json_as(params)
+    @response_from_json_as ||= begin
+      response_from_json[params.to_sym]
+    end
+  end
+
   def test_user(trait = nil, **attributes)
     @test_user ||= create(:user, trait, **attributes)
   end

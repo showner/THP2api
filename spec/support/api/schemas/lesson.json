@@ -1,14 +1,18 @@
 {
   "type"      : "object",
-  "required"  : ["id", "title", "description", "created_at", "updated_at", "creator_id", "course_id"],
-  "properties": {
-    "id"         : { "$ref" : "#/definitions/uuid" },
-    "title"      : { "type" : "string"},
-    "description": { "type" : "string"},
-    "created_at" : { "type" : "string", "format": "date-time" },
-    "updated_at" : { "type" : "string", "format": "date-time" },
-    "creator_id" : { "$ref" : "#/definitions/uuid" },
-    "course_id"  : { "$ref" : "#/definitions/uuid" }
+  "required"  : ["lesson"],
+  "lesson"    : {
+    "type": "object",
+    "properties": {
+      "id"         : { "$ref" : "#/definitions/uuid" },
+      "title"      : { "type" : "string"},
+      "description": { "type" : "string"},
+      "created_at" : { "type" : "string", "format": "date-time" },
+      "updated_at" : { "type" : "string", "format": "date-time" },
+      "creator_id" : { "$ref" : "#/definitions/uuid" },
+      "course_id"  : { "$ref" : "#/definitions/uuid" }
+    },
+    "required"  : ["id", "title", "description", "created_at", "updated_at", "creator_id", "course_id"]
   },
   "definitions": {
     "uuid": {

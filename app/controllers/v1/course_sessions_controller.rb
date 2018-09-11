@@ -6,7 +6,7 @@ module V1
       @allow_only_params_for = {
         create:  [:course_id, :creator_id, course_session: @attributes],
         destroy: %i[course_id id],
-        index:   [:course_id],
+        index:   %i[course_id page page_size],
         show:    %i[course_id id],
         update:  [:course_id, :id, course_session: @attributes]
       }
@@ -20,7 +20,8 @@ module V1
       # authorize [:v1, current_organization]
       # render json: @current_organization.created_sessions
       # TO BE CHANGED
-      render json: current_course.sessions
+      @sessions = current_course.sessions.order(created_at: :asc).page(params[:page]).per(params[:page_size])
+      render json: @sessions, meta: pagination_dict(@sessions)
     end
 
     def show

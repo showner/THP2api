@@ -47,6 +47,18 @@ class ApplicationController < ActionController::API
     current_v1_user
   end
 
+  # https://github.com/rails-api/active_model_serializers/blob/0-10-stable/docs/howto/add_pagination_links.md#json-adapter
+  def pagination_dict(collection)
+    # binding.pry
+    {
+      current_page: collection.current_page,
+      next_page: collection.next_page,
+      prev_page: collection.prev_page, # use collection.previous_page when using will_paginate
+      total_pages: collection.total_pages,
+      total_count: collection.total_count
+    }
+  end
+
   protected
 
   def configure_permitted_parameters
