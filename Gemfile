@@ -46,6 +46,8 @@ gem 'rack-attack'
 gem 'sidekiq'
 # Pagination
 gem 'kaminari'
+# CORS
+gem 'rack-cors'
 
 group :development, :test do
   gem 'dotenv-rails'

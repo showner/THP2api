@@ -1,7 +1,8 @@
 [![CircleCI](https://circleci.com/gh/Showner/THP2api/tree/master.svg?style=svg)](https://circleci.com/gh/Showner/THP2api/tree/master)
 
 # Priority Steps
--pagination tests
+- pagination tests
+- Prod env config: add url for front CORS (CORS_ALLOWING)
 
 # README
 

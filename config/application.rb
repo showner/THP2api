@@ -36,5 +36,12 @@ module THP2api
     config.middleware.use Rack::Attack
     # https://github.com/mperham/sidekiq/wiki/Active-Job
     config.active_job.queue_adapter = :sidekiq
+    # https://github.com/cyu/rack-cors
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins CORS_ALLOWING
+        resource '*', headers: :any, methods: %i[get post options], expose: %i[access-token client token-type uid expiry]
+      end
+    end
   end
 end
