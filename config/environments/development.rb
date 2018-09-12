@@ -76,4 +76,24 @@ Rails.application.configure do
   DeviseTokenAuth.setup do |config|
     config.default_confirm_success_url = "http://localhost:3000"
   end
+
+  # Cors allowed adress
+  CORS_ALLOWING = [ENV.fetch('FRONT_URL', 'localhost:3000'), '127.0.0.1:3000'].freeze
+
+  # BY MARVIN
+  # # [byMarv]#
+  # # FRONT_PORT_DEFAULT = 8001
+  # FRONT_PORT_DEFAULT = 3001 # XXX: because we don't have a front already ;)
+  # FRONT_HOST         = ENV.fetch('FRONT_HOST', 'localhost').freeze
+  # FRONT_PORT         = ENV.fetch('FRONT_PORT').presence if ENV.key?('FRONT_PORT')
+  # FRONT_PORT         = (FRONT_HOST.in?(['127.0.0.1', 'localhost']) ? FRONT_PORT_DEFAULT : nil) unless defined? FRONT_PORT
+  # FRONT_URL          = FRONT_PORT ? "#{FRONT_HOST}:#{FRONT_PORT}".freeze : FRONT_HOST
+  # FRONT_SCHEME       = 'http'.freeze
+  # FRONT_FQDN         = "#{FRONT_SCHEME}://#{FRONT_URL}".freeze
+
+  # # [byMarv]# FIXME: add  docker addresses / fqdns
+  # CORS_ALLOWING = [
+  #   "127.0.0.1:#{FRONT_PORT_DEFAULT}",
+  #   FRONT_URL
+  # ].freeze
 end

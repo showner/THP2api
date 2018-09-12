@@ -104,4 +104,7 @@ Rails.application.configure do
   }
   # To be disabled in real prod
   config.public_file_server.enabled = true
+
+  # Cors allowed adress
+  CORS_ALLOWING = [ENV.fetch('FRONT_URL', '')].freeze
 end

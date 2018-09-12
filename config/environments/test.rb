@@ -55,4 +55,7 @@ Rails.application.configure do
   DeviseTokenAuth.setup do |config|
     config.default_confirm_success_url = "http://localhost:3000"
   end
+
+  # Cors allowed adress
+  CORS_ALLOWING = [ENV.fetch('FRONT_URL', 'localhost:3000'), '127.0.0.1:3000'].freeze
 end
