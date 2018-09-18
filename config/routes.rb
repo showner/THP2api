@@ -69,5 +69,6 @@ Rails.application.routes.draw do
     end
     resources :organizations, except: %i[new edit], concerns: :paginatable
     resources :invitations, except: %i[new edit index]
+    get '/s3_test', to: 'ressources#request_s3'
   end
 end

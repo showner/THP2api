@@ -48,6 +48,8 @@ gem 'sidekiq'
 gem 'kaminari'
 # CORS
 gem 'rack-cors'
+# Storage
+gem 'aws-sdk-s3'
 
 group :development, :test do
   gem 'dotenv-rails'
